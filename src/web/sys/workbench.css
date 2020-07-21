@@ -1,0 +1,117 @@
+.el-header {
+  background-color: #545c64;
+}
+
+.el_menu:not(.el-menu--collapse) {
+  width: 200px;
+}
+
+.el-menu {
+  height: 100%;
+}
+
+#logoMenuItem {
+  height: 60px;
+  margin-left: -8px;
+  background-color: #545c64 !important;
+}
+
+#logoMenuItem:hover {
+  /*background-color: #545c64 !important;*/
+}
+
+.top_welcome_col {
+  padding-top: 20px;
+  color: white;
+  font-size: 13px;
+  text-align: center;
+}
+
+.el-dropdown-link {
+  cursor: pointer;
+  color: white;
+  font-size: 13px;
+}
+
+.top_dropdown_col {
+  padding-top: 20px;
+  text-align: center;
+}
+
+.aside_header_image {
+  width: 40px;
+  height: 40px;
+  margin-top: 2px;
+}
+
+.right_content_header {
+  padding: 5px 0;
+}
+
+.input_search {
+  width: 120px;
+  float: right;
+  transition: width 0.5s;
+}
+
+.input_search:hover {
+  width: 150px;
+}
+
+.input_search >>> .el-input__inner {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px antiquewhite solid;
+  background-color: #545c64;
+  color: white;
+  font-size: 13px;
+  height: 30px;
+}
+
+.top_search_col {
+  padding-top: 10px;
+}
+
+.aside_header_span {
+  color: white;
+  font-size: 1.5rem;
+  display: inline-block;
+  margin-top: 3px;
+  margin-left: 5px;
+  font-family: cursive;
+}
+
+.main_content {
+  padding-top: 10px;
+  padding-bottom: 0;
+}
+
+.main_content_top {
+  margin-bottom: 10px;
+}
+
+aside.el-aside > .el-menu {
+  height: 100%;
+}
+
+.collapse_i {
+  font-size: 1.5rem;
+  color: #3a8ee6;
+}
+
+.collapse_radio_group >>> .el-radio-button__inner {
+  padding: 1px;
+  border: none;
+  border-radius: 4px
+}
+
+.breadcrumb_div {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+@media screen and (max-width: 500px) {
+  /*当屏幕尺寸小于500px时，应用下面的CSS样式*/
+
+}
