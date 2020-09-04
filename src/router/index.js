@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '../web/sys/Login.vue'
 import Workbench from '../web/sys/Workbench.vue'
 import DefaultContent from '../web/sys/DefaultContent.vue'
+import AccessDeny from '../web/sys/AccessDeny.vue'
 import Test from '../web/Test.vue'
 import TestOther from '../web/TestOther.vue'
 
@@ -24,6 +25,11 @@ export default new Router({
       path: '/defaultContent',
       name: '默认主页',
       component: DefaultContent
+    },
+    {
+      path: '/403',
+      name: '无权访问',
+      component: AccessDeny
     },
     {
       path: '/test',

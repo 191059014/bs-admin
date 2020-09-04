@@ -5,7 +5,7 @@ export default {
     return {
       logining: false,
       AgentDO: {
-        mobile: "",
+        usernameOrMobile: "",
         password: ""
       },
       loginRules: {
@@ -16,12 +16,15 @@ export default {
     }
   },
   methods: {
-    login() {
-      this.Alert.success("success");
-      this.Alert.info(123);
-      this.Alert.warn(789);
-      this.Alert.error(456);
-      this.$router.push({ path: "/workbench" });
+    doLogin() {
+      login(this.AgentDO, false).then(res => {
+        if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+          this.Alert.info("登陆成功");
+          this.$router.push({path: "/workbench"});
+        } else {
+          this.Alert.error(res.msg);
+        }
+      });
     }
   }
 }

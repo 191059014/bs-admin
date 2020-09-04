@@ -6,9 +6,11 @@ import router from './router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import * as alert from './common/alert.js';
+import * as consts from './common/consts.js';
 
 Vue.config.productionTip = false;
 Vue.prototype.Alert = alert;
+Vue.prototype.Consts = consts;
 
 Vue.use(ElementUI);
 
