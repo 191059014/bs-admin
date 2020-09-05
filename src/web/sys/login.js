@@ -20,6 +20,7 @@ export default {
       login(this.AgentDO, false).then(res => {
         if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
           this.Alert.info("登陆成功");
+          sessionStorage.setItem(this.Consts.JWT_TOKEN, res.data);
           this.$router.push({path: "/workbench"});
         } else {
           this.Alert.error(res.msg);

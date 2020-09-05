@@ -1,7 +1,7 @@
 /**
  * jwt token
  */
-export const JWT_TOKEN = "jwt_token";
+export const JWT_TOKEN = "token";
 /**
  * 错误码
  */
