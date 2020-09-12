@@ -1,5 +1,3 @@
-import {login} from '../../common/api.js';
-
 export default {
   data() {
     return {
@@ -17,7 +15,7 @@ export default {
   },
   methods: {
     doLogin() {
-      login(this.AgentDO, false).then(res => {
+      this.Api.login(this.AgentDO, false).then(res => {
         if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
           this.Alert.info("登陆成功");
           sessionStorage.setItem(this.Consts.JWT_TOKEN, res.data);

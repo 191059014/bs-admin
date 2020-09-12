@@ -7,10 +7,12 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import * as alert from './common/alert.js';
 import * as consts from './common/consts.js';
+import * as apis from './common/api.js';
 
 Vue.config.productionTip = false;
 Vue.prototype.Alert = alert;
 Vue.prototype.Consts = consts;
+Vue.prototype.Api = apis;
 
 Vue.use(ElementUI);
 
