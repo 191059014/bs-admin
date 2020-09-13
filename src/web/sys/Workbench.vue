@@ -2,9 +2,9 @@
   <el-container>
     <div id="aside_div_id">
       <el-menu class="el_menu" :collapse="isCollapse" :default-active="menuActive" ref="menuTree" :unique-opened="true">
-               <!--background-color="#545c64"-->
-               <!--text-color="#fff"-->
-               <!--active-text-color="#ffd04b"-->
+        <!--background-color="#545c64"-->
+        <!--text-color="#fff"-->
+        <!--active-text-color="#ffd04b"-->
         <el-menu-item id="logoMenuItem">
           <el-row>
             <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7">
@@ -120,8 +120,278 @@
   </el-container>
 </template>
 
-<script src="./workbench.js"></script>
+<script>
+  import FrameContent from './FrameContent.vue'
+  import DefaultContent from './DefaultContent.vue'
+  import {getServerIpAndHost} from '../../common/utils.js'
+
+  export default {
+
+    data() {
+      return {
+        shouyeMenu: {
+          "index": "0",
+          "name": "首页",
+          "url": "/defaultContent",
+          "icon": "el-icon-s-home"
+        },
+        menuActive: "0",
+        searchWord: '',
+        menuDatas: '',
+        singleMenuData: {
+          url: getServerIpAndHost('/defaultContent')
+        },
+        iframeHeight: '100%',
+        isCollapse: false,
+        firstMenuName: '',
+        secondMenuName: '',
+        thirdMenuName: '',
+        isMiniCollapse: true,
+      }
+    },
+    methods: {
+      changeIFrame(menu, firstMenuName, secondMenuName, thirdMenuName) {
+        if (firstMenuName) {
+          this.firstMenuName = firstMenuName;
+        } else {
+          this.firstMenuName = '';
+        }
+        if (secondMenuName) {
+          this.secondMenuName = secondMenuName;
+        } else {
+          this.secondMenuName = '';
+        }
+        if (thirdMenuName) {
+          this.thirdMenuName = thirdMenuName;
+        } else {
+          this.thirdMenuName = '';
+        }
+        let newMenu = {...menu};
+        if (menu && menu.url && menu.url.indexOf('http') < 0) {
+          newMenu.url = getServerIpAndHost(menu.url);
+        }
+        this.singleMenuData = newMenu;
+      },
+      collapseChange(collapse) {
+
+      },
+      miniCollapseChange(miniCollapse) {
+        // if (miniCollapse) {
+        //   document.getElementById("aside_div_id").style.display = "none";
+        // } else {
+        //   document.getElementById("aside_div_id").style.display = "block";
+        // }
+        this.hiddenMenuOfMini = miniCollapse;
+      },
+      handleCommand(command) {
+        this.Alert.info('click on item ' + command);
+      },
+      querySearch(queryString, cb) {
+        let suggests = this.findSuggestCycle(this.menuDatas);
+        let suggestAfterFilter = suggests.filter(this.createFilter(queryString));
+        // 调用 callback 返回建议列表的数据
+        cb(suggestAfterFilter);
+      },
+      findSuggestCycle(menuList) {
+        let suggests = [];
+        menuList.forEach(menu => {
+          if (!menu.children) {
+            suggests.push({"value": menu.name, "menu": menu});
+          } else {
+            suggests = suggests.concat(this.findSuggestCycle(menu.children));
+          }
+        });
+        return suggests;
+      },
+      createFilter(queryString) {
+        return (suggest) => {
+          return (suggest.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      },
+      handleSelectSuggestion(item) {
+        if (this.isCollapse) {
+          this.isCollapse = false;
+        }
+        // 打开父级目录
+        let parentIndex = item.menu.parentIndex;
+        if (parentIndex) {
+          this.$refs.menuTree.open(item.menu.parentIndex);
+        }
+        this.menuActive = item.menu.index;
+        let parentMenu = this.findParentMenu(parentIndex);
+        let parentParentMeun = this.findParentMenu(parentMenu & parentMenu.parentIndex);
+        this.changeIFrame(item.menu, parentParentMeun && parentParentMeun.name, parentMenu && parentMenu.name, item.menu.name);
+      },
+      findParentMenu(parentIndex) {
+        if (!parentIndex) {
+          return null;
+        }
+        return this.findParentCycle(parentIndex, this.menuDatas);
+      },
+      findParentCycle(parentIndex, menuList) {
+        for (let i in menuList) {
+          let menu = menuList[i];
+          if (parentIndex === menu.index) {
+            return menu;
+          }
+          if (menu.children) {
+            let parentCycle = this.findParentCycle(parentIndex, menu.children);
+            if (parentCycle) {
+              return parentCycle;
+            }
+          }
+        }
+      },
+      isMini() {
+        return document.documentElement.clientWidth < 500;
+      },
+      findPrivateMenuDatas() {
+        this.Api.getPrivateMenuDatas().then(res => {
+          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+            this.menuDatas = res.data.menuDatas;
+          } else {
+            this.Alert.error(res.msg);
+          }
+        })
+      }
+    },
+    mounted() {
+      // 动态设置iframe高度
+      let frameContent = document.getElementById("frameContent");
+      let top = frameContent.offsetTop;
+      this.iframeHeight = (document.documentElement.clientHeight - top - 20) + 'px';
+      // 设置左侧菜单隐藏
+      if (this.isMini()) {
+        this.isCollapse = false;
+      }
+    },
+    components: {
+      FrameContent: FrameContent,
+      DefaultContent: DefaultContent
+    },
+    computed: {},
+    watch: {}
+  }
+
+</script>
 
 <style scoped>
-  @import './workbench.css';
+  .el-header {
+    background-color: #545c64;
+  }
+
+  .el_menu:not(.el-menu--collapse) {
+    width: 200px;
+  }
+
+  .el-menu {
+    height: 100%;
+  }
+
+  #logoMenuItem {
+    height: 60px;
+    margin-left: -8px;
+    background-color: #545c64 !important;
+  }
+
+  #logoMenuItem:hover {
+    /*background-color: #545c64 !important;*/
+  }
+
+  .top_welcome_col {
+    padding-top: 20px;
+    color: white;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .el-dropdown-link {
+    cursor: pointer;
+    color: white;
+    font-size: 13px;
+  }
+
+  .top_dropdown_col {
+    padding-top: 20px;
+    text-align: center;
+  }
+
+  .aside_header_image {
+    width: 40px;
+    height: 40px;
+    margin-top: 2px;
+  }
+
+  .right_content_header {
+    padding: 5px 0;
+  }
+
+  .input_search {
+    width: 120px;
+    float: right;
+    transition: width 0.5s;
+  }
+
+  .input_search:hover {
+    width: 150px;
+  }
+
+  .input_search >>> .el-input__inner {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px antiquewhite solid;
+    background-color: #545c64;
+    color: white;
+    font-size: 13px;
+    height: 30px;
+  }
+
+  .top_search_col {
+    padding-top: 10px;
+  }
+
+  .aside_header_span {
+    color: white;
+    font-size: 1.5rem;
+    display: inline-block;
+    margin-top: 3px;
+    margin-left: 5px;
+    font-family: cursive;
+  }
+
+  .main_content {
+    padding-top: 10px;
+    padding-bottom: 0;
+  }
+
+  .main_content_top {
+    margin-bottom: 10px;
+  }
+
+  aside.el-aside > .el-menu {
+    height: 100%;
+  }
+
+  .collapse_i {
+    font-size: 1.5rem;
+    color: #3a8ee6;
+  }
+
+  .collapse_radio_group >>> .el-radio-button__inner {
+    padding: 1px;
+    border: none;
+    border-radius: 4px
+  }
+
+  .breadcrumb_div {
+    display: inline-block;
+    margin-left: 5px;
+  }
+
+  @media screen and (max-width: 500px) {
+    /*当屏幕尺寸小于500px时，应用下面的CSS样式*/
+
+  }
+
 </style>

@@ -27,9 +27,59 @@
   </el-form>
 </template>
 
-<script src="./login.js"></script>
+<script>
+  export default {
+    data() {
+      return {
+        logining: false,
+        AgentDO: {
+          usernameOrMobile: "",
+          password: ""
+        },
+        loginRules: {
+          mobile: [{required: true, message: "请输入账号", trigger: "blur"}],
+          password: [{required: true, message: "请输入密码", trigger: "blur"}]
+        },
+        checked: true
+      }
+    },
+    methods: {
+      doLogin() {
+        this.Api.login(this.AgentDO, false).then(res => {
+          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+            this.Alert.info("登陆成功");
+            sessionStorage.setItem(this.Consts.JWT_TOKEN, res.data);
+            this.$router.push({path: "/workbench"});
+          } else {
+            this.Alert.error(res.msg);
+          }
+        });
+      }
+    }
+  }
+
+</script>
 
 <style scoped>
-  @import './login.css';
+  .login-container {
+    /*box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);*/
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    background-clip: padding-box;
+    margin: 180px auto;
+    width: 350px;
+    padding: 35px 35px 25px 35px;
+    background: #fff;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 0 25px #cac6c6;
+  }
+
+  .title {
+    margin: 0px auto 40px auto;
+    text-align: center;
+    color: #505458;
+  }
+
 </style>
 
