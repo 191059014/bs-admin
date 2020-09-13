@@ -264,6 +264,7 @@
       if (this.isMini()) {
         this.isCollapse = false;
       }
+      this.findPrivateMenuDatas();
     },
     components: {
       FrameContent: FrameContent,
