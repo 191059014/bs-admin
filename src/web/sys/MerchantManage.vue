@@ -16,14 +16,14 @@
       :data="merchantList"
       stripe
       style="width: 100%">
-      <el-table-column type="index" label="序号" min-width="50"></el-table-column>
-      <el-table-column prop="merchantId" label="商户标识" min-width="180" sortable></el-table-column>
-      <el-table-column prop="merchantName" label="商户名" min-width="180" sortable></el-table-column>
-      <el-table-column prop="createTime" label="创建时间" min-width="180" sortable></el-table-column>
-      <el-table-column prop="createBy" label="创建人" min-width="180" sortable></el-table-column>
-      <el-table-column prop="updateTime" label="更新时间" min-width="180" sortable></el-table-column>
-      <el-table-column prop="updateBy" label="更新人" min-width="180" sortable></el-table-column>
-      <el-table-column label="操作" min-width="120">
+      <el-table-column type="index" label="序号" min-width="100"></el-table-column>
+      <el-table-column prop="merchantId" label="商户标识" min-width="100" sortable></el-table-column>
+      <el-table-column prop="merchantName" label="商户名" min-width="100" sortable></el-table-column>
+      <el-table-column prop="createTime" label="创建时间" min-width="100" sortable></el-table-column>
+      <el-table-column prop="createBy" label="创建人" min-width="100" sortable></el-table-column>
+      <el-table-column prop="updateTime" label="更新时间" min-width="100" sortable></el-table-column>
+      <el-table-column prop="updateBy" label="更新人" min-width="100" sortable></el-table-column>
+      <el-table-column label="操作" min-width="100">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
@@ -72,6 +72,7 @@
         this.Api.getMerchantPages(this.queryCondition, this.pageNum, this.pageSize).then(res => {
           if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
             this.merchantList = res.data.data;
+            this.total = res.data.count;
           } else {
             this.Alert.error(res.msg);
           }

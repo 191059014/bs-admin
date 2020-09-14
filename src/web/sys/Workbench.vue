@@ -15,7 +15,7 @@
             </el-col>
           </el-row>
         </el-menu-item>
-        <el-menu-item :index="shouyeMenu.index" @click="changeIFrame(shouyeMenu)">
+        <el-menu-item :index="shouyeMenu.index" @click="clickMenu(shouyeMenu)">
           <i :class="shouyeMenu.icon"></i>
           <span slot="title">{{shouyeMenu.name}}</span>
         </el-menu-item>
@@ -43,7 +43,7 @@
                     <!-- 此处可继续添加四级菜单 -->
                   </el-submenu>
                   <el-menu-item v-else :id="thirdMenu.index" :index="thirdMenu.index"
-                                @click="changeIFrame(thirdMenu)">
+                                @click="clickMenu(thirdMenu)">
                     <i :class="thirdMenu.icon"></i>
                     <span slot="title">{{thirdMenu.name}}</span>
                   </el-menu-item>
@@ -51,7 +51,7 @@
                 <!-- 三级菜单 end-->
               </el-submenu>
               <el-menu-item v-else :id="secondMenu.index" :index="secondMenu.index"
-                            @click="changeIFrame(secondMenu)">
+                            @click="clickMenu(secondMenu)">
                 <i :class="secondMenu.icon"></i>
                 <span slot="title">{{secondMenu.name}}</span>
               </el-menu-item>
@@ -59,7 +59,7 @@
             <!-- 二级菜单 end -->
           </el-submenu>
           <el-menu-item v-else :id="firstMenu.index" :index="firstMenu.index"
-                        @click="changeIFrame(firstMenu)">
+                        @click="clickMenu(firstMenu)">
             <i :class="firstMenu.icon"></i>
             <span slot="title">{{firstMenu.name}}</span>
           </el-menu-item>
@@ -70,7 +70,7 @@
     <el-container>
       <el-header class="right_content_header">
         <el-row type="flex" justify="end">
-          <el-col :xs="8" :sm="4" :md="4" :lg="4" :xl="1" :pull="17" class="collapse_radio_group_col">
+          <el-col :xs="8" :sm="4" :md="4" :lg="4" :xl="1" :pull="14" class="collapse_radio_group_col">
             <el-radio-group v-model="isCollapse" class="collapse_radio_group" @change="collapseChange">
               <el-radio-button v-show="isCollapse" :label="false"><i class="el-icon-s-unfold collapse_i"></i>
               </el-radio-button>
@@ -167,7 +167,7 @@
       tabClick(thisTab) {
 
       },
-      changeIFrame(menu) {
+      clickMenu(menu) {
         if (this.tabsItem.length > 10) {
           this.Alert.warn("当前打开的页面过多，请关闭一些后再打开");
           return false;
@@ -242,7 +242,7 @@
         this.menuActive = item.menu.index;
         let parentMenu = this.findParentMenu(parentIndex);
         let parentParentMeun = this.findParentMenu(parentMenu & parentMenu.parentIndex);
-        this.changeIFrame(item.menu, parentParentMeun && parentParentMeun.name, parentMenu && parentMenu.name, item.menu.name);
+        this.clickMenu(item.menu, parentParentMeun && parentParentMeun.name, parentMenu && parentMenu.name, item.menu.name);
       },
       findParentMenu(parentIndex) {
         if (!parentIndex) {
