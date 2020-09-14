@@ -12,3 +12,8 @@ export const login = (params, rememberMe) => {
 export const getPrivateMenuDatas = () => {
   return Ajax.get(`bs/auth/access/getPrivateMenuDatas`).then(res => res.data);
 };
+
+// 分页查询商户列表
+export const getMerchantPages = (params, pageNum, pageSize) => {
+  return Ajax.post(`bs/auth/merchant/queryPages?pageNum=` + pageNum + '&pageSize=' + pageSize, params).then(res => res.data);
+};

@@ -43,7 +43,7 @@
                     <!-- 此处可继续添加四级菜单 -->
                   </el-submenu>
                   <el-menu-item v-else :id="thirdMenu.index" :index="thirdMenu.index"
-                                @click="changeIFrame(thirdMenu,firstMenu.name,secondMenu.name,thirdMenu.name)">
+                                @click="changeIFrame(thirdMenu)">
                     <i :class="thirdMenu.icon"></i>
                     <span slot="title">{{thirdMenu.name}}</span>
                   </el-menu-item>
@@ -51,7 +51,7 @@
                 <!-- 三级菜单 end-->
               </el-submenu>
               <el-menu-item v-else :id="secondMenu.index" :index="secondMenu.index"
-                            @click="changeIFrame(secondMenu,firstMenu.name,secondMenu.name)">
+                            @click="changeIFrame(secondMenu)">
                 <i :class="secondMenu.icon"></i>
                 <span slot="title">{{secondMenu.name}}</span>
               </el-menu-item>
@@ -59,7 +59,7 @@
             <!-- 二级菜单 end -->
           </el-submenu>
           <el-menu-item v-else :id="firstMenu.index" :index="firstMenu.index"
-                        @click="changeIFrame(firstMenu,firstMenu.name)">
+                        @click="changeIFrame(firstMenu)">
             <i :class="firstMenu.icon"></i>
             <span slot="title">{{firstMenu.name}}</span>
           </el-menu-item>
@@ -69,7 +69,15 @@
     </div>
     <el-container>
       <el-header class="right_content_header">
-        <el-row type="flex" class="row-bg" justify="end">
+        <el-row type="flex" justify="end">
+          <el-col :xs="8" :sm="4" :md="4" :lg="4" :xl="1" :pull="17" class="collapse_radio_group_col">
+            <el-radio-group v-model="isCollapse" class="collapse_radio_group" @change="collapseChange">
+              <el-radio-button v-show="isCollapse" :label="false"><i class="el-icon-s-unfold collapse_i"></i>
+              </el-radio-button>
+              <el-radio-button v-show="!isCollapse" :label="true"><i class="el-icon-s-fold collapse_i"></i>
+              </el-radio-button>
+            </el-radio-group>
+          </el-col>
           <el-col :xs="8" :sm="4" :md="4" :lg="4" :xl="4" class="top_search_col">
             <el-autocomplete
               class="inline-input input_search"
@@ -97,31 +105,23 @@
         </el-row>
       </el-header>
       <el-main class="main_content">
-        <div class="main_content_top">
-          <el-radio-group v-model="isCollapse" class="collapse_radio_group" @change="collapseChange">
-            <el-radio-button v-show="isCollapse" :label="false"><i class="el-icon-s-unfold collapse_i"></i>
-            </el-radio-button>
-            <el-radio-button v-show="!isCollapse" :label="true"><i class="el-icon-s-fold collapse_i"></i>
-            </el-radio-button>
-          </el-radio-group>
-          <div class="breadcrumb_div">
-            <el-link type="primary" @click="changeIFrame(shouyeMenu)">{{shouyeMenu.name}}</el-link>
-            <el-link v-show="firstMenuName" disabled><i class="el-icon-arrow-right"></i>&nbsp;{{firstMenuName}}
-            </el-link>
-            <el-link v-show="secondMenuName" disabled><i class="el-icon-arrow-right"></i>&nbsp;{{secondMenuName}}
-            </el-link>
-            <el-link v-show="thirdMenuName" disabled><i class="el-icon-arrow-right"></i>&nbsp;{{thirdMenuName}}
-            </el-link>
-          </div>
-        </div>
-        <FrameContent id="frameContent" :singleMenuData="singleMenuData" :iframeHeight="iframeHeight"></FrameContent>
+        <el-tabs v-model="activeTab" type="border-card" @tab-remove="removeTab" @tab-click="tabClick">
+          <el-tab-pane v-for="(item, index) in tabsItem"
+                       :key="item.name"
+                       :label="item.title"
+                       :name="item.name"
+                       :closable="item.closable"
+                       :ref="item.ref">
+            <iframe id="frameContent" :src="item.url" width="100%" :height="iframeHeight" frameborder="no"
+                    scrolling="auto"></iframe>
+          </el-tab-pane>
+        </el-tabs>
       </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
-  import FrameContent from './FrameContent.vue'
   import DefaultContent from './DefaultContent.vue'
   import {getServerIpAndHost} from '../../common/utils.js'
 
@@ -129,6 +129,16 @@
 
     data() {
       return {
+        activeTab: '0', //默认显示的tab
+        tabsItem: [
+          {
+            title: '首页',
+            name: '0',
+            closable: false,
+            ref: 'tabs',
+            url: 'http://localhost/#/defaultContent'
+          }
+        ],
         shouyeMenu: {
           "index": "0",
           "name": "首页",
@@ -138,39 +148,51 @@
         menuActive: "0",
         searchWord: '',
         menuDatas: '',
-        singleMenuData: {
-          url: getServerIpAndHost('/defaultContent')
-        },
         iframeHeight: '100%',
         isCollapse: false,
-        firstMenuName: '',
-        secondMenuName: '',
-        thirdMenuName: '',
         isMiniCollapse: true,
       }
     },
     methods: {
-      changeIFrame(menu, firstMenuName, secondMenuName, thirdMenuName) {
-        if (firstMenuName) {
-          this.firstMenuName = firstMenuName;
-        } else {
-          this.firstMenuName = '';
+      removeTab(targetName) {
+        let removeIndex = 0;
+        for (let i = 0; i < this.tabsItem.length; i++) {
+          if (targetName === this.tabsItem[i].name) {
+            removeIndex = i;
+            break;
+          }
         }
-        if (secondMenuName) {
-          this.secondMenuName = secondMenuName;
-        } else {
-          this.secondMenuName = '';
-        }
-        if (thirdMenuName) {
-          this.thirdMenuName = thirdMenuName;
-        } else {
-          this.thirdMenuName = '';
+        this.tabsItem.splice(removeIndex, 1);
+      },
+      tabClick(thisTab) {
+
+      },
+      changeIFrame(menu) {
+        if (this.tabsItem.length > 10) {
+          this.Alert.warn("当前打开的页面过多，请关闭一些后再打开");
+          return false;
         }
         let newMenu = {...menu};
         if (menu && menu.url && menu.url.indexOf('http') < 0) {
           newMenu.url = getServerIpAndHost(menu.url);
         }
-        this.singleMenuData = newMenu;
+        let tabExist = false;
+        for (let i = 0; i < this.tabsItem.length; i++) {
+          if (menu.index === this.tabsItem[i].name) {
+            tabExist = true;
+            break;
+          }
+        }
+        if (!tabExist) {
+          this.tabsItem.push({
+            title: newMenu.name,
+            name: newMenu.index,
+            closable: true,
+            ref: 'tabs',
+            url: newMenu.url
+          });
+        }
+        this.activeTab = menu.index;
       },
       collapseChange(collapse) {
 
@@ -259,7 +281,8 @@
       // 动态设置iframe高度
       let frameContent = document.getElementById("frameContent");
       let top = frameContent.offsetTop;
-      this.iframeHeight = (document.documentElement.clientHeight - top - 20) + 'px';
+      debugger;
+      this.iframeHeight = (document.documentElement.clientHeight - top - 120) + 'px';
       // 设置左侧菜单隐藏
       if (this.isMini()) {
         this.isCollapse = false;
@@ -267,7 +290,6 @@
       this.findPrivateMenuDatas();
     },
     components: {
-      FrameContent: FrameContent,
       DefaultContent: DefaultContent
     },
     computed: {},
@@ -362,8 +384,7 @@
   }
 
   .main_content {
-    padding-top: 10px;
-    padding-bottom: 0;
+    padding: 5px 5px 0 5px;
   }
 
   .main_content_top {
@@ -375,19 +396,28 @@
   }
 
   .collapse_i {
-    font-size: 1.5rem;
-    color: #3a8ee6;
+    font-size: 2rem;
+    color: white;
+  }
+
+  .collapse_radio_group_col {
+    padding: 10px 0 10px 10px;
   }
 
   .collapse_radio_group >>> .el-radio-button__inner {
     padding: 1px;
     border: none;
-    border-radius: 4px
+    border-radius: 4px;
+    background-color: #545c64;
   }
 
   .breadcrumb_div {
     display: inline-block;
     margin-left: 5px;
+  }
+
+  .el-tabs--border-card >>> .el-tabs__content {
+    padding: 5px;
   }
 
   @media screen and (max-width: 500px) {

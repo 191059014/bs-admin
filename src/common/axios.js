@@ -17,7 +17,8 @@ const Ajax = axios.create({
 // 请求拦截（配置发送请求的信息）
 Ajax.interceptors.request.use(function (config) {
   // 处理请求之前的配置
-  config.headers.common.token = sessionStorage.getItem(JWT_TOKEN);
+  let token = sessionStorage.getItem(JWT_TOKEN);
+  config.headers.common.token = token && "Bearer " + token;
   return config;
 }, function (error) {
   // 请求失败的处理
@@ -30,6 +31,14 @@ Ajax.interceptors.response.use(function (response) {
     Message({message: ResponseEnum.ACCESS_DENY.msg, type: 'error'});
     router.replace({
       path: '/403',
+      query: {redirect: router.currentRoute.fullPath}
+    });
+    return;
+  }
+  if (response.data.code == ResponseEnum.TOKEN_ERROR.code) {
+    Message({message: response.data.msg, type: 'error'});
+    router.replace({
+      path: '/',
       query: {redirect: router.currentRoute.fullPath}
     });
     return;

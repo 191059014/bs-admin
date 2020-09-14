@@ -33,8 +33,8 @@
       return {
         logining: false,
         AgentDO: {
-          usernameOrMobile: "",
-          password: ""
+          usernameOrMobile: "admin",
+          password: "123456"
         },
         loginRules: {
           mobile: [{required: true, message: "请输入账号", trigger: "blur"}],
