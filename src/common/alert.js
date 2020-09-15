@@ -33,5 +33,57 @@ export const error = function (msg) {
 };
 
 const message = function (msg, type) {
-  Message({message: msg, type: type});
+  Message({message: msg, type: type, duration: 1000});
+};
+
+/**
+ * 成功样式确认框
+ * @param title 标题
+ * @param msg 信息
+ * @param successCallback 成功回调
+ * @param failCallback 失败回调
+ */
+export const confirmSuccess = function (title, msg, successCallback, failCallback) {
+  confirm(title, msg, 'success', successCallback, failCallback);
+};
+
+/**
+ * 普通样式确认框
+ * @param title 标题
+ * @param msg 信息
+ * @param successCallback 成功回调
+ * @param failCallback 失败回调
+ */
+export const confirmInfo = function (title, msg, successCallback, failCallback) {
+  confirm(title, msg, 'info', successCallback, failCallback);
+};
+
+/**
+ * 警告样式确认框
+ * @param title 标题
+ * @param msg 信息
+ * @param successCallback 成功回调
+ * @param failCallback 失败回调
+ */
+export const confirmWarning = function (title, msg, successCallback, failCallback) {
+  confirm(title, msg, 'warning', successCallback, failCallback);
+};
+
+/**
+ * 错误样式确认框
+ * @param title 标题
+ * @param msg 信息
+ * @param successCallback 成功回调
+ * @param failCallback 失败回调
+ */
+export const confirmError = function (title, msg, successCallback, failCallback) {
+  confirm(title, msg, 'error', successCallback, failCallback);
+};
+
+const confirm = function (title, msg, type, successCallback, failCallback) {
+  MessageBox({
+    title: title,
+    message: msg,
+    type: type
+  }).then(successCallback && successCallback()).catch(failCallback && failCallback());
 };

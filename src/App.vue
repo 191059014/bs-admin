@@ -21,4 +21,11 @@
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
   }
+
+  /**
+   * 设置所有的dialog的内边距
+   */
+  .el-dialog__body {
+    padding: 0 20px;
+  }
 </style>
