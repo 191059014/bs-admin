@@ -84,6 +84,14 @@ const confirm = function (title, msg, type, successCallback, failCallback) {
   MessageBox({
     title: title,
     message: msg,
-    type: type
-  }).then(successCallback && successCallback()).catch(failCallback && failCallback());
+    type: type,
+    showCancelButton: true,
+    callback: function (action, instance) {
+      if (action === 'confirm') {
+        successCallback && successCallback();
+      } else {
+        failCallback && failCallback();
+      }
+    }
+  });
 };
