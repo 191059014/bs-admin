@@ -179,10 +179,10 @@
         })
       },
       handleDelete(index, row) {
-        this.Alert.confirmWarning('提示', '确定删除吗？', function () {
-          console.info(123);
-        },function () {
-          console.info(456);
+        this.Alert.confirmWarning('提示', '确定删除吗？', () => {
+          this.Alert.success(123);
+        }, () => {
+          this.Alert.success(456);
         });
       }
     },

@@ -32,6 +32,11 @@ export const error = function (msg) {
   message(msg, 'error');
 };
 
+/**
+ * 提示框
+ * @param msg 消息内容
+ * @param type 提示框类型
+ */
 const message = function (msg, type) {
   Message({message: msg, type: type, duration: 1000});
 };
@@ -80,6 +85,14 @@ export const confirmError = function (title, msg, successCallback, failCallback)
   confirm(title, msg, 'error', successCallback, failCallback);
 };
 
+/**
+ * 确认框
+ * @param title 标题
+ * @param msg 信息
+ * @param type 确认框类型
+ * @param successCallback 成功回调
+ * @param failCallback 失败回调
+ */
 const confirm = function (title, msg, type, successCallback, failCallback) {
   MessageBox({
     title: title,
