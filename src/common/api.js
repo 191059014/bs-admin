@@ -23,3 +23,7 @@ export const addMerchant = (params) => {
 export const updateMerchant = (params, merchantId) => {
   return Ajax.post(`bs/auth/merchant/update?merchantId=` + merchantId, params).then(res => res.data);
 };
+// 删除商户
+export const deleteMerchant = (merchantId) => {
+  return Ajax.get(`bs/auth/merchant/delete?merchantId=` + merchantId).then(res => res.data);
+};

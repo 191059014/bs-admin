@@ -180,9 +180,16 @@
       },
       handleDelete(index, row) {
         this.Alert.confirmWarning('提示', '确定删除吗？', () => {
-          this.Alert.success(123);
+          this.Api.deleteMerchant(row.merchantId).then(res => {
+            if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+              this.Alert.success('删除成功');
+              this.queryPages();
+            } else {
+              this.Alert.error(res.msg);
+            }
+          })
         }, () => {
-          this.Alert.success(456);
+          // do nothing
         });
       }
     },
