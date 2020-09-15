@@ -89,12 +89,12 @@
         },
         merchantList: [],
         showAddDialog: false,
-        addDialogLabelWidth: 200,
+        addDialogLabelWidth: '200',
         merchantModelAdd: {
           merchantName: ''
         },
         showUpdateDialog: false,
-        updateDialogLabelWidth: 200,
+        updateDialogLabelWidth: '200',
         merchantModelUpdate: {
           merchantId: '',
           merchantName: ''
@@ -164,11 +164,15 @@
         })
       },
       handleEdit() {
+        if (!this.merchantModelUpdate.merchantName) {
+          this.Alert.warn("商户名称不能为空");
+          return false;
+        }
         if (this.merchantModelUpdatePrimary.merchantName === this.merchantModelUpdate.merchantName) {
           this.Alert.warn("没有任何修改");
           return false;
         }
-        this.Api.updateMerchant(this.merchantModelUpdate).then(res => {
+        this.Api.updateMerchant({merchantName: this.merchantModelUpdate.merchantName}, this.merchantModelUpdate.merchantId).then(res => {
           if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
             this.Alert.success(res.msg);
             this.showUpdateDialog = false;
