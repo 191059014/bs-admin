@@ -29,7 +29,7 @@ export default new Router({
       component: DefaultContent
     },
     {
-      path: '/403',
+      path: '/accessDeny',
       name: '无权访问',
       component: AccessDeny
     },

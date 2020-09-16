@@ -30,7 +30,7 @@ Ajax.interceptors.response.use(function (response) {
   if (response.data.code == ResponseEnum.ACCESS_DENY.code) {
     Message({message: ResponseEnum.ACCESS_DENY.msg, type: 'error'});
     router.replace({
-      path: '/403',
+      path: '/accessDeny',
       query: {redirect: router.currentRoute.fullPath}
     });
     return;
