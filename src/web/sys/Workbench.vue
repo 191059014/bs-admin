@@ -98,7 +98,7 @@
                 <el-dropdown-item command="b">狮子头</el-dropdown-item>
                 <el-dropdown-item command="c">螺蛳粉</el-dropdown-item>
                 <el-dropdown-item command="d" disabled>双皮奶</el-dropdown-item>
-                <el-dropdown-item command="e" divided>蚵仔煎</el-dropdown-item>
+                <el-dropdown-item command="logout" divided>注销</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </el-col>
@@ -207,6 +207,10 @@
       },
       handleCommand(command) {
         this.Alert.info('click on item ' + command);
+        if (command === 'logout') {
+          sessionStorage.setItem(this.Consts.JWT_TOKEN, null);
+          this.$router.push({path: "/"});
+        }
       },
       querySearch(queryString, cb) {
         let suggests = this.findSuggestCycle(this.menuDatas);

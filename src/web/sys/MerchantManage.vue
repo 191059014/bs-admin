@@ -1,5 +1,5 @@
 <template>
-  <div class="merchant_container">
+  <div class="div_container">
     <el-form :inline="true" :model="queryCondition">
       <el-form-item label="商户ID">
         <el-input v-model="queryCondition.merchantId" placeholder="商户ID"></el-input>
@@ -204,7 +204,7 @@
 </script>
 
 <style scoped>
-  .merchant_container {
+  .div_container {
     padding: 10px;
   }
 

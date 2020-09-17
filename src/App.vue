@@ -28,4 +28,5 @@
   .el-dialog__body {
     padding: 0 20px;
   }
+
 </style>
