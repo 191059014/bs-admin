@@ -87,7 +87,18 @@
       :visible.sync="openDrawer"
       direction="rtl"
       :before-close="handleClose">
-      <span>我来啦!</span>
+
+      <el-checkbox-group v-model="checkedPermissions">
+        <div v-for="permission in permissionsUnderMerchant" style="padding-bottom: 10px">
+          <el-checkbox :label="permission.permissionId" :key="permission.permissionId">{{permission.permissionName}}
+          </el-checkbox>
+        </div>
+      </el-checkbox-group>
+
+      <el-row style="text-align: center;padding-top: 20px">
+        <el-button type="primary" @click="updateRolePermission" style="width: 100%">保存</el-button>
+      </el-row>
+
     </el-drawer>
 
   </div>
@@ -122,7 +133,10 @@
           userName: ''
         },
         subMerchantList: [],
-        openDrawer: false
+        openDrawer: false,
+        permissionsUnderMerchant: [],
+        checkedPermissions: [],
+        roleIdOfCurrentRow: ''
       }
     },
     methods: {
@@ -228,11 +242,41 @@
       },
       handleChangePermission(idnex, row) {
         this.openDrawer = true;
+        this.roleIdOfCurrentRow = row.roleId;
+        this.Api.getPermissionUnderMerchant(row.roleId).then(res => {
+          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+            this.permissionsUnderMerchant = res.data;
+          } else {
+            this.Alert.error("获取角色对应商户下所有权限集合失败");
+          }
+        });
+        this.Api.getPermissionsUnderRole(row.roleId).then(res => {
+          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+            this.checkedPermissions = res.data;
+          } else {
+            this.Alert.error("获取角色的权限集合失败");
+          }
+        })
       },
       handleClose(done) {
         this.Alert.confirmWarning('提示', '确定关闭吗？', () => {
           done();
+          this.checkedPermissions = [];
+          this.permissionsUnderMerchant = [];
         });
+      },
+      updateRolePermission() {
+        this.Api.updateRolePermission(this.roleIdOfCurrentRow, this.checkedPermissions).then(res => {
+          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+            this.Alert.success(res.msg);
+            this.openDrawer = false;
+            this.checkedPermissions = [];
+            this.permissionsUnderMerchant = [];
+            this.queryPages();
+          } else {
+            this.Alert.error(res.msg);
+          }
+        })
       }
     },
     mounted() {

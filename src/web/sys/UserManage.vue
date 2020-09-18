@@ -117,6 +117,10 @@
         </div>
       </el-checkbox-group>
 
+      <el-row style="text-align: center;padding-top: 20px">
+        <el-button type="primary" @click="updateUserRole" style="width: 100%">保存</el-button>
+      </el-row>
+
     </el-drawer>
 
   </div>
@@ -163,7 +167,8 @@
         subMerchantList: [],
         openDrawer: false,
         rolesUnderMerchant: [],
-        checkedRoles: []
+        checkedRoles: [],
+        userIdOfCurrentRow: ''
       }
     },
     methods: {
@@ -315,13 +320,14 @@
       },
       handleChangeRole(index, row) {
         this.openDrawer = true;
+        this.userIdOfCurrentRow = row.userId;
         this.Api.getRolesUnderMerchant(row.userId).then(res => {
           if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
             this.rolesUnderMerchant = res.data;
           } else {
             this.Alert.error("获取用户对应商户下所有角色集合失败");
           }
-        })
+        });
         this.Api.getRolesUnderUser(row.userId).then(res => {
           if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
             this.checkedRoles = res.data;
@@ -333,7 +339,22 @@
       handleClose(done) {
         this.Alert.confirmWarning('提示', '确定关闭吗？', () => {
           done();
+          this.checkedRoles = [];
+          this.rolesUnderMerchant = [];
         });
+      },
+      updateUserRole() {
+        this.Api.updateUserRole(this.userIdOfCurrentRow, this.checkedRoles).then(res => {
+          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+            this.Alert.success(res.msg);
+            this.openDrawer = false;
+            this.checkedRoles = [];
+            this.rolesUnderMerchant = [];
+            this.queryPages();
+          } else {
+            this.Alert.error(res.msg);
+          }
+        })
       }
     },
     mounted() {

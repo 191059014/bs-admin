@@ -69,6 +69,10 @@ export const getRolesUnderUser = (userId) => {
 export const getRolesUnderMerchant = (userId) => {
   return Ajax.get(`bs/auth/user/getRolesUnderMerchant?userId=` + userId).then(res => res.data);
 };
+// 更新用户的角色
+export const updateUserRole = (userId, params) => {
+  return Ajax.post(`bs/auth/user/updateUserRole?userId=` + userId, params).then(res => res.data);
+};
 /**
  * 角色管理
  */
@@ -87,6 +91,18 @@ export const updateRole = (params, roleId) => {
 // 删除角色
 export const deleteRole = (roleId) => {
   return Ajax.get(`bs/auth/role/delete?roleId=` + roleId).then(res => res.data);
+};
+// 获取角色的权限集合
+export const getPermissionsUnderRole = (roleId) => {
+  return Ajax.get(`bs/auth/role/getPermissionsUnderRole?roleId=` + roleId).then(res => res.data);
+};
+// 获取角色对应商户下所有权限集合
+export const getPermissionUnderMerchant = (roleId) => {
+  return Ajax.get(`bs/auth/role/getPermissionUnderMerchant?roleId=` + roleId).then(res => res.data);
+};
+// 更新角色的权限
+export const updateRolePermission = (roleId, params) => {
+  return Ajax.post(`bs/auth/role/updateRolePermission?roleId=` + roleId, params).then(res => res.data);
 };
 /**
  * 权限管理
