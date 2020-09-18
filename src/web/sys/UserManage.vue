@@ -109,7 +109,14 @@
       :visible.sync="openDrawer"
       direction="rtl"
       :before-close="handleClose">
-      <span>我来啦!</span>
+
+      <el-checkbox-group v-model="checkedRoles">
+        <div v-for="role in rolesUnderMerchant" style="padding-bottom: 10px">
+          <el-checkbox :label="role.roleId" :key="role.roleId">{{role.roleName}}
+          </el-checkbox>
+        </div>
+      </el-checkbox-group>
+
     </el-drawer>
 
   </div>
@@ -154,7 +161,9 @@
           confirmPassword: ''
         },
         subMerchantList: [],
-        openDrawer: false
+        openDrawer: false,
+        rolesUnderMerchant: [],
+        checkedRoles: []
       }
     },
     methods: {
@@ -269,7 +278,7 @@
         let updateParams = {
           userName: this.userModelUpdate.userName,
           mobile: this.userModelUpdate.mobile,
-          mobile: this.userModelUpdate.password
+          password: this.userModelUpdate.password
         };
         this.Api.updateUser(updateParams, this.userModelUpdate.userId).then(res => {
           if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
@@ -304,8 +313,22 @@
           }
         })
       },
-      handleChangeRole(index, row){
+      handleChangeRole(index, row) {
         this.openDrawer = true;
+        this.Api.getRolesUnderMerchant(row.userId).then(res => {
+          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+            this.rolesUnderMerchant = res.data;
+          } else {
+            this.Alert.error("获取用户对应商户下所有角色集合失败");
+          }
+        })
+        this.Api.getRolesUnderUser(row.userId).then(res => {
+          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+            this.checkedRoles = res.data;
+          } else {
+            this.Alert.error("获取用户的角色集合失败");
+          }
+        })
       },
       handleClose(done) {
         this.Alert.confirmWarning('提示', '确定关闭吗？', () => {

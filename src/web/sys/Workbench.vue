@@ -11,7 +11,7 @@
               <el-image class="aside_header_image" src="../../static/image/favicon.ico" fit="scale-contain"></el-image>
             </el-col>
             <el-col :xs="17" :sm="17" :md="17" :lg="17" :xl="17">
-              <span class="aside_header_span">一览众山小</span>
+              <span class="aside_header_span">天道酬勤</span>
             </el-col>
           </el-row>
         </el-menu-item>

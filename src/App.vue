@@ -23,14 +23,35 @@
   }
 
   /**
-   * 设置所有的dialog的内边距
+   * 全局设置所有dialog组件样式
    */
   .el-dialog__body {
     padding: 0 20px;
   }
 
   /**
+   * 全局设置所有drawer组件样式
+   */
+  .el-drawer__header > :first-child {
+    outline: none;
+    font-size: 1.5rem;
+  }
+
+  .el-drawer {
+    outline: none;
+  }
+
+  .el-drawer__body {
+    padding: 0 20px;
+  }
+
+  .el-drawer__close-btn {
+    outline: none;
+  }
+
+  /**
    *  修改滚动条样式
+   *
    *  ::-webkit-scrollbar 滚动条整体部分
    *  ::-webkit-scrollbar-thumb  滚动条里面的小方块，能向上向下移动（或往左往右移动，取决于是垂直滚动条还是水平滚动条）
    *  ::-webkit-scrollbar-track  滚动条的轨道（里面装有Thumb）

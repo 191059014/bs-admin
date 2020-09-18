@@ -61,6 +61,14 @@ export const updateUser = (params, userId) => {
 export const deleteUser = (userId) => {
   return Ajax.get(`bs/auth/user/delete?userId=` + userId).then(res => res.data);
 };
+// 获取用户的角色集合
+export const getRolesUnderUser = (userId) => {
+  return Ajax.get(`bs/auth/user/getRolesUnderUser?userId=` + userId).then(res => res.data);
+};
+// 获取用户对应商户下所有角色集合
+export const getRolesUnderMerchant = (userId) => {
+  return Ajax.get(`bs/auth/user/getRolesUnderMerchant?userId=` + userId).then(res => res.data);
+};
 /**
  * 角色管理
  */
