@@ -3,22 +3,10 @@
 
     <div class="block">
       <el-timeline style="padding-right: 40px">
-        <el-timeline-item timestamp="2020/05/01" placement="top">
+        <el-timeline-item v-for="item in timelineList" :key="item.time" :timestamp="item.time" placement="top">
           <el-card>
-            <h4>创建项目</h4>
-            <p>搭建项目基本框架</p>
-          </el-card>
-        </el-timeline-item>
-        <el-timeline-item timestamp="2018/4/3" placement="top">
-          <el-card>
-            <h4>添加系统管理-商户管理</h4>
-            <p>完善了商户管理的增删改查功能</p>
-          </el-card>
-        </el-timeline-item>
-        <el-timeline-item timestamp="2018/4/2" placement="top">
-          <el-card>
-            <h4>添加系统管理-商户管理</h4>
-            <p>完善了商户管理的增删改查功能</p>
+            <h4>{{item.title}}</h4>
+            <p>{{item.desc}}</p>
           </el-card>
         </el-timeline-item>
       </el-timeline>
@@ -31,7 +19,15 @@
   export default {
     name: "MainContent",
     data() {
-      return {};
+      return {
+        timelineList: [
+          {time: '2020/05/01', title: '创建项目', desc: '搭建项目基本框架'},
+          {time: '2020/06/01', title: '添加系统管理-商户管理', desc: '完善了商户管理的增删改查功能'},
+          {time: '2020/07/01', title: '添加系统管理-用户管理', desc: '完善了用户管理的增删改查功能'},
+          {time: '2020/08/01', title: '添加系统管理-角色管理', desc: '完善了角色管理的增删改查功能'},
+          {time: '2020/09/01', title: '添加系统管理-权限管理', desc: '完善了权限管理的增删改查功能'},
+        ]
+      };
     }
   }
 </script>

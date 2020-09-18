@@ -85,7 +85,8 @@
               :fetch-suggestions="querySearch"
               placeholder="请输入内容"
               @select="handleSelectSuggestion"
-              suffix-icon="el-icon-search"
+              prefix-icon="el-icon-search"
+              clearable="true"
             ></el-autocomplete>
           </el-col>
           <el-col :xs="8" :sm="2" :md="2" :lg="2" :xl="2" class="top_dropdown_col">
@@ -354,13 +355,13 @@
   }
 
   .input_search {
-    width: 120px;
+    width: 150px;
     float: right;
     transition: width 0.5s;
   }
 
   .input_search:hover {
-    width: 150px;
+    width: 180px;
   }
 
   .input_search >>> .el-input__inner {

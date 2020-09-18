@@ -10,6 +10,16 @@
       <el-form-item label="手机号">
         <el-input v-model="queryCondition.mobile" placeholder="手机号"></el-input>
       </el-form-item>
+      <el-form-item label="商户">
+        <el-select v-model="queryCondition.tenantId" placeholder="请选择商户">
+          <el-option
+            v-for="item in subMerchantList"
+            :key="item.merchantId"
+            :label="item.merchantName"
+            :value="item.merchantId">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="queryPages">查询</el-button>
         <el-button type="primary" @click="reset">重置</el-button>
@@ -31,10 +41,11 @@
       <el-table-column prop="createBy" label="创建人" min-width="100" sortable></el-table-column>
       <el-table-column prop="updateTime" label="更新时间" min-width="100" sortable></el-table-column>
       <el-table-column prop="updateBy" label="更新人" min-width="100" sortable></el-table-column>
-      <el-table-column label="操作" min-width="100">
+      <el-table-column label="操作" min-width="120">
         <template slot-scope="scope">
           <el-button size="mini" @click="showDialogOfUpdate(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+          <el-button size="mini" type="danger" @click="handleChangeRole(scope.$index, scope.row)">角色</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -53,13 +64,13 @@
 
     <el-dialog title="新增用户" :visible.sync="showAddDialog">
       <el-form :model="userModelAdd">
-        <el-form-item label="用户名称" :label-width="addDialogLabelWidth" required>
+        <el-form-item label="用户名称" :label-width="addDialogLabelWidth" required class="dialog_form_item">
           <el-input v-model="userModelAdd.userName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" :label-width="addDialogLabelWidth" required>
+        <el-form-item label="手机号" :label-width="addDialogLabelWidth" required class="dialog_form_item">
           <el-input v-model="userModelAdd.mobile" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="密码" :label-width="addDialogLabelWidth" required>
+        <el-form-item label="密码" :label-width="addDialogLabelWidth" required class="dialog_form_item">
           <el-input v-model="userModelAdd.password" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" :label-width="addDialogLabelWidth" required>
@@ -72,19 +83,19 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="修改商户" :visible.sync="showUpdateDialog">
+    <el-dialog title="修改商户" :visible.sync="showUpdateDialog" class="dialog_form_item">
       <el-form :model="userModelUpdate">
-        <el-form-item label="用户名称" :label-width="addDialogLabelWidth" required>
+        <el-form-item label="用户名称" :label-width="addDialogLabelWidth" required class="dialog_form_item">
           <el-input v-model="userModelUpdate.userName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" :label-width="addDialogLabelWidth" required>
+        <el-form-item label="手机号" :label-width="addDialogLabelWidth" required class="dialog_form_item">
           <el-input v-model="userModelUpdate.mobile" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="密码" :label-width="addDialogLabelWidth" required>
-          <el-input v-model="userModelUpdate.password" autocomplete="off"></el-input>
+        <el-form-item label="密码" :label-width="addDialogLabelWidth" required class="dialog_form_item">
+          <el-input v-model="userModelUpdate.password" autocomplete="off" show-password></el-input>
         </el-form-item>
         <el-form-item label="确认密码" :label-width="addDialogLabelWidth" required>
-          <el-input v-model="userModelUpdate.confirmPassword" autocomplete="off"></el-input>
+          <el-input v-model="userModelUpdate.confirmPassword" autocomplete="off" show-password></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -93,12 +104,19 @@
       </div>
     </el-dialog>
 
+    <el-drawer
+      title="修改用户的角色"
+      :visible.sync="openDrawer"
+      direction="rtl"
+      :before-close="handleClose">
+      <span>我来啦!</span>
+    </el-drawer>
+
   </div>
 </template>
 
 <script>
   export default {
-    name: "UserManage",
     data() {
       return {
         pageNum: 1,
@@ -108,7 +126,8 @@
         queryCondition: {
           userId: '',
           userName: '',
-          mobile: ''
+          mobile: '',
+          tenantId: ''
         },
         userList: [],
         showAddDialog: false,
@@ -133,7 +152,9 @@
           mobile: '',
           password: '',
           confirmPassword: ''
-        }
+        },
+        subMerchantList: [],
+        openDrawer: false
       }
     },
     methods: {
@@ -273,10 +294,28 @@
         }, () => {
           // do nothing
         });
+      },
+      getAllSubMerchants() {
+        this.Api.getAllSubMerchants().then(res => {
+          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+            this.subMerchantList = res.data;
+          } else {
+            this.Alert.error("初始化所有下级商户下拉框失败");
+          }
+        })
+      },
+      handleChangeRole(index, row){
+        this.openDrawer = true;
+      },
+      handleClose(done) {
+        this.Alert.confirmWarning('提示', '确定关闭吗？', () => {
+          done();
+        });
       }
     },
     mounted() {
       this.queryPages();
+      this.getAllSubMerchants();
     }
   }
 </script>
@@ -286,10 +325,7 @@
     padding: 10px;
   }
 
-  /**
-     * 设置所有的form的每一项距离下边的距离
-     */
-  .el-form-item {
+  .dialog_form_item {
     margin-bottom: 0;
   }
 </style>
