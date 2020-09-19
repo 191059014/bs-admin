@@ -74,20 +74,45 @@
 
     <el-dialog title="新增权限" :visible.sync="showAddDialog">
       <el-form :model="permissionModelAdd">
-        <el-form-item label="权限名称" :label-width="addDialogLabelWidth" required class="dialog_form_item">
-          <el-input v-model="permissionModelAdd.permissionName" autocomplete="off"></el-input>
-        </el-form-item>
         <el-form-item label="资源类型" :label-width="addDialogLabelWidth" required class="dialog_form_item"
                       style="margin-top: 10px">
           <el-radio-group v-model="permissionModelAdd.resourceType" :change="resourceTypeChange">
             <el-radio v-for="item in resourceTypeList" :label="item.value" :key="item.value">{{item.name}}</el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item label="上级目录" :label-width="addDialogLabelWidth" class="dialog_form_item" style="padding: 15px 0"
+                      v-show="permissionModelAdd.resourceType==='page' ||permissionModelAdd.resourceType==='folder'">
+          <el-select v-model="permissionModelAdd.parentId" placeholder="请选择上级目录">
+            <el-option label="无" value=""></el-option>
+            <el-option
+              v-for="item in folderList"
+              :key="item.permissionId"
+              :label="item.permissionName"
+              :value="item.permissionId">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="所属页面" :label-width="addDialogLabelWidth" required class="dialog_form_item"
+                      style="padding: 15px 0"
+                      v-show="permissionModelAdd.resourceType==='button'">
+          <el-select v-model="permissionModelAdd.parentId" placeholder="请选择所属页面">
+            <el-option label="无" value=""></el-option>
+            <el-option
+              v-for="item in pageList"
+              :key="item.permissionId"
+              :label="item.permissionName"
+              :value="item.permissionId">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="权限名称" :label-width="addDialogLabelWidth" required class="dialog_form_item">
+          <el-input v-model="permissionModelAdd.permissionName" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item label="权限值" :label-width="addDialogLabelWidth" required class="dialog_form_item">
           <el-input v-model="permissionModelAdd.value" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="图标" :label-width="addDialogLabelWidth" required class="dialog_form_item"
-                      v-show="permissionModelAdd.resourceType==='page'">
+        <el-form-item label="图标" :label-width="addDialogLabelWidth" class="dialog_form_item"
+                      v-show="permissionModelAdd.resourceType==='page' ||permissionModelAdd.resourceType==='folder'">
           <el-input v-model="permissionModelAdd.icon" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="链接" :label-width="addDialogLabelWidth" required
@@ -103,20 +128,46 @@
 
     <el-dialog title="修改权限" :visible.sync="showUpdateDialog" class="dialog_form_item">
       <el-form :model="permissionModelUpdate">
-        <el-form-item label="权限名称" :label-width="updateDialogLabelWidth" required class="dialog_form_item">
-          <el-input v-model="permissionModelUpdate.permissionName" autocomplete="off"></el-input>
-        </el-form-item>
         <el-form-item label="资源类型" :label-width="updateDialogLabelWidth" required class="dialog_form_item"
                       style="margin-top: 10px">
-          <el-radio-group v-model="permissionModelUpdate.resourceType" disabled="true">
+          <el-radio-group v-model="permissionModelUpdate.resourceType" disabled>
             <el-radio v-for="item in resourceTypeList" :label="item.value" :key="item.value">{{item.name}}</el-radio>
           </el-radio-group>
+        </el-form-item>
+        <el-form-item label="上级目录" :label-width="updateDialogLabelWidth" class="dialog_form_item"
+                      style="padding: 15px 0"
+                      v-show="permissionModelUpdate.resourceType==='page' ||permissionModelUpdate.resourceType==='folder'">
+          <el-select v-model="permissionModelUpdate.parentId" placeholder="请选择上级目录">
+            <el-option label="无" value=""></el-option>
+            <el-option
+              v-for="item in folderList"
+              :key="item.permissionId"
+              :label="item.permissionName"
+              :value="item.permissionId">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="所属页面" :label-width="updateDialogLabelWidth" required class="dialog_form_item"
+                      style="padding: 15px 0"
+                      v-show="permissionModelUpdate.resourceType==='button'">
+          <el-select v-model="permissionModelUpdate.parentId" placeholder="请选择所属页面">
+            <el-option label="无" value=""></el-option>
+            <el-option
+              v-for="item in pageList"
+              :key="item.permissionId"
+              :label="item.permissionName"
+              :value="item.permissionId">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="权限名称" :label-width="updateDialogLabelWidth" required class="dialog_form_item">
+          <el-input v-model="permissionModelUpdate.permissionName" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="权限值" :label-width="updateDialogLabelWidth" required class="dialog_form_item">
           <el-input v-model="permissionModelUpdate.value" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="图标" :label-width="updateDialogLabelWidth" required class="dialog_form_item"
-                      v-show="permissionModelUpdate.resourceType==='page'">
+        <el-form-item label="图标" :label-width="updateDialogLabelWidth" class="dialog_form_item"
+                      v-show="permissionModelUpdate.resourceType==='page' ||permissionModelUpdate.resourceType==='folder'">
           <el-input v-model="permissionModelUpdate.icon" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="链接" :label-width="updateDialogLabelWidth" required
@@ -151,6 +202,7 @@
         showAddDialog: false,
         addDialogLabelWidth: '200',
         permissionModelAdd: {
+          parentId: '',
           permissionName: '',
           resourceType: '',
           value: '',
@@ -160,6 +212,7 @@
         showUpdateDialog: false,
         updateDialogLabelWidth: '200',
         permissionModelUpdate: {
+          parentId: '',
           permissionId: '',
           permissionName: '',
           resourceType: '',
@@ -174,7 +227,9 @@
           url: ''
         },
         subMerchantList: [],
-        resourceTypeList: []
+        resourceTypeList: [],
+        folderList: [],
+        pageList: []
       }
     },
     methods: {
@@ -304,6 +359,24 @@
           }
         })
       },
+      loadFolderList() {
+        this.Api.getResourcesUnderMerchantByResourceType('folder').then(res => {
+          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+            this.folderList = res.data;
+          } else {
+            this.Alert.error("初始化上级目录下拉框失败");
+          }
+        })
+      },
+      loadPageList() {
+        this.Api.getResourcesUnderMerchantByResourceType('page').then(res => {
+          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+            this.pageList = res.data;
+          } else {
+            this.Alert.error("初始化所属页面下拉框失败");
+          }
+        })
+      },
       resourceTypeChange() {
 
       },
@@ -331,6 +404,8 @@
       this.queryPages();
       this.getAllSubMerchants();
       this.queryResourceTypeList();
+      this.loadFolderList();
+      this.loadPageList();
     }
   }
 </script>

@@ -15,10 +15,6 @@ export const getEnumCombobox = (type) => {
 export const login = (params, rememberMe) => {
   return Ajax.post(`bs/noauth/login/login?rememberMe=` + rememberMe, params).then(res => res.data);
 };
-// 获取私人的所有菜单信息
-export const getPrivateMenuDatas = () => {
-  return Ajax.get(`bs/auth/access/getPrivateMenuDatas`).then(res => res.data);
-};
 /**
  * 商户管理
  */
@@ -107,6 +103,10 @@ export const updateRolePermission = (roleId, params) => {
 /**
  * 权限管理
  */
+// 获取私人的所有菜单信息
+export const getPrivateMenuDatas = () => {
+  return Ajax.get(`bs/auth/access/getPrivateMenuDatas`).then(res => res.data);
+};
 // 分页查询权限列表
 export const getPermissionPages = (params, pageNum, pageSize) => {
   return Ajax.post(`bs/auth/access/queryPages?pageNum=` + pageNum + '&pageSize=' + pageSize, params).then(res => res.data);
@@ -123,4 +123,9 @@ export const updatePermission = (params, permissionId) => {
 export const deletePermission = (permissionId) => {
   return Ajax.get(`bs/auth/access/delete?permissionId=` + permissionId).then(res => res.data);
 };
+// 通过资源类型获取当前商户下的资源
+export const getResourcesUnderMerchantByResourceType = (resourceType) => {
+  return Ajax.get(`bs/auth/access/getResourcesUnderMerchantByResourceType?resourceType=`+resourceType).then(res => res.data);
+};
+
 

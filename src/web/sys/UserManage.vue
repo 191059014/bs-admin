@@ -337,11 +337,9 @@
         })
       },
       handleClose(done) {
-        this.Alert.confirmWarning('提示', '确定关闭吗？', () => {
-          done();
-          this.checkedRoles = [];
-          this.rolesUnderMerchant = [];
-        });
+        done();
+        this.checkedRoles = [];
+        this.rolesUnderMerchant = [];
       },
       updateUserRole() {
         this.Api.updateUserRole(this.userIdOfCurrentRow, this.checkedRoles).then(res => {

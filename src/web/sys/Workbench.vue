@@ -86,7 +86,7 @@
               placeholder="请输入内容"
               @select="handleSelectSuggestion"
               prefix-icon="el-icon-search"
-              clearable="true"
+              clearable=`true`
             ></el-autocomplete>
           </el-col>
           <el-col :xs="8" :sm="2" :md="2" :lg="2" :xl="2" class="top_dropdown_col">
@@ -286,7 +286,6 @@
       // 动态设置iframe高度
       let frameContent = document.getElementById("frameContent");
       let top = frameContent.offsetTop;
-      debugger;
       this.iframeHeight = (document.documentElement.clientHeight - top - 120) + 'px';
       // 设置左侧菜单隐藏
       if (this.isMini()) {
