@@ -88,12 +88,14 @@
       direction="rtl"
       :before-close="handleClose">
 
-      <el-checkbox-group v-model="checkedPermissions">
-        <div v-for="permission in permissionsUnderMerchant" style="padding-bottom: 10px">
-          <el-checkbox :label="permission.permissionId" :key="permission.permissionId">{{permission.permissionName}}
-          </el-checkbox>
-        </div>
-      </el-checkbox-group>
+      <el-tree
+        ref="tree"
+        :data="permissionTreeData"
+        show-checkbox
+        node-key="id"
+        :default-expanded-keys="checkedPermissions"
+        :default-checked-keys="checkedPermissions">
+      </el-tree>
 
       <el-row style="text-align: center;padding-top: 20px">
         <el-button type="primary" @click="updateRolePermission" style="width: 100%">保存</el-button>
@@ -134,9 +136,9 @@
         },
         subMerchantList: [],
         openDrawer: false,
-        permissionsUnderMerchant: [],
         checkedPermissions: [],
-        roleIdOfCurrentRow: ''
+        roleIdOfCurrentRow: '',
+        permissionTreeData: []
       }
     },
     methods: {
@@ -243,11 +245,11 @@
       handleChangePermission(idnex, row) {
         this.openDrawer = true;
         this.roleIdOfCurrentRow = row.roleId;
-        this.Api.getPermissionUnderMerchant(row.roleId).then(res => {
+        this.Api.getPermissionTreeUnderMerchant(this.roleIdOfCurrentRow).then(res => {
           if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-            this.permissionsUnderMerchant = res.data;
+            this.permissionTreeData = res.data.treeDataList
           } else {
-            this.Alert.error("获取角色对应商户下所有权限集合失败");
+            this.Alert.error(res.msg);
           }
         });
         this.Api.getPermissionsUnderRole(row.roleId).then(res => {
@@ -259,19 +261,21 @@
         })
       },
       handleClose(done) {
-        this.Alert.confirmWarning('提示', '确定关闭吗？', () => {
-          done();
-          this.checkedPermissions = [];
-          this.permissionsUnderMerchant = [];
-        });
+        done();
+        this.checkedPermissions = [];
+        this.permissionTreeData = [];
       },
       updateRolePermission() {
-        this.Api.updateRolePermission(this.roleIdOfCurrentRow, this.checkedPermissions).then(res => {
+        let checkedNodes = this.$refs.tree.getCheckedNodes(false, true);
+        let checkedKeys = [];
+        checkedNodes.forEach(node => checkedKeys.push(node.id));
+        debugger;
+        this.Api.updateRolePermission(this.roleIdOfCurrentRow, checkedKeys).then(res => {
           if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
             this.Alert.success(res.msg);
             this.openDrawer = false;
             this.checkedPermissions = [];
-            this.permissionsUnderMerchant = [];
+            this.permissionTreeData = [];
             this.queryPages();
           } else {
             this.Alert.error(res.msg);
@@ -294,4 +298,5 @@
   .dialog_form_item {
     margin-bottom: 0;
   }
+
 </style>

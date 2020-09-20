@@ -284,12 +284,28 @@
         this.permissionModelUpdate = {};
       },
       handleAdd() {
-        if (!this.permissionModelAdd.permissionName) {
-          this.Alert.warn("权限名称不能为空");
-          return false;
-        }
         if (!this.permissionModelAdd.resourceType) {
           this.Alert.warn("资源类型不能为空");
+          return false;
+        }
+        if (this.permissionModelAdd.resourceType === 'page') {
+          if (!this.permissionModelAdd.parentId) {
+            this.Alert.warn("上级目录不能为空");
+            return false;
+          }
+          if (!this.permissionModelAdd.url) {
+            this.Alert.warn("链接不能为空");
+            return false;
+          }
+        }
+        if (this.permissionModelAdd.resourceType === 'button') {
+          if (!this.permissionModelAdd.parentId) {
+            this.Alert.warn("所属页面不能为空");
+            return false;
+          }
+        }
+        if (!this.permissionModelAdd.permissionName) {
+          this.Alert.warn("权限名称不能为空");
           return false;
         }
         if (!this.permissionModelAdd.value) {

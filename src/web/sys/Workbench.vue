@@ -86,7 +86,7 @@
               placeholder="请输入内容"
               @select="handleSelectSuggestion"
               prefix-icon="el-icon-search"
-              clearable=`true`
+              clearable
             ></el-autocomplete>
           </el-col>
           <el-col :xs="8" :sm="2" :md="2" :lg="2" :xl="2" class="top_dropdown_col">

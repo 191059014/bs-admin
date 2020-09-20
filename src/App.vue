@@ -45,6 +45,10 @@
     padding: 0 20px;
   }
 
+  .el-drawer.rtl {
+    overflow: auto;
+  }
+
   .el-drawer__close-btn {
     outline: none;
   }

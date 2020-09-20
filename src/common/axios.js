@@ -49,11 +49,11 @@ Ajax.interceptors.response.use(function (response) {
   }
   return response;
 }, function (error) {
-  if (error.response.status === 404) {
+  if (error.response && error.response.status === 404) {
     Alert.error('请求路径错了');
     return;
   }
-  if (error.response.status === 500) {
+  if (error.response && error.response.status === 500) {
     Alert.error('服务器开小猜了');
     return;
   }

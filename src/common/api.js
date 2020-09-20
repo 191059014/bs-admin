@@ -100,6 +100,10 @@ export const getPermissionUnderMerchant = (roleId) => {
 export const updateRolePermission = (roleId, params) => {
   return Ajax.post(`bs/auth/role/updateRolePermission?roleId=` + roleId, params).then(res => res.data);
 };
+// 获取角色对应商户下所有权限集合
+export const getPermissionTreeUnderMerchant = (roleId) => {
+  return Ajax.get(`bs/auth/role/getPermissionTreeUnderMerchant?roleId=` + roleId).then(res => res.data);
+};
 /**
  * 权限管理
  */
@@ -125,7 +129,8 @@ export const deletePermission = (permissionId) => {
 };
 // 通过资源类型获取当前商户下的资源
 export const getResourcesUnderMerchantByResourceType = (resourceType) => {
-  return Ajax.get(`bs/auth/access/getResourcesUnderMerchantByResourceType?resourceType=`+resourceType).then(res => res.data);
+  return Ajax.get(`bs/auth/access/getResourcesUnderMerchantByResourceType?resourceType=` + resourceType).then(res => res.data);
 };
+
 
 

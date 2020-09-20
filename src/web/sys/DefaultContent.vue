@@ -1,8 +1,15 @@
 <template>
   <div class="containerDiv">
 
+    <el-steps :active="2" align-center>
+      <el-step title="添加商户" description="添加商户"></el-step>
+      <el-step title="添加用户+设置角色" description="添加用户+设置角色"></el-step>
+      <el-step title="添加角色+设置权限" description="添加角色+设置权限"></el-step>
+      <el-step title="添加权限" description="添加权限"></el-step>
+    </el-steps>
+
     <div class="block">
-      <el-timeline style="padding-right: 40px">
+      <el-timeline style="padding-right: 40px;margin-top: 50px">
         <el-timeline-item v-for="item in timelineList" :key="item.time" :timestamp="item.time" placement="top">
           <el-card>
             <h4>{{item.title}}</h4>
