@@ -64,6 +64,16 @@
 
     <el-dialog title="新增用户" :visible.sync="showAddDialog">
       <el-form :model="userModelAdd">
+        <el-form-item label="指定商户" :label-width="addDialogLabelWidth" required class="dialog_form_item" style="padding: 10px 0">
+          <el-select v-model="userModelAdd.tenantId" placeholder="请指定商户">
+            <el-option
+              v-for="item in subMerchantList"
+              :key="item.merchantId"
+              :label="item.merchantName"
+              :value="item.merchantId">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="用户名称" :label-width="addDialogLabelWidth" required class="dialog_form_item">
           <el-input v-model="userModelAdd.userName" autocomplete="off"></el-input>
         </el-form-item>
@@ -85,16 +95,26 @@
 
     <el-dialog title="修改商户" :visible.sync="showUpdateDialog" class="dialog_form_item">
       <el-form :model="userModelUpdate">
-        <el-form-item label="用户名称" :label-width="addDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="属于商户" :label-width="updateDialogLabelWidth" required class="dialog_form_item" style="padding: 10px 0">
+          <el-select v-model="userModelUpdate.tenantId" placeholder="请指定商户" disabled>
+            <el-option
+              v-for="item in subMerchantList"
+              :key="item.merchantId"
+              :label="item.merchantName"
+              :value="item.merchantId">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="用户名称" :label-width="updateDialogLabelWidth" required class="dialog_form_item">
           <el-input v-model="userModelUpdate.userName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" :label-width="addDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="手机号" :label-width="updateDialogLabelWidth" required class="dialog_form_item">
           <el-input v-model="userModelUpdate.mobile" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="密码" :label-width="addDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="密码" :label-width="updateDialogLabelWidth" required class="dialog_form_item">
           <el-input v-model="userModelUpdate.password" autocomplete="off" show-password></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" :label-width="addDialogLabelWidth" required>
+        <el-form-item label="确认密码" :label-width="updateDialogLabelWidth" required>
           <el-input v-model="userModelUpdate.confirmPassword" autocomplete="off" show-password></el-input>
         </el-form-item>
       </el-form>
@@ -147,7 +167,8 @@
           userName: '',
           mobile: '',
           password: '',
-          confirmPassword: ''
+          confirmPassword: '',
+          tenantId: ''
         },
         showUpdateDialog: false,
         updateDialogLabelWidth: '200',
@@ -156,7 +177,8 @@
           userName: '',
           mobile: '',
           password: '',
-          confirmPassword: ''
+          confirmPassword: '',
+          tenantId: ''
         },
         userModelUpdatePrimary: {
           userName: '',
@@ -210,6 +232,7 @@
         this.userModelUpdate.mobile = row.mobile;
         this.userModelUpdate.password = row.password;
         this.userModelUpdate.confirmPassword = row.password;
+        this.userModelUpdate.tenantId = row.tenantId;
 
         this.userModelUpdatePrimary.userName = row.userName;
         this.userModelUpdatePrimary.mobile = row.mobile;
@@ -222,6 +245,10 @@
         this.userModelUpdate = {};
       },
       handleAdd() {
+        if (!this.userModelAdd.tenantId) {
+          this.Alert.warn("请指定商户");
+          return false;
+        }
         if (!this.userModelAdd.userName) {
           this.Alert.warn("用户名称不能为空");
           return false;
@@ -273,18 +300,24 @@
           this.Alert.warn("两次输入的密码不一致");
           return false;
         }
-        if (this.merchantModelUpdatePrimary.userName === this.userModelUpdate.userName
-          && this.merchantModelUpdatePrimary.mobile === this.userModelUpdate.mobile
-          && this.merchantModelUpdatePrimary.password === this.userModelUpdate.password
-          && this.merchantModelUpdatePrimary.confirmPassword === this.userModelUpdate.confirmPassword) {
+        let updateParams = {};
+        let updateFlag = false;
+        if (this.userModelUpdatePrimary.userName !== this.userModelUpdate.userName) {
+          updateParams.userName = this.userModelUpdate.userName;
+          updateFlag = true;
+        }
+        if (this.userModelUpdatePrimary.mobile !== this.userModelUpdate.mobile) {
+          updateParams.mobile = this.userModelUpdate.mobile;
+          updateFlag = true;
+        }
+        if (this.userModelUpdatePrimary.password !== this.userModelUpdate.password) {
+          updateParams.password = this.userModelUpdate.password;
+          updateFlag = true;
+        }
+        if (!updateFlag) {
           this.Alert.warn("没有任何修改");
           return false;
         }
-        let updateParams = {
-          userName: this.userModelUpdate.userName,
-          mobile: this.userModelUpdate.mobile,
-          password: this.userModelUpdate.password
-        };
         this.Api.updateUser(updateParams, this.userModelUpdate.userId).then(res => {
           if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
             this.Alert.success(res.msg);

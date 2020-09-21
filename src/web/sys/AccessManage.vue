@@ -74,9 +74,19 @@
 
     <el-dialog title="新增权限" :visible.sync="showAddDialog">
       <el-form :model="permissionModelAdd">
+        <el-form-item label="指定商户" :label-width="addDialogLabelWidth" required class="dialog_form_item" style="padding: 10px 0">
+          <el-select v-model="permissionModelAdd.tenantId" placeholder="请指定商户">
+            <el-option
+              v-for="item in subMerchantList"
+              :key="item.merchantId"
+              :label="item.merchantName"
+              :value="item.merchantId">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="资源类型" :label-width="addDialogLabelWidth" required class="dialog_form_item"
                       style="margin-top: 10px">
-          <el-radio-group v-model="permissionModelAdd.resourceType" :change="resourceTypeChange">
+          <el-radio-group v-model="permissionModelAdd.resourceType" @change="resourceTypeChange">
             <el-radio v-for="item in resourceTypeList" :label="item.value" :key="item.value">{{item.name}}</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -128,8 +138,18 @@
 
     <el-dialog title="修改权限" :visible.sync="showUpdateDialog" class="dialog_form_item">
       <el-form :model="permissionModelUpdate">
+        <el-form-item label="属于商户" :label-width="updateDialogLabelWidth" required class="dialog_form_item" style="padding: 10px 0">
+          <el-select v-model="permissionModelUpdate.tenantId" placeholder="请指定商户" disabled>
+            <el-option
+              v-for="item in subMerchantList"
+              :key="item.merchantId"
+              :label="item.merchantName"
+              :value="item.merchantId">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="资源类型" :label-width="updateDialogLabelWidth" required class="dialog_form_item"
-                      style="margin-top: 10px">
+                      style="padding: 10px 0">
           <el-radio-group v-model="permissionModelUpdate.resourceType" disabled>
             <el-radio v-for="item in resourceTypeList" :label="item.value" :key="item.value">{{item.name}}</el-radio>
           </el-radio-group>
@@ -207,7 +227,8 @@
           resourceType: '',
           value: '',
           icon: '',
-          url: ''
+          url: '',
+          tenantId:''
         },
         showUpdateDialog: false,
         updateDialogLabelWidth: '200',
@@ -218,7 +239,8 @@
           resourceType: '',
           value: '',
           icon: '',
-          url: ''
+          url: '',
+          tenantId:''
         },
         permissionModelUpdatePrimary: {
           permissionName: '',
@@ -272,6 +294,8 @@
         this.permissionModelUpdate.value = row.value;
         this.permissionModelUpdate.url = row.url;
         this.permissionModelUpdate.icon = row.icon;
+        this.permissionModelUpdate.tenantId = row.tenantId;
+        this.permissionModelUpdate.parentId = row.parentId;
         this.permissionModelUpdatePrimary.permissionName = row.permissionName;
         this.permissionModelUpdatePrimary.value = row.value;
         this.permissionModelUpdatePrimary.url = row.url;
@@ -284,6 +308,10 @@
         this.permissionModelUpdate = {};
       },
       handleAdd() {
+        if (!this.permissionModelAdd.tenantId) {
+          this.Alert.warn("请指定商户");
+          return false;
+        }
         if (!this.permissionModelAdd.resourceType) {
           this.Alert.warn("资源类型不能为空");
           return false;
@@ -375,26 +403,24 @@
           }
         })
       },
-      loadFolderList() {
-        this.Api.getResourcesUnderMerchantByResourceType('folder').then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-            this.folderList = res.data;
-          } else {
-            this.Alert.error("初始化上级目录下拉框失败");
-          }
-        })
-      },
-      loadPageList() {
-        this.Api.getResourcesUnderMerchantByResourceType('page').then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-            this.pageList = res.data;
-          } else {
-            this.Alert.error("初始化所属页面下拉框失败");
-          }
-        })
-      },
-      resourceTypeChange() {
-
+      resourceTypeChange(label) {
+        if ("folder" === label || "page" === label) {
+          this.Api.getResourcesUnderMerchantByResourceType('folder').then(res => {
+            if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+              this.folderList = res.data;
+            } else {
+              this.Alert.error("初始化上级目录下拉框失败");
+            }
+          })
+        } else if ("button" === label) {
+          this.Api.getResourcesUnderMerchantByResourceType('page').then(res => {
+            if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+              this.pageList = res.data;
+            } else {
+              this.Alert.error("初始化所属页面下拉框失败");
+            }
+          })
+        }
       },
       queryResourceTypeList() {
         this.Api.getEnumCombobox('ResourceType').then(res => {
@@ -420,8 +446,6 @@
       this.queryPages();
       this.getAllSubMerchants();
       this.queryResourceTypeList();
-      this.loadFolderList();
-      this.loadPageList();
     }
   }
 </script>

@@ -60,6 +60,16 @@
 
     <el-dialog title="新增角色" :visible.sync="showAddDialog">
       <el-form :model="roleModelAdd">
+        <el-form-item label="指定商户" :label-width="addDialogLabelWidth" required class="dialog_form_item" style="padding: 10px 0">
+          <el-select v-model="roleModelAdd.tenantId" placeholder="请指定商户">
+            <el-option
+              v-for="item in subMerchantList"
+              :key="item.merchantId"
+              :label="item.merchantName"
+              :value="item.merchantId">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="用户名称" :label-width="addDialogLabelWidth" required class="dialog_form_item">
           <el-input v-model="roleModelAdd.roleName" autocomplete="off"></el-input>
         </el-form-item>
@@ -72,6 +82,16 @@
 
     <el-dialog title="修改角色" :visible.sync="showUpdateDialog" class="dialog_form_item">
       <el-form :model="roleModelUpdate">
+        <el-form-item label="属于商户" :label-width="updateDialogLabelWidth" required class="dialog_form_item" style="padding: 10px 0">
+          <el-select v-model="roleModelUpdate.tenantId" placeholder="请指定商户" disabled>
+            <el-option
+              v-for="item in subMerchantList"
+              :key="item.merchantId"
+              :label="item.merchantName"
+              :value="item.merchantId">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="用户名称" :label-width="addDialogLabelWidth" required class="dialog_form_item">
           <el-input v-model="roleModelUpdate.roleName" autocomplete="off"></el-input>
         </el-form-item>
@@ -123,13 +143,15 @@
         showAddDialog: false,
         addDialogLabelWidth: '200',
         roleModelAdd: {
-          roleName: ''
+          roleName: '',
+          tenantId:''
         },
         showUpdateDialog: false,
         updateDialogLabelWidth: '200',
         roleModelUpdate: {
           roleId: '',
-          roleName: ''
+          roleName: '',
+          tenantId:''
         },
         roleModelUpdatePrimary: {
           userName: ''
@@ -175,6 +197,7 @@
         }
       },
       showDialogOfUpdate(index, row) {
+        this.roleModelUpdate.tenantId=row.tenantId;
         this.roleModelUpdate.roleId = row.roleId;
         this.roleModelUpdate.roleName = row.roleName;
         this.roleModelUpdatePrimary.roleName = row.roleName;
@@ -185,6 +208,10 @@
         this.roleModelUpdate = {};
       },
       handleAdd() {
+        if (!this.roleModelAdd.tenantId) {
+          this.Alert.warn("请指定商户");
+          return false;
+        }
         if (!this.roleModelAdd.roleName) {
           this.Alert.warn("角色名称不能为空");
           return false;
@@ -269,7 +296,6 @@
         let checkedNodes = this.$refs.tree.getCheckedNodes(false, true);
         let checkedKeys = [];
         checkedNodes.forEach(node => checkedKeys.push(node.id));
-        debugger;
         this.Api.updateRolePermission(this.roleIdOfCurrentRow, checkedKeys).then(res => {
           if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
             this.Alert.success(res.msg);
