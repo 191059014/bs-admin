@@ -1,11 +1,11 @@
 <template>
   <div class="containerDiv">
 
-    <el-steps :active="2" align-center>
-      <el-step title="添加商户" description="添加商户"></el-step>
-      <el-step title="添加用户+设置角色" description="添加用户+设置角色"></el-step>
-      <el-step title="添加角色+设置权限" description="添加角色+设置权限"></el-step>
-      <el-step title="添加权限" description="添加权限"></el-step>
+    <el-steps :active="4" align-center>
+      <el-step title="添加商户" description="先添加一个商户"></el-step>
+      <el-step title="添加用户" description="添加一个用户，并赋予系统管理员的权限"></el-step>
+      <el-step title="换用户登陆" description="用刚才创建的用户登陆"></el-step>
+      <el-step title="添加用户、角色、权限" description="添加登录用户所属商户的用户、角色、权限"></el-step>
     </el-steps>
 
     <div class="block">

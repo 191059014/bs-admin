@@ -70,7 +70,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="用户名称" required>
+        <el-form-item label="角色名称" required>
           <el-input v-model="roleModelAdd.roleName" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -92,7 +92,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="用户名称" required>
+        <el-form-item label="角色名称" required>
           <el-input v-model="roleModelUpdate.roleName" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -193,6 +193,7 @@
           this.roleModelAdd = {};
           this.showAddDialog = false;
         }
+        this.getAllSubMerchants();
       },
       showDialogOfUpdate(index, row) {
         this.roleModelUpdate.tenantId = row.tenantId;
@@ -200,6 +201,7 @@
         this.roleModelUpdate.roleName = row.roleName;
         this.roleModelUpdatePrimary.roleName = row.roleName;
         this.showUpdateDialog = true;
+        this.getAllSubMerchants();
       },
       hideDialogOfUpdate() {
         this.showUpdateDialog = false;
@@ -270,7 +272,7 @@
       handleChangePermission(idnex, row) {
         this.openDrawer = true;
         this.roleIdOfCurrentRow = row.roleId;
-        this.Api.getPermissionTreeUnderMerchant(this.roleIdOfCurrentRow).then(res => {
+        this.Api.getPermissionTreeUnderMerchant().then(res => {
           if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
             this.permissionTreeData = res.data.treeDataList
           } else {
@@ -309,7 +311,6 @@
     },
     mounted() {
       this.queryPages();
-      this.getAllSubMerchants();
     }
   }
 </script>

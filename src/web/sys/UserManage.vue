@@ -223,6 +223,7 @@
           this.userModelAdd = {};
           this.showAddDialog = false;
         }
+        this.getAllSubMerchants();
       },
       showDialogOfUpdate(index, row) {
         this.userModelUpdate.userId = row.userId;
@@ -237,6 +238,8 @@
         this.userModelUpdatePrimary.password = row.password;
         this.userModelUpdatePrimary.confirmPassword = row.password;
         this.showUpdateDialog = true;
+
+        this.getAllSubMerchants();
       },
       hideDialogOfUpdate() {
         this.showUpdateDialog = false;
@@ -352,7 +355,7 @@
       handleChangeRole(index, row) {
         this.openDrawer = true;
         this.userIdOfCurrentRow = row.userId;
-        this.Api.getRolesUnderMerchant(row.userId).then(res => {
+        this.Api.getRolesUnderMerchant().then(res => {
           if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
             this.rolesUnderMerchant = res.data;
           } else {
@@ -388,7 +391,6 @@
     },
     mounted() {
       this.queryPages();
-      this.getAllSubMerchants();
     }
   }
 </script>

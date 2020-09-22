@@ -41,7 +41,7 @@
       v-loading="tableLoading"
       style="width: 100%">
       <el-table-column type="index" label="序号" min-width="100"></el-table-column>
-      <el-table-column prop="permissionId" label="权限标识" min-width="100" sortable></el-table-column>
+      <!--<el-table-column prop="permissionId" label="权限标识" min-width="100" sortable></el-table-column>-->
       <el-table-column prop="permissionName" label="权限名称" min-width="100" sortable></el-table-column>
       <el-table-column prop="resourceType" label="资源类型" min-width="100" sortable
                        :formatter="formatResourceType"></el-table-column>
@@ -274,6 +274,7 @@
           this.permissionModelAdd = {};
           this.showAddDialog = false;
         }
+        this.getAllSubMerchants();
       },
       showDialogOfUpdate(index, row) {
         this.permissionModelUpdate.permissionId = row.permissionId;
@@ -292,6 +293,8 @@
         this.showUpdateDialog = true;
 
         this.resourceTypeChange(row.resourceType);
+
+        this.getAllSubMerchants();
       },
       hideDialogOfUpdate() {
         this.showUpdateDialog = false;
@@ -434,7 +437,6 @@
     },
     mounted() {
       this.queryPages();
-      this.getAllSubMerchants();
       this.queryResourceTypeList();
     }
   }

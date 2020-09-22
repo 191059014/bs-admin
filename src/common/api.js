@@ -62,8 +62,8 @@ export const getRolesUnderUser = (userId) => {
   return Ajax.get(`bs/auth/user/getRolesUnderUser?userId=` + userId).then(res => res.data);
 };
 // 获取用户对应商户下所有角色集合
-export const getRolesUnderMerchant = (userId) => {
-  return Ajax.get(`bs/auth/user/getRolesUnderMerchant?userId=` + userId).then(res => res.data);
+export const getRolesUnderMerchant = () => {
+  return Ajax.get(`bs/auth/user/getRolesUnderMerchant`).then(res => res.data);
 };
 // 更新用户的角色
 export const updateUserRole = (userId, params) => {
@@ -101,8 +101,8 @@ export const updateRolePermission = (roleId, params) => {
   return Ajax.post(`bs/auth/role/updateRolePermission?roleId=` + roleId, params).then(res => res.data);
 };
 // 获取角色对应商户下所有权限集合
-export const getPermissionTreeUnderMerchant = (roleId) => {
-  return Ajax.get(`bs/auth/role/getPermissionTreeUnderMerchant?roleId=` + roleId).then(res => res.data);
+export const getPermissionTreeUnderMerchant = () => {
+  return Ajax.get(`bs/auth/role/getPermissionTreeUnderMerchant`).then(res => res.data);
 };
 /**
  * 权限管理
