@@ -59,8 +59,8 @@
     </el-row>
 
     <el-dialog title="新增角色" :visible.sync="showAddDialog">
-      <el-form :model="roleModelAdd">
-        <el-form-item label="指定商户" :label-width="addDialogLabelWidth" required class="dialog_form_item" style="padding: 10px 0">
+      <el-form :model="roleModelAdd" label-position="right" label-width="80px">
+        <el-form-item label="指定商户" required>
           <el-select v-model="roleModelAdd.tenantId" placeholder="请指定商户">
             <el-option
               v-for="item in subMerchantList"
@@ -70,7 +70,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="用户名称" :label-width="addDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="用户名称" required>
           <el-input v-model="roleModelAdd.roleName" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -81,8 +81,8 @@
     </el-dialog>
 
     <el-dialog title="修改角色" :visible.sync="showUpdateDialog" class="dialog_form_item">
-      <el-form :model="roleModelUpdate">
-        <el-form-item label="属于商户" :label-width="updateDialogLabelWidth" required class="dialog_form_item" style="padding: 10px 0">
+      <el-form :model="roleModelUpdate" label-position="right" label-width="80px">
+        <el-form-item label="属于商户" required>
           <el-select v-model="roleModelUpdate.tenantId" placeholder="请指定商户" disabled>
             <el-option
               v-for="item in subMerchantList"
@@ -92,7 +92,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="用户名称" :label-width="addDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="用户名称" required>
           <el-input v-model="roleModelUpdate.roleName" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -141,17 +141,15 @@
         },
         roleList: [],
         showAddDialog: false,
-        addDialogLabelWidth: '200',
         roleModelAdd: {
           roleName: '',
-          tenantId:''
+          tenantId: ''
         },
         showUpdateDialog: false,
-        updateDialogLabelWidth: '200',
         roleModelUpdate: {
           roleId: '',
           roleName: '',
-          tenantId:''
+          tenantId: ''
         },
         roleModelUpdatePrimary: {
           userName: ''
@@ -197,7 +195,7 @@
         }
       },
       showDialogOfUpdate(index, row) {
-        this.roleModelUpdate.tenantId=row.tenantId;
+        this.roleModelUpdate.tenantId = row.tenantId;
         this.roleModelUpdate.roleId = row.roleId;
         this.roleModelUpdate.roleName = row.roleName;
         this.roleModelUpdatePrimary.roleName = row.roleName;
@@ -319,10 +317,6 @@
 <style scoped>
   .div_container {
     padding: 10px;
-  }
-
-  .dialog_form_item {
-    margin-bottom: 0;
   }
 
 </style>

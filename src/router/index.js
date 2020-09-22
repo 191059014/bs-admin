@@ -8,6 +8,7 @@ import MerchantManage from '../web/sys/MerchantManage.vue'
 import UserManage from '../web/sys/UserManage.vue'
 import RoleManage from '../web/sys/RoleManage.vue'
 import AccessManage from '../web/sys/AccessManage.vue'
+import Test from '../web/Test.vue'
 
 Vue.use(Router);
 
@@ -52,6 +53,11 @@ export default new Router({
       path: '/accessManage',
       name: '权限管理',
       component: AccessManage
+    },
+    {
+      path: '/test',
+      name: '测试',
+      component: Test
     }
   ]
 })

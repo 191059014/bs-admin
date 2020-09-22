@@ -48,8 +48,8 @@
     </el-row>
 
     <el-dialog title="新增商户" :visible.sync="showAddDialog">
-      <el-form :model="merchantModelAdd">
-        <el-form-item label="商户名称" :label-width="addDialogLabelWidth" required>
+      <el-form :model="merchantModelAdd" label-position="right" label-width="80px">
+        <el-form-item label="商户名称" required>
           <el-input v-model="merchantModelAdd.merchantName" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -60,8 +60,8 @@
     </el-dialog>
 
     <el-dialog title="修改商户" :visible.sync="showUpdateDialog">
-      <el-form :model="merchantModelUpdate">
-        <el-form-item label="商户名称" :label-width="updateDialogLabelWidth" required>
+      <el-form :model="merchantModelUpdate" label-position="right" label-width="80px">
+        <el-form-item label="商户名称" required>
           <el-input v-model="merchantModelUpdate.merchantName" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -88,12 +88,10 @@
         },
         merchantList: [],
         showAddDialog: false,
-        addDialogLabelWidth: '200',
         merchantModelAdd: {
           merchantName: ''
         },
         showUpdateDialog: false,
-        updateDialogLabelWidth: '200',
         merchantModelUpdate: {
           merchantId: '',
           merchantName: ''

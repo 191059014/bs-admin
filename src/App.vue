@@ -53,6 +53,10 @@
     outline: none;
   }
 
+  .el-dialog__header {
+    padding: 20px;
+  }
+
   /**
    *  修改滚动条样式
    *

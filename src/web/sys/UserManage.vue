@@ -63,8 +63,8 @@
     </el-row>
 
     <el-dialog title="新增用户" :visible.sync="showAddDialog">
-      <el-form :model="userModelAdd">
-        <el-form-item label="指定商户" :label-width="addDialogLabelWidth" required class="dialog_form_item" style="padding: 10px 0">
+      <el-form :model="userModelAdd" label-position="right" label-width="80px">
+        <el-form-item label="指定商户" required>
           <el-select v-model="userModelAdd.tenantId" placeholder="请指定商户">
             <el-option
               v-for="item in subMerchantList"
@@ -74,16 +74,16 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="用户名称" :label-width="addDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="用户名称" required>
           <el-input v-model="userModelAdd.userName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" :label-width="addDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="手机号" required>
           <el-input v-model="userModelAdd.mobile" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="密码" :label-width="addDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="密码" required>
           <el-input v-model="userModelAdd.password" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" :label-width="addDialogLabelWidth" required>
+        <el-form-item label="确认密码" required>
           <el-input v-model="userModelAdd.confirmPassword" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -93,9 +93,9 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="修改商户" :visible.sync="showUpdateDialog" class="dialog_form_item">
-      <el-form :model="userModelUpdate">
-        <el-form-item label="属于商户" :label-width="updateDialogLabelWidth" required class="dialog_form_item" style="padding: 10px 0">
+    <el-dialog title="修改商户" :visible.sync="showUpdateDialog">
+      <el-form :model="userModelUpdate" label-position="right" label-width="80px">
+        <el-form-item label="属于商户" required>
           <el-select v-model="userModelUpdate.tenantId" placeholder="请指定商户" disabled>
             <el-option
               v-for="item in subMerchantList"
@@ -105,16 +105,16 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="用户名称" :label-width="updateDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="用户名称" required>
           <el-input v-model="userModelUpdate.userName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" :label-width="updateDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="手机号" required>
           <el-input v-model="userModelUpdate.mobile" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="密码" :label-width="updateDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="密码" required>
           <el-input v-model="userModelUpdate.password" autocomplete="off" show-password></el-input>
         </el-form-item>
-        <el-form-item label="确认密码" :label-width="updateDialogLabelWidth" required>
+        <el-form-item label="确认密码" required>
           <el-input v-model="userModelUpdate.confirmPassword" autocomplete="off" show-password></el-input>
         </el-form-item>
       </el-form>
@@ -162,7 +162,6 @@
         },
         userList: [],
         showAddDialog: false,
-        addDialogLabelWidth: '200',
         userModelAdd: {
           userName: '',
           mobile: '',
@@ -171,7 +170,6 @@
           tenantId: ''
         },
         showUpdateDialog: false,
-        updateDialogLabelWidth: '200',
         userModelUpdate: {
           userId: '',
           userName: '',
@@ -398,9 +396,5 @@
 <style scoped>
   .div_container {
     padding: 10px;
-  }
-
-  .dialog_form_item {
-    margin-bottom: 0;
   }
 </style>

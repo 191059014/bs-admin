@@ -73,8 +73,8 @@
     </el-row>
 
     <el-dialog title="新增权限" :visible.sync="showAddDialog">
-      <el-form :model="permissionModelAdd">
-        <el-form-item label="指定商户" :label-width="addDialogLabelWidth" required class="dialog_form_item" style="padding: 10px 0">
+      <el-form :model="permissionModelAdd" label-position="right" label-width="80px">
+        <el-form-item label="指定商户" required>
           <el-select v-model="permissionModelAdd.tenantId" placeholder="请指定商户">
             <el-option
               v-for="item in subMerchantList"
@@ -84,13 +84,12 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="资源类型" :label-width="addDialogLabelWidth" required class="dialog_form_item"
-                      style="margin-top: 10px">
+        <el-form-item label="资源类型" required>
           <el-radio-group v-model="permissionModelAdd.resourceType" @change="resourceTypeChange">
             <el-radio v-for="item in resourceTypeList" :label="item.value" :key="item.value">{{item.name}}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="上级目录" :label-width="addDialogLabelWidth" class="dialog_form_item" style="padding: 15px 0"
+        <el-form-item label="上级目录"
                       v-show="permissionModelAdd.resourceType==='page' ||permissionModelAdd.resourceType==='folder'">
           <el-select v-model="permissionModelAdd.parentId" placeholder="请选择上级目录">
             <el-option label="无" value=""></el-option>
@@ -102,9 +101,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="所属页面" :label-width="addDialogLabelWidth" required class="dialog_form_item"
-                      style="padding: 15px 0"
-                      v-show="permissionModelAdd.resourceType==='button'">
+        <el-form-item label="所属页面" required v-show="permissionModelAdd.resourceType==='button'">
           <el-select v-model="permissionModelAdd.parentId" placeholder="请选择所属页面">
             <el-option label="无" value=""></el-option>
             <el-option
@@ -115,18 +112,17 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="权限名称" :label-width="addDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="权限名称" required>
           <el-input v-model="permissionModelAdd.permissionName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="权限值" :label-width="addDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="权限值" required>
           <el-input v-model="permissionModelAdd.value" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="图标" :label-width="addDialogLabelWidth" class="dialog_form_item"
+        <el-form-item label="图标"
                       v-show="permissionModelAdd.resourceType==='page' ||permissionModelAdd.resourceType==='folder'">
           <el-input v-model="permissionModelAdd.icon" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="链接" :label-width="addDialogLabelWidth" required
-                      v-show="permissionModelAdd.resourceType==='page'">
+        <el-form-item label="链接" required v-show="permissionModelAdd.resourceType==='page'">
           <el-input v-model="permissionModelAdd.url" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -136,9 +132,9 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="修改权限" :visible.sync="showUpdateDialog" class="dialog_form_item">
-      <el-form :model="permissionModelUpdate">
-        <el-form-item label="属于商户" :label-width="updateDialogLabelWidth" required class="dialog_form_item" style="padding: 10px 0">
+    <el-dialog title="修改权限" :visible.sync="showUpdateDialog">
+      <el-form :model="permissionModelUpdate" label-position="right" label-width="80px">
+        <el-form-item label="属于商户" required>
           <el-select v-model="permissionModelUpdate.tenantId" placeholder="请指定商户" disabled>
             <el-option
               v-for="item in subMerchantList"
@@ -148,16 +144,13 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="资源类型" :label-width="updateDialogLabelWidth" required class="dialog_form_item"
-                      style="padding: 10px 0">
+        <el-form-item label="资源类型" required>
           <el-radio-group v-model="permissionModelUpdate.resourceType" disabled>
             <el-radio v-for="item in resourceTypeList" :label="item.value" :key="item.value">{{item.name}}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="上级目录" :label-width="updateDialogLabelWidth" class="dialog_form_item"
-                      style="padding: 15px 0"
-                      v-show="permissionModelUpdate.resourceType==='page' ||permissionModelUpdate.resourceType==='folder'">
-          <el-select v-model="permissionModelUpdate.parentId" placeholder="请选择上级目录">
+        <el-form-item label="上级目录" v-show="permissionModelUpdate.resourceType==='page' ||permissionModelUpdate.resourceType==='folder'">
+          <el-select v-model="permissionModelUpdate.parentId" placeholder="请选择上级目录" disabled>
             <el-option label="无" value=""></el-option>
             <el-option
               v-for="item in folderList"
@@ -167,10 +160,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="所属页面" :label-width="updateDialogLabelWidth" required class="dialog_form_item"
-                      style="padding: 15px 0"
-                      v-show="permissionModelUpdate.resourceType==='button'">
-          <el-select v-model="permissionModelUpdate.parentId" placeholder="请选择所属页面">
+        <el-form-item label="所属页面" required v-show="permissionModelUpdate.resourceType==='button'">
+          <el-select v-model="permissionModelUpdate.parentId" placeholder="请选择所属页面" disabled>
             <el-option label="无" value=""></el-option>
             <el-option
               v-for="item in pageList"
@@ -180,18 +171,17 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="权限名称" :label-width="updateDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="权限名称" required>
           <el-input v-model="permissionModelUpdate.permissionName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="权限值" :label-width="updateDialogLabelWidth" required class="dialog_form_item">
+        <el-form-item label="权限值" required>
           <el-input v-model="permissionModelUpdate.value" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="图标" :label-width="updateDialogLabelWidth" class="dialog_form_item"
-                      v-show="permissionModelUpdate.resourceType==='page' ||permissionModelUpdate.resourceType==='folder'">
+        <el-form-item label="图标"
+                      v-show="permissionModelUpdate.resourceType==='page' || permissionModelUpdate.resourceType==='folder'">
           <el-input v-model="permissionModelUpdate.icon" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="链接" :label-width="updateDialogLabelWidth" required
-                      v-show="permissionModelUpdate.resourceType==='page'">
+        <el-form-item label="链接" required v-show="permissionModelUpdate.resourceType==='page'">
           <el-input v-model="permissionModelUpdate.url" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -220,7 +210,6 @@
         },
         permissionList: [],
         showAddDialog: false,
-        addDialogLabelWidth: '200',
         permissionModelAdd: {
           parentId: '',
           permissionName: '',
@@ -228,10 +217,9 @@
           value: '',
           icon: '',
           url: '',
-          tenantId:''
+          tenantId: ''
         },
         showUpdateDialog: false,
-        updateDialogLabelWidth: '200',
         permissionModelUpdate: {
           parentId: '',
           permissionId: '',
@@ -240,7 +228,7 @@
           value: '',
           icon: '',
           url: '',
-          tenantId:''
+          tenantId: ''
         },
         permissionModelUpdatePrimary: {
           permissionName: '',
@@ -302,6 +290,8 @@
         this.permissionModelUpdatePrimary.icon = row.icon;
 
         this.showUpdateDialog = true;
+
+        this.resourceTypeChange(row.resourceType);
       },
       hideDialogOfUpdate() {
         this.showUpdateDialog = false;
@@ -455,7 +445,4 @@
     padding: 10px;
   }
 
-  .dialog_form_item {
-    margin-bottom: 0;
-  }
 </style>
