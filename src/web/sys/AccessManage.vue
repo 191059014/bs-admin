@@ -149,7 +149,8 @@
             <el-radio v-for="item in resourceTypeList" :label="item.value" :key="item.value">{{item.name}}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="上级目录" v-show="permissionModelUpdate.resourceType==='page' ||permissionModelUpdate.resourceType==='folder'">
+        <el-form-item label="上级目录"
+                      v-show="permissionModelUpdate.resourceType==='page' ||permissionModelUpdate.resourceType==='folder'">
           <el-select v-model="permissionModelUpdate.parentId" placeholder="请选择上级目录" disabled>
             <el-option label="无" value=""></el-option>
             <el-option
@@ -274,7 +275,6 @@
           this.permissionModelAdd = {};
           this.showAddDialog = false;
         }
-        this.getAllSubMerchants();
       },
       showDialogOfUpdate(index, row) {
         this.permissionModelUpdate.permissionId = row.permissionId;
@@ -293,8 +293,6 @@
         this.showUpdateDialog = true;
 
         this.resourceTypeChange(row.resourceType);
-
-        this.getAllSubMerchants();
       },
       hideDialogOfUpdate() {
         this.showUpdateDialog = false;
@@ -375,7 +373,7 @@
       },
       handleDelete(index, row) {
         this.Alert.confirmWarning('提示', '确定删除吗？', () => {
-          this.Api.deletePermission(row.userId).then(res => {
+          this.Api.deletePermission(row.permissionId).then(res => {
             if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
               this.Alert.success('删除成功');
               this.queryPages();
@@ -397,8 +395,9 @@
         })
       },
       resourceTypeChange(label) {
+        let tenantId = this.permissionModelAdd.tenantId;
         if ("folder" === label || "page" === label) {
-          this.Api.getResourcesUnderMerchantByResourceType('folder').then(res => {
+          this.Api.getResourcesUnderMerchantByResourceType('folder', tenantId).then(res => {
             if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
               this.folderList = res.data;
             } else {
@@ -406,7 +405,7 @@
             }
           })
         } else if ("button" === label) {
-          this.Api.getResourcesUnderMerchantByResourceType('page').then(res => {
+          this.Api.getResourcesUnderMerchantByResourceType('page', tenantId).then(res => {
             if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
               this.pageList = res.data;
             } else {
@@ -438,6 +437,7 @@
     mounted() {
       this.queryPages();
       this.queryResourceTypeList();
+      this.getAllSubMerchants();
     }
   }
 </script>

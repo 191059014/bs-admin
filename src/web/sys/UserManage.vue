@@ -78,7 +78,7 @@
           <el-input v-model="userModelAdd.userName" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="手机号" required>
-          <el-input v-model="userModelAdd.mobile" autocomplete="off"></el-input>
+          <el-input v-model="userModelAdd.mobile" autocomplete="off" maxlength="11" show-word-limit></el-input>
         </el-form-item>
         <el-form-item label="密码" required>
           <el-input v-model="userModelAdd.password" autocomplete="off"></el-input>
@@ -109,7 +109,7 @@
           <el-input v-model="userModelUpdate.userName" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="手机号" required>
-          <el-input v-model="userModelUpdate.mobile" autocomplete="off"></el-input>
+          <el-input v-model="userModelUpdate.mobile" autocomplete="off" maxlength="11" show-word-limit></el-input>
         </el-form-item>
         <el-form-item label="密码" required>
           <el-input v-model="userModelUpdate.password" autocomplete="off" show-password></el-input>
@@ -223,7 +223,6 @@
           this.userModelAdd = {};
           this.showAddDialog = false;
         }
-        this.getAllSubMerchants();
       },
       showDialogOfUpdate(index, row) {
         this.userModelUpdate.userId = row.userId;
@@ -238,8 +237,6 @@
         this.userModelUpdatePrimary.password = row.password;
         this.userModelUpdatePrimary.confirmPassword = row.password;
         this.showUpdateDialog = true;
-
-        this.getAllSubMerchants();
       },
       hideDialogOfUpdate() {
         this.showUpdateDialog = false;
@@ -391,6 +388,7 @@
     },
     mounted() {
       this.queryPages();
+      this.getAllSubMerchants();
     }
   }
 </script>

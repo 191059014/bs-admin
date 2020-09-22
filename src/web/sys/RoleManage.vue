@@ -193,7 +193,6 @@
           this.roleModelAdd = {};
           this.showAddDialog = false;
         }
-        this.getAllSubMerchants();
       },
       showDialogOfUpdate(index, row) {
         this.roleModelUpdate.tenantId = row.tenantId;
@@ -201,7 +200,6 @@
         this.roleModelUpdate.roleName = row.roleName;
         this.roleModelUpdatePrimary.roleName = row.roleName;
         this.showUpdateDialog = true;
-        this.getAllSubMerchants();
       },
       hideDialogOfUpdate() {
         this.showUpdateDialog = false;
@@ -311,6 +309,7 @@
     },
     mounted() {
       this.queryPages();
+      this.getAllSubMerchants();
     }
   }
 </script>

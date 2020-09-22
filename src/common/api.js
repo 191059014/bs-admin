@@ -128,8 +128,8 @@ export const deletePermission = (permissionId) => {
   return Ajax.get(`bs/auth/access/delete?permissionId=` + permissionId).then(res => res.data);
 };
 // 通过资源类型获取当前商户下的资源
-export const getResourcesUnderMerchantByResourceType = (resourceType) => {
-  return Ajax.get(`bs/auth/access/getResourcesUnderMerchantByResourceType?resourceType=` + resourceType).then(res => res.data);
+export const getResourcesUnderMerchantByResourceType = (resourceType, tenantId) => {
+  return Ajax.get(`bs/auth/access/getResourcesUnderMerchantByResourceType?resourceType=` + resourceType + "&tenantId=" + tenantId).then(res => res.data);
 };
 
 
