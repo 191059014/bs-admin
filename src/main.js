@@ -8,11 +8,13 @@ import 'element-ui/lib/theme-chalk/index.css';
 import * as alert from './common/alert.js';
 import * as consts from './common/consts.js';
 import * as apis from './common/api.js';
+import * as utils from './common/utils.js';
 
 Vue.config.productionTip = false;
-Vue.prototype.Alert = alert;
-Vue.prototype.Consts = consts;
-Vue.prototype.Api = apis;
+Vue.prototype.hbalert = alert;
+Vue.prototype.hbconsts = consts;
+Vue.prototype.hbapis = apis;
+Vue.prototype.hbutils = utils;
 
 Vue.use(ElementUI);
 

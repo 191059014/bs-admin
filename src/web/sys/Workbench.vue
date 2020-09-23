@@ -170,7 +170,7 @@
       },
       clickMenu(menu) {
         if (this.tabsItem.length > 10) {
-          this.Alert.warn("当前打开的页面过多，请关闭一些后再打开");
+          this.hbalert.warn("当前打开的页面过多，请关闭一些后再打开");
           return false;
         }
         let newMenu = {...menu};
@@ -207,9 +207,9 @@
         this.hiddenMenuOfMini = miniCollapse;
       },
       handleCommand(command) {
-        this.Alert.info('click on item ' + command);
+        this.hbalert.info('click on item ' + command);
         if (command === 'logout') {
-          sessionStorage.setItem(this.Consts.JWT_TOKEN, null);
+          sessionStorage.setItem(this.hbconsts.JWT_TOKEN, null);
           this.$router.push({path: "/"});
         }
       },
@@ -273,11 +273,11 @@
         return document.documentElement.clientWidth < 500;
       },
       findPrivateMenuDatas() {
-        this.Api.getPrivateMenuDatas().then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+        this.hbapis.getPrivateMenuDatas().then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.menuDatas = res.data.menuDatas;
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
         })
       }

@@ -116,12 +116,12 @@
       },
       queryPages() {
         this.tableLoading = true;
-        this.Api.getMerchantPages(this.queryCondition, this.pageNum, this.pageSize).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+        this.hbapis.getMerchantPages(this.queryCondition, this.pageNum, this.pageSize).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.merchantList = res.data.data;
             this.total = res.data.count;
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
           this.tableLoading = false;
         })
@@ -147,46 +147,46 @@
       },
       handleAdd() {
         if (!this.merchantModelAdd.merchantName) {
-          this.Alert.warn("商户名称不能为空");
+          this.hbalert.warn("商户名称不能为空");
           return false;
         }
-        this.Api.addMerchant(this.merchantModelAdd).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-            this.Alert.success(res.msg);
+        this.hbapis.addMerchant(this.merchantModelAdd).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+            this.hbalert.success(res.msg);
             this.showAddDialog = false;
             this.queryPages();
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
         })
       },
       handleEdit() {
         if (!this.merchantModelUpdate.merchantName) {
-          this.Alert.warn("商户名称不能为空");
+          this.hbalert.warn("商户名称不能为空");
           return false;
         }
         if (this.merchantModelUpdatePrimary.merchantName === this.merchantModelUpdate.merchantName) {
-          this.Alert.warn("没有任何修改");
+          this.hbalert.warn("没有任何修改");
           return false;
         }
-        this.Api.updateMerchant({merchantName: this.merchantModelUpdate.merchantName}, this.merchantModelUpdate.merchantId).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-            this.Alert.success(res.msg);
+        this.hbapis.updateMerchant({merchantName: this.merchantModelUpdate.merchantName}, this.merchantModelUpdate.merchantId).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+            this.hbalert.success(res.msg);
             this.showUpdateDialog = false;
             this.queryPages();
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
         })
       },
       handleDelete(index, row) {
-        this.Alert.confirmWarning('提示', '确定删除吗？', () => {
-          this.Api.deleteMerchant(row.merchantId).then(res => {
-            if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-              this.Alert.success('删除成功');
+        this.hbalert.confirmWarning('提示', '确定删除吗？', () => {
+          this.hbapis.deleteMerchant(row.merchantId).then(res => {
+            if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+              this.hbalert.success('删除成功');
               this.queryPages();
             } else {
-              this.Alert.error(res.msg);
+              this.hbalert.error(res.msg);
             }
           })
         }, () => {

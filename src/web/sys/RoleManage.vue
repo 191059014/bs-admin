@@ -175,12 +175,12 @@
       },
       queryPages() {
         this.tableLoading = true;
-        this.Api.getRolePages(this.queryCondition, this.pageNum, this.pageSize).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+        this.hbapis.getRolePages(this.queryCondition, this.pageNum, this.pageSize).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.roleList = res.data.data;
             this.total = res.data.count;
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
           this.tableLoading = false;
         })
@@ -207,81 +207,81 @@
       },
       handleAdd() {
         if (!this.roleModelAdd.tenantId) {
-          this.Alert.warn("请指定商户");
+          this.hbalert.warn("请指定商户");
           return false;
         }
         if (!this.roleModelAdd.roleName) {
-          this.Alert.warn("角色名称不能为空");
+          this.hbalert.warn("角色名称不能为空");
           return false;
         }
-        this.Api.addRole(this.roleModelAdd).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-            this.Alert.success(res.msg);
+        this.hbapis.addRole(this.roleModelAdd).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+            this.hbalert.success(res.msg);
             this.showAddDialog = false;
             this.queryPages();
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
         })
       },
       handleEdit() {
         if (!this.roleModelUpdate.roleName) {
-          this.Alert.warn("角色名称不能为空");
+          this.hbalert.warn("角色名称不能为空");
           return false;
         }
         if (this.roleModelUpdatePrimary.roleName === this.roleModelUpdate.roleName) {
-          this.Alert.warn("没有任何修改");
+          this.hbalert.warn("没有任何修改");
           return false;
         }
         let updateParams = {
           roleName: this.roleModelUpdate.roleName
         };
-        this.Api.updateRole(updateParams, this.roleModelUpdate.roleId).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-            this.Alert.success(res.msg);
+        this.hbapis.updateRole(updateParams, this.roleModelUpdate.roleId).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+            this.hbalert.success(res.msg);
             this.showUpdateDialog = false;
             this.queryPages();
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
         })
       },
       handleDelete(index, row) {
-        this.Alert.confirmWarning('提示', '确定删除吗？', () => {
-          this.Api.deleteRole(row.roleId).then(res => {
-            if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-              this.Alert.success('删除成功');
+        this.hbalert.confirmWarning('提示', '确定删除吗？', () => {
+          this.hbapis.deleteRole(row.roleId).then(res => {
+            if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+              this.hbalert.success('删除成功');
               this.queryPages();
             } else {
-              this.Alert.error(res.msg);
+              this.hbalert.error(res.msg);
             }
           })
         });
       },
       getAllSubMerchants() {
-        this.Api.getAllSubMerchants().then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+        this.hbapis.getAllSubMerchants().then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.subMerchantList = res.data;
           } else {
-            this.Alert.error("初始化所有下级商户下拉框失败");
+            this.hbalert.error("初始化所有下级商户下拉框失败");
           }
         })
       },
       handleChangePermission(idnex, row) {
         this.openDrawer = true;
         this.roleIdOfCurrentRow = row.roleId;
-        this.Api.getPermissionTreeUnderMerchant().then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+        this.hbapis.getPermissionTreeUnderMerchant().then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.permissionTreeData = res.data.treeDataList
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
         });
-        this.Api.getPermissionsUnderRole(row.roleId).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+        this.hbapis.getPermissionsUnderRole(row.roleId).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.checkedPermissions = res.data;
           } else {
-            this.Alert.error("获取角色的权限集合失败");
+            this.hbalert.error("获取角色的权限集合失败");
           }
         })
       },
@@ -294,15 +294,15 @@
         let checkedNodes = this.$refs.tree.getCheckedNodes(false, true);
         let checkedKeys = [];
         checkedNodes.forEach(node => checkedKeys.push(node.id));
-        this.Api.updateRolePermission(this.roleIdOfCurrentRow, checkedKeys).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-            this.Alert.success(res.msg);
+        this.hbapis.updateRolePermission(this.roleIdOfCurrentRow, checkedKeys).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+            this.hbalert.success(res.msg);
             this.openDrawer = false;
             this.checkedPermissions = [];
             this.permissionTreeData = [];
             this.queryPages();
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
         })
       }

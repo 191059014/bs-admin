@@ -257,12 +257,12 @@
       },
       queryPages() {
         this.tableLoading = true;
-        this.Api.getPermissionPages(this.queryCondition, this.pageNum, this.pageSize).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+        this.hbapis.getPermissionPages(this.queryCondition, this.pageNum, this.pageSize).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.permissionList = res.data.data;
             this.total = res.data.count;
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
           this.tableLoading = false;
         })
@@ -300,59 +300,59 @@
       },
       handleAdd() {
         if (!this.permissionModelAdd.tenantId) {
-          this.Alert.warn("请指定商户");
+          this.hbalert.warn("请指定商户");
           return false;
         }
         if (!this.permissionModelAdd.resourceType) {
-          this.Alert.warn("资源类型不能为空");
+          this.hbalert.warn("资源类型不能为空");
           return false;
         }
         if (this.permissionModelAdd.resourceType === 'page') {
           if (!this.permissionModelAdd.parentId) {
-            this.Alert.warn("上级目录不能为空");
+            this.hbalert.warn("上级目录不能为空");
             return false;
           }
           if (!this.permissionModelAdd.url) {
-            this.Alert.warn("链接不能为空");
+            this.hbalert.warn("链接不能为空");
             return false;
           }
         }
         if (this.permissionModelAdd.resourceType === 'button') {
           if (!this.permissionModelAdd.parentId) {
-            this.Alert.warn("所属页面不能为空");
+            this.hbalert.warn("所属页面不能为空");
             return false;
           }
         }
         if (!this.permissionModelAdd.permissionName) {
-          this.Alert.warn("权限名称不能为空");
+          this.hbalert.warn("权限名称不能为空");
           return false;
         }
         if (!this.permissionModelAdd.value) {
-          this.Alert.warn("权限值不能为空");
+          this.hbalert.warn("权限值不能为空");
           return false;
         }
         this.Api.addPermission(this.permissionModelAdd).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-            this.Alert.success(res.msg);
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+            this.hbalert.success(res.msg);
             this.showAddDialog = false;
             this.queryPages();
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
         })
       },
       handleEdit() {
         if (!this.permissionModelUpdate.permissionName) {
-          this.Alert.warn("用户名称不能为空");
+          this.hbalert.warn("用户名称不能为空");
           return false;
         }
         if (!this.permissionModelUpdate.value) {
-          this.Alert.warn("权限值不能为空");
+          this.hbalert.warn("权限值不能为空");
           return false;
         }
         if (this.permissionModelUpdatePrimary.permissionName === this.permissionModelUpdate.permissionName
           && this.permissionModelUpdatePrimary.value === this.permissionModelUpdate.value) {
-          this.Alert.warn("没有任何修改");
+          this.hbalert.warn("没有任何修改");
           return false;
         }
         let updateParams = {
@@ -361,24 +361,24 @@
           url: this.permissionModelUpdate.url,
           icon: this.permissionModelUpdate.icon
         };
-        this.Api.updatePermission(updateParams, this.permissionModelUpdate.permissionId).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-            this.Alert.success(res.msg);
+        this.hbapis.updatePermission(updateParams, this.permissionModelUpdate.permissionId).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+            this.hbalert.success(res.msg);
             this.showUpdateDialog = false;
             this.queryPages();
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
         })
       },
       handleDelete(index, row) {
-        this.Alert.confirmWarning('提示', '确定删除吗？', () => {
-          this.Api.deletePermission(row.permissionId).then(res => {
-            if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-              this.Alert.success('删除成功');
+        this.hbalert.confirmWarning('提示', '确定删除吗？', () => {
+          this.hbapis.deletePermission(row.permissionId).then(res => {
+            if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+              this.hbalert.success('删除成功');
               this.queryPages();
             } else {
-              this.Alert.error(res.msg);
+              this.hbalert.error(res.msg);
             }
           })
         }, () => {
@@ -386,40 +386,40 @@
         });
       },
       getAllSubMerchants() {
-        this.Api.getAllSubMerchants().then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+        this.hbapis.getAllSubMerchants().then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.subMerchantList = res.data;
           } else {
-            this.Alert.error("初始化所有下级商户下拉框失败");
+            this.hbalert.error("初始化所有下级商户下拉框失败");
           }
         })
       },
       resourceTypeChange(label) {
         let tenantId = this.permissionModelAdd.tenantId;
         if ("folder" === label || "page" === label) {
-          this.Api.getResourcesUnderMerchantByResourceType('folder', tenantId).then(res => {
-            if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+          this.hbapis.getResourcesUnderMerchantByResourceType('folder', tenantId).then(res => {
+            if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
               this.folderList = res.data;
             } else {
-              this.Alert.error("初始化上级目录下拉框失败");
+              this.hbalert.error("初始化上级目录下拉框失败");
             }
           })
         } else if ("button" === label) {
-          this.Api.getResourcesUnderMerchantByResourceType('page', tenantId).then(res => {
-            if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+          this.hbapis.getResourcesUnderMerchantByResourceType('page', tenantId).then(res => {
+            if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
               this.pageList = res.data;
             } else {
-              this.Alert.error("初始化所属页面下拉框失败");
+              this.hbalert.error("初始化所属页面下拉框失败");
             }
           })
         }
       },
       queryResourceTypeList() {
-        this.Api.getEnumCombobox('ResourceType').then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+        this.hbapis.getEnumCombobox('ResourceType').then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.resourceTypeList = res.data;
           } else {
-            this.Alert.error("初始化资源类型下拉框失败");
+            this.hbalert.error("初始化资源类型下拉框失败");
           }
         })
       },

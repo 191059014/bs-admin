@@ -75,16 +75,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="用户名称" required>
-          <el-input v-model="userModelAdd.userName" autocomplete="off"></el-input>
+          <el-input v-model="userModelAdd.userName" autocomplete="off" maxlength="32" show-word-limit clearable placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
         </el-form-item>
         <el-form-item label="手机号" required>
-          <el-input v-model="userModelAdd.mobile" autocomplete="off" maxlength="11" show-word-limit></el-input>
+          <el-input v-model="userModelAdd.mobile" autocomplete="off" maxlength="11" show-word-limit clearable></el-input>
         </el-form-item>
         <el-form-item label="密码" required>
-          <el-input v-model="userModelAdd.password" autocomplete="off"></el-input>
+          <el-input v-model="userModelAdd.password" autocomplete="off" maxlength="20" show-word-limit clearable placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" required>
-          <el-input v-model="userModelAdd.confirmPassword" autocomplete="off"></el-input>
+          <el-input v-model="userModelAdd.confirmPassword" autocomplete="off" maxlength="20" show-word-limit clearable placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -106,16 +106,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="用户名称" required>
-          <el-input v-model="userModelUpdate.userName" autocomplete="off"></el-input>
+          <el-input v-model="userModelUpdate.userName" autocomplete="off" maxlength="32" show-word-limit clearable placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
         </el-form-item>
         <el-form-item label="手机号" required>
-          <el-input v-model="userModelUpdate.mobile" autocomplete="off" maxlength="11" show-word-limit></el-input>
+          <el-input v-model="userModelUpdate.mobile" autocomplete="off" maxlength="11" show-word-limit clearable></el-input>
         </el-form-item>
         <el-form-item label="密码" required>
-          <el-input v-model="userModelUpdate.password" autocomplete="off" show-password></el-input>
+          <el-input v-model="userModelUpdate.password" autocomplete="off" show-password maxlength="20" show-word-limit clearable placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" required>
-          <el-input v-model="userModelUpdate.confirmPassword" autocomplete="off" show-password></el-input>
+          <el-input v-model="userModelUpdate.confirmPassword" autocomplete="off" show-password maxlength="20" show-word-limit clearable placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -205,12 +205,12 @@
       },
       queryPages() {
         this.tableLoading = true;
-        this.Api.getUserPages(this.queryCondition, this.pageNum, this.pageSize).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+        this.hbapis.getUserPages(this.queryCondition, this.pageNum, this.pageSize).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.userList = res.data.data;
             this.total = res.data.count;
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
           this.tableLoading = false;
         })
@@ -244,58 +244,78 @@
       },
       handleAdd() {
         if (!this.userModelAdd.tenantId) {
-          this.Alert.warn("请指定商户");
+          this.hbalert.warn("请指定商户");
           return false;
         }
         if (!this.userModelAdd.userName) {
-          this.Alert.warn("用户名称不能为空");
+          this.hbalert.warn("用户名称不能为空");
+          return false;
+        }
+        if (this.hbutils.isContainChinese(this.userModelAdd.userName) || this.hbutils.isContainSpecialSymbol(this.userModelAdd.userName)) {
+          this.hbalert.warn("用户名称格式有误");
           return false;
         }
         if (!this.userModelAdd.mobile) {
-          this.Alert.warn("手机号不能为空");
+          this.hbalert.warn("手机号不能为空");
+          return false;
+        }
+        if (!this.hbutils.isAllNumber(this.userModelAdd.mobile)) {
+          this.hbalert.warn("手机号格式有误");
           return false;
         }
         if (!this.userModelAdd.password) {
-          this.Alert.warn("密码不能为空");
+          this.hbalert.warn("密码不能为空");
+          return false;
+        }
+        if (this.hbutils.isContainChinese(this.userModelAdd.password) || this.hbutils.isContainSpecialSymbol(this.userModelAdd.password)) {
+          this.hbalert.warn("密码格式有误");
           return false;
         }
         if (!this.userModelAdd.confirmPassword) {
-          this.Alert.warn("确认密码不能为空");
+          this.hbalert.warn("确认密码不能为空");
           return false;
         }
         if (this.userModelAdd.password !== this.userModelAdd.confirmPassword) {
-          this.Alert.warn("两次输入的密码不一致");
+          this.hbalert.warn("两次输入的密码不一致");
           return false;
         }
-        this.Api.addUser(this.userModelAdd).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-            this.Alert.success(res.msg);
+        this.hbapis.addUser(this.userModelAdd).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+            this.hbalert.success(res.msg);
             this.showAddDialog = false;
             this.queryPages();
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
         })
       },
       handleEdit() {
         if (!this.userModelUpdate.userName) {
-          this.Alert.warn("用户名称不能为空");
+          this.hbalert.warn("用户名称不能为空");
+          return false;
+        }
+        if (this.hbutils.isContainChinese(this.userModelUpdate.userName) || this.hbutils.isContainSpecialSymbol(this.userModelUpdate.userName)) {
+          this.hbalert.warn("用户名称格式有误");
           return false;
         }
         if (!this.userModelUpdate.mobile) {
-          this.Alert.warn("手机号不能为空");
+          this.hbalert.warn("手机号不能为空");
+          return false;
+        }
+        if (!this.hbutils.isAllNumber(this.userModelUpdate.mobile)) {
+          this.hbalert.warn("手机号格式有误");
           return false;
         }
         if (!this.userModelUpdate.password) {
-          this.Alert.warn("密码不能为空");
+          this.hbalert.warn("密码不能为空");
           return false;
         }
         if (!this.userModelUpdate.confirmPassword) {
-          this.Alert.warn("确认密码不能为空");
+          this.hbalert.warn("确认密码不能为空");
           return false;
         }
         if (this.userModelUpdate.password !== this.userModelUpdate.confirmPassword) {
-          this.Alert.warn("两次输入的密码不一致");
+          this.hbalert.warn("两次输入的密码不一致");
           return false;
         }
         let updateParams = {};
@@ -309,31 +329,35 @@
           updateFlag = true;
         }
         if (this.userModelUpdatePrimary.password !== this.userModelUpdate.password) {
+          if (this.hbutils.isContainChinese(this.userModelUpdate.password) || this.hbutils.isContainSpecialSymbol(this.userModelUpdate.password)) {
+            this.hbalert.warn("密码格式有误");
+            return false;
+          }
           updateParams.password = this.userModelUpdate.password;
           updateFlag = true;
         }
         if (!updateFlag) {
-          this.Alert.warn("没有任何修改");
+          this.hbalert.warn("没有任何修改");
           return false;
         }
-        this.Api.updateUser(updateParams, this.userModelUpdate.userId).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-            this.Alert.success(res.msg);
+        this.hbapis.updateUser(updateParams, this.userModelUpdate.userId).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+            this.hbalert.success(res.msg);
             this.showUpdateDialog = false;
             this.queryPages();
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
         })
       },
       handleDelete(index, row) {
-        this.Alert.confirmWarning('提示', '确定删除吗？', () => {
-          this.Api.deleteUser(row.userId).then(res => {
-            if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-              this.Alert.success('删除成功');
+        this.hbalert.confirmWarning('提示', '确定删除吗？', () => {
+          this.hbapis.deleteUser(row.userId).then(res => {
+            if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+              this.hbalert.success('删除成功');
               this.queryPages();
             } else {
-              this.Alert.error(res.msg);
+              this.hbalert.error(res.msg);
             }
           })
         }, () => {
@@ -341,29 +365,29 @@
         });
       },
       getAllSubMerchants() {
-        this.Api.getAllSubMerchants().then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+        this.hbapis.getAllSubMerchants().then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.subMerchantList = res.data;
           } else {
-            this.Alert.error("初始化所有下级商户下拉框失败");
+            this.hbalert.error("初始化所有下级商户下拉框失败");
           }
         })
       },
       handleChangeRole(index, row) {
         this.openDrawer = true;
         this.userIdOfCurrentRow = row.userId;
-        this.Api.getRolesUnderMerchant().then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+        this.hbapis.getRolesUnderMerchant().then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.rolesUnderMerchant = res.data;
           } else {
-            this.Alert.error("获取用户对应商户下所有角色集合失败");
+            this.hbalert.error("获取用户对应商户下所有角色集合失败");
           }
         });
-        this.Api.getRolesUnderUser(row.userId).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
+        this.hbapis.getRolesUnderUser(row.userId).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.checkedRoles = res.data;
           } else {
-            this.Alert.error("获取用户的角色集合失败");
+            this.hbalert.error("获取用户的角色集合失败");
           }
         })
       },
@@ -373,15 +397,15 @@
         this.rolesUnderMerchant = [];
       },
       updateUserRole() {
-        this.Api.updateUserRole(this.userIdOfCurrentRow, this.checkedRoles).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-            this.Alert.success(res.msg);
+        this.hbapis.updateUserRole(this.userIdOfCurrentRow, this.checkedRoles).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+            this.hbalert.success(res.msg);
             this.openDrawer = false;
             this.checkedRoles = [];
             this.rolesUnderMerchant = [];
             this.queryPages();
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
         })
       }

@@ -45,13 +45,13 @@
     },
     methods: {
       doLogin() {
-        this.Api.login(this.AgentDO, false).then(res => {
-          if (this.Consts.ResponseEnum.SUCCESS.code === res.code) {
-            this.Alert.info("登陆成功");
-            sessionStorage.setItem(this.Consts.JWT_TOKEN, res.data);
+        this.hbapis.login(this.AgentDO, false).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+            this.hbalert.info("登陆成功");
+            sessionStorage.setItem(this.hbconsts.JWT_TOKEN, res.data);
             this.$router.push({path: "/workbench"});
           } else {
-            this.Alert.error(res.msg);
+            this.hbalert.error(res.msg);
           }
         });
       }
