@@ -3,6 +3,10 @@
  */
 export const JWT_TOKEN = "token";
 /**
+ * 登录的用户名
+ */
+export const LOGIN_USERNAME = "username";
+/**
  * 错误码
  */
 export const ResponseEnum = {

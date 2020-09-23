@@ -78,28 +78,15 @@
               </el-radio-button>
             </el-radio-group>
           </el-col>
-          <el-col :xs="8" :sm="4" :md="4" :lg="4" :xl="4" class="top_search_col">
-            <el-autocomplete
-              class="inline-input input_search"
-              v-model="searchWord"
-              :fetch-suggestions="querySearch"
-              placeholder="请输入内容"
-              @select="handleSelectSuggestion"
-              prefix-icon="el-icon-search"
-              clearable
-            ></el-autocomplete>
-          </el-col>
           <el-col :xs="8" :sm="2" :md="2" :lg="2" :xl="2" class="top_dropdown_col">
             <el-dropdown @command="handleCommand">
               <span class="el-dropdown-link">
-                个人中心<i class="el-icon-arrow-down el-icon--right"></i>
+                {{currentLoginUsername}}<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">黄金糕</el-dropdown-item>
-                <el-dropdown-item command="b">狮子头</el-dropdown-item>
-                <el-dropdown-item command="c">螺蛳粉</el-dropdown-item>
-                <el-dropdown-item command="d" disabled>双皮奶</el-dropdown-item>
-                <el-dropdown-item command="logout" divided>注销</el-dropdown-item>
+                <el-dropdown-item command="a">账户中心</el-dropdown-item>
+                <el-dropdown-item command="b">个人主页</el-dropdown-item>
+                <el-dropdown-item command="logout" divided icon="el-icon-switch-button">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </el-col>
@@ -152,6 +139,7 @@
         iframeHeight: '100%',
         isCollapse: false,
         isMiniCollapse: true,
+        currentLoginUsername: sessionStorage.getItem(this.hbconsts.LOGIN_USERNAME)
       }
     },
     methods: {
@@ -213,42 +201,6 @@
           this.$router.push({path: "/"});
         }
       },
-      querySearch(queryString, cb) {
-        let suggests = this.findSuggestCycle(this.menuDatas);
-        let suggestAfterFilter = suggests.filter(this.createFilter(queryString));
-        // 调用 callback 返回建议列表的数据
-        cb(suggestAfterFilter);
-      },
-      findSuggestCycle(menuList) {
-        let suggests = [];
-        menuList.forEach(menu => {
-          if (!menu.children) {
-            suggests.push({"value": menu.name, "menu": menu});
-          } else {
-            suggests = suggests.concat(this.findSuggestCycle(menu.children));
-          }
-        });
-        return suggests;
-      },
-      createFilter(queryString) {
-        return (suggest) => {
-          return (suggest.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-        };
-      },
-      handleSelectSuggestion(item) {
-        if (this.isCollapse) {
-          this.isCollapse = false;
-        }
-        // 打开父级目录
-        let parentIndex = item.menu.parentIndex;
-        if (parentIndex) {
-          this.$refs.menuTree.open(item.menu.parentIndex);
-        }
-        this.menuActive = item.menu.index;
-        let parentMenu = this.findParentMenu(parentIndex);
-        let parentParentMeun = this.findParentMenu(parentMenu & parentMenu.parentIndex);
-        this.clickMenu(item.menu, parentParentMeun && parentParentMeun.name, parentMenu && parentMenu.name, item.menu.name);
-      },
       findParentMenu(parentIndex) {
         if (!parentIndex) {
           return null;
@@ -292,6 +244,13 @@
         this.isCollapse = false;
       }
       this.findPrivateMenuDatas();
+
+      // document.addEventListener("mousedown", function (e) {
+      //   if (e.target.id !== "searchInputId") {
+      //     let searchInput = document.getElementById("searchInputId");
+      //     searchInput.blur();
+      //   }
+      // }, false);
     },
     components: {
       DefaultContent: DefaultContent
@@ -307,9 +266,7 @@
     background-color: #545c64;
   }
 
-  .el_menu:not(.el-menu--collapse) {
-    width: 200px;
-  }
+
 
   .el-menu {
     height: 100%;
@@ -370,8 +327,6 @@
     border-bottom: 1px antiquewhite solid;
     background-color: #545c64;
     color: white;
-    font-size: 13px;
-    height: 30px;
   }
 
   .top_search_col {

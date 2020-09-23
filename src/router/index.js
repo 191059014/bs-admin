@@ -9,6 +9,7 @@ import UserManage from '../web/sys/UserManage.vue'
 import RoleManage from '../web/sys/RoleManage.vue'
 import AccessManage from '../web/sys/AccessManage.vue'
 import Test from '../web/Test.vue'
+import Test1 from '../web/Test1.vue'
 
 Vue.use(Router);
 
@@ -58,6 +59,12 @@ export default new Router({
       path: '/test',
       name: '测试',
       component: Test
+    }
+    ,
+    {
+      path: '/test1',
+      name: '测试1',
+      component: Test1
     }
   ]
 })

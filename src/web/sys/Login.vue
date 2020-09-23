@@ -48,7 +48,8 @@
         this.hbapis.login(this.AgentDO, false).then(res => {
           if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.hbalert.info("登陆成功");
-            sessionStorage.setItem(this.hbconsts.JWT_TOKEN, res.data);
+            sessionStorage.setItem(this.hbconsts.JWT_TOKEN, res.data.jwt);
+            sessionStorage.setItem(this.hbconsts.LOGIN_USERNAME, res.data.username);
             this.$router.push({path: "/workbench"});
           } else {
             this.hbalert.error(res.msg);
