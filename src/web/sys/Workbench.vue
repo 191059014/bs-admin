@@ -68,9 +68,9 @@
       </el-menu>
     </div>
     <el-container>
-      <el-header class="right_content_header">
-        <el-row type="flex" justify="end">
-          <el-col :xs="8" :sm="4" :md="4" :lg="4" :xl="1" :pull="21" class="collapse_radio_group_col">
+      <el-header class="right_content_header" :style="{'background-color':currentThemeColor}">
+        <el-row type="flex" justify="space-between">
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="collapse_radio_group_col">
             <el-radio-group v-model="isCollapse" class="collapse_radio_group" @change="collapseChange">
               <el-radio-button v-show="isCollapse" :label="false"><i class="el-icon-s-unfold collapse_i"></i>
               </el-radio-button>
@@ -78,7 +78,7 @@
               </el-radio-button>
             </el-radio-group>
           </el-col>
-          <el-col :xs="8" :sm="2" :md="2" :lg="2" :xl="2" class="top_dropdown_col">
+          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" :offset="20" class="top_dropdown_col">
             <el-dropdown @command="handleCommand">
               <span class="el-dropdown-link">
                 {{currentLoginUsername}}<i class="el-icon-arrow-down el-icon--right"></i>
@@ -86,6 +86,7 @@
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item command="a">账户中心</el-dropdown-item>
                 <el-dropdown-item command="b">个人主页</el-dropdown-item>
+                <el-dropdown-item command="setting">系统设置</el-dropdown-item>
                 <el-dropdown-item command="logout" divided icon="el-icon-switch-button">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -106,6 +107,33 @@
         </el-tabs>
       </el-main>
     </el-container>
+
+    <el-drawer
+      title="系统设置"
+      :visible.sync="openDrawer"
+      direction="rtl"
+      :before-close="handleClose">
+
+      <p>主题色</p>
+      <el-row>
+        <a id="themeColor1" href="javascript:void(0)" @click="changeThemeColor('themeColor1','#545c64')"
+           class="color_span" style="background-color: #545c64"></a>
+        <a id="themeColor2" href="javascript:void(0)" class="color_span" style="background-color: antiquewhite"></a>
+        <a id="themeColor3" href="javascript:void(0)" class="color_span" style="background-color: black"></a>
+        <a id="themeColor4" href="javascript:void(0)" class="color_span" style="background-color: yellow"></a>
+      </el-row>
+
+      <p>菜单色</p>
+      <el-row>
+        <a id="menuColor1" href="javascript:void(0)" class="color_span color_span_active"
+           style="background-color: #545c64"></a>
+        <a id="menuColor2" href="javascript:void(0)" class="color_span" style="background-color: antiquewhite"></a>
+        <a id="menuColor3" href="javascript:void(0)" class="color_span" style="background-color: black"></a>
+        <a id="menuColor4" href="javascript:void(0)" class="color_span" style="background-color: yellow"></a>
+      </el-row>
+
+    </el-drawer>
+
   </el-container>
 </template>
 
@@ -139,7 +167,9 @@
         iframeHeight: '100%',
         isCollapse: false,
         isMiniCollapse: true,
-        currentLoginUsername: sessionStorage.getItem(this.hbconsts.LOGIN_USERNAME)
+        currentLoginUsername: sessionStorage.getItem(this.hbconsts.LOGIN_USERNAME),
+        openDrawer: false,
+        currentThemeColor: localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR)
       }
     },
     methods: {
@@ -155,6 +185,9 @@
       },
       tabClick(thisTab) {
 
+      },
+      handleClose(done) {
+        done();
       },
       clickMenu(menu) {
         if (this.tabsItem.length > 10) {
@@ -195,10 +228,13 @@
         this.hiddenMenuOfMini = miniCollapse;
       },
       handleCommand(command) {
-        this.hbalert.info('click on item ' + command);
         if (command === 'logout') {
           sessionStorage.setItem(this.hbconsts.JWT_TOKEN, null);
           this.$router.push({path: "/"});
+        } else if (command === 'setting') {
+          this.openDrawer = true;
+        } else {
+          this.hbalert.info('click on item ' + command);
         }
       },
       findParentMenu(parentIndex) {
@@ -256,7 +292,13 @@
       DefaultContent: DefaultContent
     },
     computed: {},
-    watch: {}
+    watch: {},
+    create() {
+      let currentThemeColor = localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR);
+      if (!currentThemeColor) {
+        localStorage.setItem(this.hbconsts.CURRENT_THEME_COLOR, '#545c64');
+      }
+    }
   }
 
 </script>
@@ -379,6 +421,19 @@
 
   .el-tabs--border-card >>> .el-tabs__content {
     padding: 5px;
+  }
+
+  .color_span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 2px;
+  }
+
+  .color_span:hover, .color_span_active {
+    width: 30px;
+    height: 30px;
   }
 
   @media screen and (max-width: 500px) {

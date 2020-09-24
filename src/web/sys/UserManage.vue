@@ -75,16 +75,20 @@
           </el-select>
         </el-form-item>
         <el-form-item label="用户名称" required>
-          <el-input v-model="userModelAdd.userName" autocomplete="off" maxlength="32" show-word-limit clearable placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
+          <el-input v-model="userModelAdd.userName" autocomplete="off" maxlength="32" show-word-limit clearable
+                    placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
         </el-form-item>
         <el-form-item label="手机号" required>
-          <el-input v-model="userModelAdd.mobile" autocomplete="off" maxlength="11" show-word-limit clearable></el-input>
+          <el-input v-model="userModelAdd.mobile" autocomplete="off" maxlength="11" show-word-limit
+                    clearable></el-input>
         </el-form-item>
         <el-form-item label="密码" required>
-          <el-input v-model="userModelAdd.password" autocomplete="off" maxlength="20" show-word-limit clearable placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
+          <el-input v-model="userModelAdd.password" autocomplete="off" maxlength="20" show-word-limit clearable
+                    placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" required>
-          <el-input v-model="userModelAdd.confirmPassword" autocomplete="off" maxlength="20" show-word-limit clearable placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
+          <el-input v-model="userModelAdd.confirmPassword" autocomplete="off" maxlength="20" show-word-limit clearable
+                    placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -106,16 +110,20 @@
           </el-select>
         </el-form-item>
         <el-form-item label="用户名称" required>
-          <el-input v-model="userModelUpdate.userName" autocomplete="off" maxlength="32" show-word-limit clearable placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
+          <el-input v-model="userModelUpdate.userName" autocomplete="off" maxlength="32" show-word-limit clearable
+                    placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
         </el-form-item>
         <el-form-item label="手机号" required>
-          <el-input v-model="userModelUpdate.mobile" autocomplete="off" maxlength="11" show-word-limit clearable></el-input>
+          <el-input v-model="userModelUpdate.mobile" autocomplete="off" maxlength="11" show-word-limit
+                    clearable></el-input>
         </el-form-item>
         <el-form-item label="密码" required>
-          <el-input v-model="userModelUpdate.password" autocomplete="off" show-password maxlength="20" show-word-limit clearable placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
+          <el-input v-model="userModelUpdate.password" autocomplete="off" show-password maxlength="20" show-word-limit
+                    clearable placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" required>
-          <el-input v-model="userModelUpdate.confirmPassword" autocomplete="off" show-password maxlength="20" show-word-limit clearable placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
+          <el-input v-model="userModelUpdate.confirmPassword" autocomplete="off" show-password maxlength="20"
+                    show-word-limit clearable placeholder="只能输入英文 + 数字的格式，不要包含特殊字符"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -259,7 +267,7 @@
           this.hbalert.warn("手机号不能为空");
           return false;
         }
-        if (!this.hbutils.isAllNumber(this.userModelAdd.mobile)) {
+        if (!this.hbutils.isAllNumber(this.userModelAdd.mobile) || this.userModelAdd.mobile.length !== 11) {
           this.hbalert.warn("手机号格式有误");
           return false;
         }
@@ -302,7 +310,7 @@
           this.hbalert.warn("手机号不能为空");
           return false;
         }
-        if (!this.hbutils.isAllNumber(this.userModelUpdate.mobile)) {
+        if (!this.hbutils.isAllNumber(this.userModelUpdate.mobile) || this.userModelUpdate.mobile.length !== 11) {
           this.hbalert.warn("手机号格式有误");
           return false;
         }

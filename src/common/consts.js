@@ -1,14 +1,8 @@
-/**
- * jwt token
- */
+// token
 export const TOKEN = "token";
-/**
- * 登录的用户名
- */
+// 登录的用户名
 export const LOGIN_USERNAME = "username";
-/**
- * 错误码
- */
+// 错误码
 export const ResponseEnum = {
   SUCCESS: {"code": "10000", "msg": "成功"},
   ERROR: {"code": "10003", "msg": "系统异常，请稍后再试"},
@@ -16,3 +10,7 @@ export const ResponseEnum = {
   TOKEN_IS_EMPTY: {"code": "20110", "msg": "token为空"},
   TOKEN_IS_EXPIRED: {"code": "20111", "msg": "token过期"},
 };
+// 当前主题颜色key
+export const CURRENT_THEME_COLOR = "currentThemeColor";
+// 当前主题颜色对应选中的a标签id
+export const CURRENT_THEME_COLOR_A_ID = "currentThemeColorAId";
