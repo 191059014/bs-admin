@@ -70,7 +70,7 @@
     <el-container>
       <el-header class="right_content_header">
         <el-row type="flex" justify="end">
-          <el-col :xs="8" :sm="4" :md="4" :lg="4" :xl="1" :pull="17" class="collapse_radio_group_col">
+          <el-col :xs="8" :sm="4" :md="4" :lg="4" :xl="1" :pull="21" class="collapse_radio_group_col">
             <el-radio-group v-model="isCollapse" class="collapse_radio_group" @change="collapseChange">
               <el-radio-button v-show="isCollapse" :label="false"><i class="el-icon-s-unfold collapse_i"></i>
               </el-radio-button>
@@ -266,7 +266,9 @@
     background-color: #545c64;
   }
 
-
+  .el_menu:not(.el-menu--collapse) {
+    width: 200px;
+  }
 
   .el-menu {
     height: 100%;

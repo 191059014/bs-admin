@@ -92,10 +92,6 @@ export const deleteRole = (roleId) => {
 export const getPermissionsUnderRole = (roleId) => {
   return Ajax.get(`bs/auth/role/getPermissionsUnderRole?roleId=` + roleId).then(res => res.data);
 };
-// 获取角色对应商户下所有权限集合
-export const getPermissionUnderMerchant = (roleId) => {
-  return Ajax.get(`bs/auth/role/getPermissionUnderMerchant?roleId=` + roleId).then(res => res.data);
-};
 // 更新角色的权限
 export const updateRolePermission = (roleId, params) => {
   return Ajax.post(`bs/auth/role/updateRolePermission?roleId=` + roleId, params).then(res => res.data);
