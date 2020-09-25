@@ -13,4 +13,4 @@ export const ResponseEnum = {
 // 当前主题颜色key
 export const CURRENT_THEME_COLOR = "currentThemeColor";
 // 当前主题颜色对应选中的a标签id
-export const CURRENT_THEME_COLOR_A_ID = "currentThemeColorAId";
+export const CURRENT_THEME_COLOR_ID = "currentThemeColorId";

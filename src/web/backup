@@ -1,10 +1,15 @@
 <template>
   <el-container>
-    <el-aside>
       <el-menu class="el_menu" :collapse="isCollapse" :default-active="menuActive" ref="menuTree" :unique-opened="true">
-        <el-menu-item class="logo" :style="{'background-color':currentThemeColor}">
-          <el-image class="aside_header_image" src="../../static/image/favicon.ico" fit="scale-contain"></el-image>
-          <span class="aside_header_span">天道酬勤</span>
+        <el-menu-item style="height: 60px;margin-left: -8px;" :style="{'background-color':currentThemeColor}">
+          <el-row>
+            <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7">
+              <el-image class="aside_header_image" src="../../static/image/favicon.ico" fit="scale-contain"></el-image>
+            </el-col>
+            <el-col :xs="17" :sm="17" :md="17" :lg="17" :xl="17">
+              <span class="aside_header_span">天道酬勤</span>
+            </el-col>
+          </el-row>
         </el-menu-item>
         <el-menu-item :index="shouyeMenu.index" @click="clickMenu(shouyeMenu)">
           <i :class="shouyeMenu.icon"></i>
@@ -57,7 +62,6 @@
         </template>
         <!-- 一级菜单 end-->
       </el-menu>
-    </el-aside>
     <el-container>
       <el-header class="right_content_header" :style="{'background-color':currentThemeColor}">
         <el-row type="flex" justify="space-between">
@@ -311,18 +315,17 @@
 </script>
 
 <style scoped>
+  .el-header {
+    background-color: #545c64;
+  }
 
   .el_menu:not(.el-menu--collapse) {
     width: 200px;
+  }
+
+  .el-menu {
+    height: 100%;
     border-right: none;
-  }
-
-  .logo:not(.el-menu-item:focus, .el-menu-item:hover){
-
-  }
-
-  .el-aside {
-    width: auto !important;
   }
 
   .el-dropdown-link {
@@ -337,13 +340,12 @@
   }
 
   .aside_header_image {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     margin-top: 2px;
   }
 
   .right_content_header {
-    height: 56px!important;
     padding: 5px 0;
   }
 
@@ -370,7 +372,7 @@
     border-left: solid 1px #e6e6e6;
   }
 
-  .el-menu-item.is-active {
+  .el-menu-item.is-active{
     border-right: 3px solid #409EFF;
   }
 
