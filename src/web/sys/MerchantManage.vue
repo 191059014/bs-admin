@@ -8,9 +8,15 @@
         <el-input v-model="queryCondition.merchantName" placeholder="商户名称"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="queryPages">查询</el-button>
-        <el-button type="primary" @click="reset">重置</el-button>
-        <el-button type="primary" @click="showDialogOfAdd(true)">新增</el-button>
+        <el-button type="primary" @click="queryPages"
+                   :style="{'background-color':currentThemeColor,'border-color':currentThemeColor}">查询
+        </el-button>
+        <el-button type="primary" @click="reset"
+                   :style="{'background-color':currentThemeColor,'border-color':currentThemeColor}">重置
+        </el-button>
+        <el-button type="primary" @click="showDialogOfAdd(true)"
+                   :style="{'background-color':currentThemeColor,'border-color':currentThemeColor}">新增
+        </el-button>
       </el-form-item>
     </el-form>
 
@@ -78,6 +84,7 @@
   export default {
     data() {
       return {
+        currentThemeColor: localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR) ? localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR) : this.hbconsts.CURRENT_THEME_COLOR_DEFAULT,
         pageNum: 1,
         pageSize: 10,
         total: 0,

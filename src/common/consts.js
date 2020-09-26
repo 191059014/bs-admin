@@ -12,6 +12,8 @@ export const ResponseEnum = {
 };
 // 当前主题颜色key
 export const CURRENT_THEME_COLOR = "currentThemeColor";
+// 当前主题默认颜色
+export const CURRENT_THEME_COLOR_DEFAULT = '#409EFF';
 // 当前主题颜色对应选中的标签id
 export const CURRENT_THEME_COLOR_ID = "currentThemeColorId";
 // 当前菜单颜色对应选中的样式id

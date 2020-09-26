@@ -137,17 +137,20 @@
 
     data() {
       return {
-        currentThemeColor: localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR) ? localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR) : '#545c64',
+        currentThemeColor: localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR) ? localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR) : this.hbconsts.CURRENT_THEME_COLOR_DEFAULT,
         currentThemeColorId: localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR_ID) ? localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR_ID) : '1',
         themeColorList: [
-          {id: '1', backgroundColor: '#545c64'},
+          {id: '1', backgroundColor: '#409EFF'},
           {id: '2', backgroundColor: 'rgb(245, 34, 45)'},
           {id: '3', backgroundColor: 'rgb(250, 84, 28)'},
-          {id: '4', backgroundColor: 'rgb(250, 173, 20)'},
-          {id: '5', backgroundColor: 'rgb(19, 194, 194)'},
+          {id: '4', backgroundColor: '#F56C6C'},
+          {id: '5', backgroundColor: 'rgb(250, 173, 20)'},
           {id: '6', backgroundColor: 'rgb(82, 196, 26)'},
-          {id: '7', backgroundColor: 'rgb(24, 144, 255)'},
-          {id: '8', backgroundColor: 'rgb(114, 46, 209)'}
+          {id: '7', backgroundColor: 'rgb(19, 194, 194)'},
+          {id: '8', backgroundColor: 'rgb(114, 46, 209)'},
+          {id: '9', backgroundColor: '#909399'},
+          {id: '10', backgroundColor: '#545c64'},
+          {id: '11', backgroundColor: '#000000'}
         ],
         currentMenuStyleId: localStorage.getItem(this.hbconsts.CURRENT_MENU_STYLE_ID) ? localStorage.getItem(this.hbconsts.CURRENT_MENU_STYLE_ID) : '1',
         currentMenuBgColor: localStorage.getItem(this.hbconsts.CURRENT_MENU_BG_COLOR) ? localStorage.getItem(this.hbconsts.CURRENT_MENU_BG_COLOR) : '#FFF',
