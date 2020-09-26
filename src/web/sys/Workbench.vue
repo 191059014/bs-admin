@@ -1,7 +1,10 @@
 <template>
   <el-container>
     <el-aside>
-      <el-menu class="el_menu" :collapse="isCollapse" :default-active="menuActive" ref="menuTree" :unique-opened="true">
+      <el-menu class="el_menu" :collapse="isCollapse" :default-active="menuActive" ref="menuTree" :unique-opened="true"
+               :background-color="currentMenuBgColor"
+               :text-color="currentMenutTColor"
+               :active-text-color="currentMenuAtColor">
         <el-menu-item class="logo" :style="{'background-color':currentThemeColor}">
           <el-image class="aside_header_image" src="../../static/image/favicon.ico" fit="scale-contain"></el-image>
           <span class="aside_header_span">天道酬勤</span>
@@ -109,17 +112,16 @@
       <el-row>
         <el-tag v-for="themeColor in themeColorList" :key="themeColor.id" :color="themeColor.backgroundColor"
                 class="el_tag_common" :class="{'myicon-tick-checked':currentThemeColorId===themeColor.id}"
-                @click="selectTheme(themeColor.id,themeColor.backgroundColor)">
+                @click="selectThemeStyle(themeColor.id,themeColor.backgroundColor)">
         </el-tag>
       </el-row>
 
       <p>菜单色</p>
       <el-row>
-        <a id="menuColor1" href="javascript:void(0)" class="color_span color_span_active"
-           style="background-color: #545c64"></a>
-        <a id="menuColor2" href="javascript:void(0)" class="color_span" style="background-color: antiquewhite"></a>
-        <a id="menuColor3" href="javascript:void(0)" class="color_span" style="background-color: black"></a>
-        <a id="menuColor4" href="javascript:void(0)" class="color_span" style="background-color: yellow"></a>
+        <el-tag v-for="menuStyle in menuStyleList" :key="menuStyle.id" :color="menuStyle.backgroundColor"
+                class="el_tag_common" :class="{'myicon-tick-checked':currentMenuStyleId===menuStyle.id}"
+                @click="changeMenuStyle(menuStyle.id,menuStyle.backgroundColor,menuStyle.textColor,menuStyle.activeTextColor)">
+        </el-tag>
       </el-row>
 
     </el-drawer>
@@ -146,6 +148,21 @@
           {id: '6', backgroundColor: 'rgb(82, 196, 26)'},
           {id: '7', backgroundColor: 'rgb(24, 144, 255)'},
           {id: '8', backgroundColor: 'rgb(114, 46, 209)'}
+        ],
+        currentMenuStyleId: localStorage.getItem(this.hbconsts.CURRENT_MENU_STYLE_ID) ? localStorage.getItem(this.hbconsts.CURRENT_MENU_STYLE_ID) : '1',
+        currentMenuBgColor: localStorage.getItem(this.hbconsts.CURRENT_MENU_BG_COLOR) ? localStorage.getItem(this.hbconsts.CURRENT_MENU_BG_COLOR) : '#FFF',
+        currentMenutTColor: localStorage.getItem(this.hbconsts.CURRENT_MENU_T_COLOR) ? localStorage.getItem(this.hbconsts.CURRENT_MENU_T_COLOR) : '#303133',
+        currentMenuAtColor: localStorage.getItem(this.hbconsts.CURRENT_MENU_AT_COLOR) ? localStorage.getItem(this.hbconsts.CURRENT_MENU_AT_COLOR) : '#409EFF',
+        menuStyleList: [
+          {id: '1', backgroundColor: '#FFF', textColor: '#303133', activeTextColor: '#409EFF'},
+          {id: '2', backgroundColor: 'rgb(245, 34, 45)', textColor: '#fff', activeTextColor: '#ffd04b'},
+          {id: '3', backgroundColor: 'rgb(250, 84, 28)', textColor: '#fff', activeTextColor: '#ffd04b'},
+          {id: '4', backgroundColor: 'rgb(250, 173, 20)', textColor: '#fff', activeTextColor: '#ffd04b'},
+          {id: '5', backgroundColor: 'rgb(19, 194, 194)', textColor: '#fff', activeTextColor: '#ffd04b'},
+          {id: '6', backgroundColor: 'rgb(82, 196, 26)', textColor: '#fff', activeTextColor: '#ffd04b'},
+          {id: '7', backgroundColor: 'rgb(24, 144, 255)', textColor: '#fff', activeTextColor: '#ffd04b'},
+          {id: '8', backgroundColor: 'rgb(114, 46, 209)', textColor: '#fff', activeTextColor: '#ffd04b'},
+          {id: '9', backgroundColor: '#545c64', textColor: '#fff', activeTextColor: '#ffd04b'}
         ],
         activeTab: '0', //默认显示的tab
         tabsItem: [
@@ -174,11 +191,21 @@
       }
     },
     methods: {
-      selectTheme(id, themeColor) {
+      selectThemeStyle(id, themeColor) {
         this.currentThemeColorId = id;
         this.currentThemeColor = themeColor;
         localStorage.setItem(this.hbconsts.CURRENT_THEME_COLOR_ID, id);
         localStorage.setItem(this.hbconsts.CURRENT_THEME_COLOR, themeColor);
+      },
+      changeMenuStyle(id, backgroundColor, textColor, activeTextColor) {
+        this.currentMenuStyleId = id;
+        this.currentMenuBgColor = backgroundColor;
+        this.currentMenutTColor = textColor;
+        this.currentMenuAtColor = activeTextColor;
+        localStorage.setItem(this.hbconsts.CURRENT_MENU_STYLE_ID, id);
+        localStorage.setItem(this.hbconsts.CURRENT_MENU_BG_COLOR, backgroundColor);
+        localStorage.setItem(this.hbconsts.CURRENT_MENU_T_COLOR, textColor);
+        localStorage.setItem(this.hbconsts.CURRENT_MENU_AT_COLOR, activeTextColor);
       },
       removeTab(targetName) {
         let removeIndex = 0;
@@ -287,13 +314,6 @@
         this.isCollapse = false;
       }
       this.findPrivateMenuDatas();
-
-      // document.addEventListener("mousedown", function (e) {
-      //   if (e.target.id !== "searchInputId") {
-      //     let searchInput = document.getElementById("searchInputId");
-      //     searchInput.blur();
-      //   }
-      // }, false);
     },
     components: {
       DefaultContent: DefaultContent
@@ -301,10 +321,7 @@
     computed: {},
     watch: {},
     create() {
-      let currentThemeColor = localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR);
-      if (!currentThemeColor) {
-        localStorage.setItem(this.hbconsts.CURRENT_THEME_COLOR, '#545c64');
-      }
+
     }
   }
 
@@ -317,8 +334,9 @@
     border-right: none;
   }
 
-  .logo:not(.el-menu-item:focus, .el-menu-item:hover){
-
+  .logo {
+    pointer-events: none;
+    transition: none;
   }
 
   .el-aside {
@@ -343,7 +361,7 @@
   }
 
   .right_content_header {
-    height: 56px!important;
+    height: 56px !important;
     padding: 5px 0;
   }
 
