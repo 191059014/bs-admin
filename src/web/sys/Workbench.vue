@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container :class="currentThemeClassName">
     <el-aside>
       <el-menu class="el_menu" :collapse="isCollapse" :default-active="menuActive" ref="menuTree" :unique-opened="true">
         <el-menu-item class="logo" :style="{'background-color':currentThemeBgColor}">
@@ -128,11 +128,11 @@
 
     data() {
       return {
-        currentThemeBgColor: localStorage.getItem("currentThemeBgColor") ? localStorage.getItem("currentThemeBgColor") : '#409EFF',
+        currentThemeClassName: localStorage.getItem("currentThemeClassName") ? localStorage.getItem("currentThemeClassName") : 'theme_0',
         currentThemeStyleId: localStorage.getItem("currentThemeStyleId") ? localStorage.getItem("currentThemeStyleId") : '1',
         themeColorList: [
-          {id: '1', backgroundColor: '#409EFF'},
-          {id: '2', backgroundColor: 'rgb(245, 34, 45)'},
+          {id: '1', themeClassName: 'theme_0'},
+          {id: '2', themeClassName: 'theme_1'},
           {id: '3', backgroundColor: 'rgb(250, 84, 28)'},
           {id: '4', backgroundColor: '#F56C6C'},
           {id: '5', backgroundColor: 'rgb(250, 173, 20)'},
@@ -170,11 +170,11 @@
       }
     },
     methods: {
-      setCurrentThemeStyle(styleId, bgColor) {
+      setCurrentThemeStyle(styleId, themeClassName) {
         this.currentThemeStyleId = styleId;
-        this.currentThemeBgColor = bgColor;
+        this.currentThemeClassName = themeClassName;
         localStorage.setItem("currentThemeStyleId", styleId);
-        localStorage.setItem("currentThemeBgColor", bgColor);
+        localStorage.setItem("currentThemeClassName", themeClassName);
       },
       removeTab(targetName) {
         let removeIndex = 0;
