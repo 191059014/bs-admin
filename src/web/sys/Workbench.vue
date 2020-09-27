@@ -109,7 +109,7 @@
       <el-row>
         <el-tag v-for="themeColor in themeColorList" :key="themeColor.id" :color="themeColor.backgroundColor"
                 class="el_tag_common" :class="{'myicon-tick-checked':currentThemeStyleId===themeColor.id}"
-                @click="setCurrentThemeStyle(themeColor.id,themeColor.backgroundColor)">
+                @click="setCurrentThemeStyle(themeColor.id,themeColor.themeClassName)">
         </el-tag>
       </el-row>
 
@@ -131,8 +131,8 @@
         currentThemeClassName: localStorage.getItem("currentThemeClassName") ? localStorage.getItem("currentThemeClassName") : 'theme_0',
         currentThemeStyleId: localStorage.getItem("currentThemeStyleId") ? localStorage.getItem("currentThemeStyleId") : '1',
         themeColorList: [
-          {id: '1', themeClassName: 'theme_0'},
-          {id: '2', themeClassName: 'theme_1'},
+          {id: '1', backgroundColor: '#409EFF', themeClassName: 'theme_0'},
+          {id: '2', backgroundColor: 'rgb(245, 34, 45)', themeClassName: 'theme_1'},
           {id: '3', backgroundColor: 'rgb(250, 84, 28)'},
           {id: '4', backgroundColor: '#F56C6C'},
           {id: '5', backgroundColor: 'rgb(250, 173, 20)'},
