@@ -1,7 +1,6 @@
 <template>
   <el-form
     :model="AgentDO"
-    :rules="loginRules"
     ref="AgentDO"
     label-position="left"
     label-width="0px"
@@ -36,10 +35,6 @@
           usernameOrMobile: "admin",
           password: "123456"
         },
-        loginRules: {
-          mobile: [{required: true, message: "请输入账号", trigger: "blur"}],
-          password: [{required: true, message: "请输入密码", trigger: "blur"}]
-        },
         checked: true
       }
     },
@@ -47,7 +42,7 @@
       doLogin() {
         this.hbapis.login(this.AgentDO, false).then(res => {
           if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
-            this.hbalert.info("登陆成功");
+            this.hbalert.success("登陆成功");
             sessionStorage.setItem(this.hbconsts.TOKEN, res.data.token);
             sessionStorage.setItem(this.hbconsts.LOGIN_USERNAME, res.data.username);
             this.$router.push({path: "/workbench"});

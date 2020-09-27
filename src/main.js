@@ -9,6 +9,7 @@ import * as alert from './common/alert.js';
 import * as consts from './common/consts.js';
 import * as apis from './common/api.js';
 import * as utils from './common/utils.js';
+import store from './vuex/index.js';
 
 Vue.config.productionTip = false;
 Vue.prototype.hbalert = alert;
@@ -21,7 +22,8 @@ Vue.use(ElementUI);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store: store,
   router,
-  components: { App },
+  components: {App},
   template: '<App/>'
 });

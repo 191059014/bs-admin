@@ -6,7 +6,23 @@
 
 <script>
   export default {
-    name: 'App'
+    name: 'App',
+    created() {
+      /**
+       * 页面创建的时候，把localStorage中的信息放进vuex的state中，防止页面刷新，vuex的state数据丢失
+       */
+      let store = localStorage.getItem("store");
+      if (store) {
+        this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(store)));
+        localStorage.removeItem("store");
+      }
+      /**
+       * 在页面刷新/关闭之前，将vuex里的信息保存到localStorage里，防止页面刷新，vuex的state数据丢失
+       */
+      window.addEventListener("beforeunload", () => {
+        localStorage.setItem("store", JSON.stringify(this.$store.state))
+      })
+    }
   }
 </script>
 

@@ -1,11 +1,8 @@
 <template>
   <el-container>
     <el-aside>
-      <el-menu class="el_menu" :collapse="isCollapse" :default-active="menuActive" ref="menuTree" :unique-opened="true"
-               :background-color="currentMenuBgColor"
-               :text-color="currentMenutTColor"
-               :active-text-color="currentMenuAtColor">
-        <el-menu-item class="logo" :style="{'background-color':currentThemeColor}">
+      <el-menu class="el_menu" :collapse="isCollapse" :default-active="menuActive" ref="menuTree" :unique-opened="true">
+        <el-menu-item class="logo" :style="{'background-color':currentThemeBgColor}">
           <el-image class="aside_header_image" src="../../static/image/favicon.ico" fit="scale-contain"></el-image>
           <span class="aside_header_span">天道酬勤</span>
         </el-menu-item>
@@ -62,7 +59,7 @@
       </el-menu>
     </el-aside>
     <el-container>
-      <el-header class="right_content_header" :style="{'background-color':currentThemeColor}">
+      <el-header class="right_content_header" :style="{'background-color':currentThemeBgColor}">
         <el-row type="flex" justify="space-between">
           <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="collapse_radio_group_col">
             <el-radio-group v-model="isCollapse" class="collapse_radio_group" @change="collapseChange">
@@ -111,16 +108,8 @@
       <p>主题色</p>
       <el-row>
         <el-tag v-for="themeColor in themeColorList" :key="themeColor.id" :color="themeColor.backgroundColor"
-                class="el_tag_common" :class="{'myicon-tick-checked':currentThemeColorId===themeColor.id}"
-                @click="selectThemeStyle(themeColor.id,themeColor.backgroundColor)">
-        </el-tag>
-      </el-row>
-
-      <p>菜单色</p>
-      <el-row>
-        <el-tag v-for="menuStyle in menuStyleList" :key="menuStyle.id" :color="menuStyle.backgroundColor"
-                class="el_tag_common" :class="{'myicon-tick-checked':currentMenuStyleId===menuStyle.id}"
-                @click="changeMenuStyle(menuStyle.id,menuStyle.backgroundColor,menuStyle.textColor,menuStyle.activeTextColor)">
+                class="el_tag_common" :class="{'myicon-tick-checked':currentThemeStyleId===themeColor.id}"
+                @click="setCurrentThemeStyle(themeColor.id,themeColor.backgroundColor)">
         </el-tag>
       </el-row>
 
@@ -132,13 +121,14 @@
 <script>
   import DefaultContent from './DefaultContent.vue'
   import {getServerIpAndHost} from '../../common/utils.js'
+  import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 
   export default {
 
     data() {
       return {
-        currentThemeColor: localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR) ? localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR) : this.hbconsts.CURRENT_THEME_COLOR_DEFAULT,
-        currentThemeColorId: localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR_ID) ? localStorage.getItem(this.hbconsts.CURRENT_THEME_COLOR_ID) : '1',
+        currentThemeBgColor: localStorage.getItem("currentThemeBgColor") ? localStorage.getItem("currentThemeBgColor") : '#409EFF',
+        currentThemeStyleId: localStorage.getItem("currentThemeStyleId") ? localStorage.getItem("currentThemeStyleId") : '1',
         themeColorList: [
           {id: '1', backgroundColor: '#409EFF'},
           {id: '2', backgroundColor: 'rgb(245, 34, 45)'},
@@ -151,21 +141,6 @@
           {id: '9', backgroundColor: '#909399'},
           {id: '10', backgroundColor: '#545c64'},
           {id: '11', backgroundColor: '#000000'}
-        ],
-        currentMenuStyleId: localStorage.getItem(this.hbconsts.CURRENT_MENU_STYLE_ID) ? localStorage.getItem(this.hbconsts.CURRENT_MENU_STYLE_ID) : '1',
-        currentMenuBgColor: localStorage.getItem(this.hbconsts.CURRENT_MENU_BG_COLOR) ? localStorage.getItem(this.hbconsts.CURRENT_MENU_BG_COLOR) : '#FFF',
-        currentMenutTColor: localStorage.getItem(this.hbconsts.CURRENT_MENU_T_COLOR) ? localStorage.getItem(this.hbconsts.CURRENT_MENU_T_COLOR) : '#303133',
-        currentMenuAtColor: localStorage.getItem(this.hbconsts.CURRENT_MENU_AT_COLOR) ? localStorage.getItem(this.hbconsts.CURRENT_MENU_AT_COLOR) : '#409EFF',
-        menuStyleList: [
-          {id: '1', backgroundColor: '#FFF', textColor: '#303133', activeTextColor: '#409EFF'},
-          {id: '2', backgroundColor: 'rgb(245, 34, 45)', textColor: '#fff', activeTextColor: '#ffd04b'},
-          {id: '3', backgroundColor: 'rgb(250, 84, 28)', textColor: '#fff', activeTextColor: '#ffd04b'},
-          {id: '4', backgroundColor: 'rgb(250, 173, 20)', textColor: '#fff', activeTextColor: '#ffd04b'},
-          {id: '5', backgroundColor: 'rgb(19, 194, 194)', textColor: '#fff', activeTextColor: '#ffd04b'},
-          {id: '6', backgroundColor: 'rgb(82, 196, 26)', textColor: '#fff', activeTextColor: '#ffd04b'},
-          {id: '7', backgroundColor: 'rgb(24, 144, 255)', textColor: '#fff', activeTextColor: '#ffd04b'},
-          {id: '8', backgroundColor: 'rgb(114, 46, 209)', textColor: '#fff', activeTextColor: '#ffd04b'},
-          {id: '9', backgroundColor: '#545c64', textColor: '#fff', activeTextColor: '#ffd04b'}
         ],
         activeTab: '0', //默认显示的tab
         tabsItem: [
@@ -194,21 +169,11 @@
       }
     },
     methods: {
-      selectThemeStyle(id, themeColor) {
-        this.currentThemeColorId = id;
-        this.currentThemeColor = themeColor;
-        localStorage.setItem(this.hbconsts.CURRENT_THEME_COLOR_ID, id);
-        localStorage.setItem(this.hbconsts.CURRENT_THEME_COLOR, themeColor);
-      },
-      changeMenuStyle(id, backgroundColor, textColor, activeTextColor) {
-        this.currentMenuStyleId = id;
-        this.currentMenuBgColor = backgroundColor;
-        this.currentMenutTColor = textColor;
-        this.currentMenuAtColor = activeTextColor;
-        localStorage.setItem(this.hbconsts.CURRENT_MENU_STYLE_ID, id);
-        localStorage.setItem(this.hbconsts.CURRENT_MENU_BG_COLOR, backgroundColor);
-        localStorage.setItem(this.hbconsts.CURRENT_MENU_T_COLOR, textColor);
-        localStorage.setItem(this.hbconsts.CURRENT_MENU_AT_COLOR, activeTextColor);
+      setCurrentThemeStyle(styleId, bgColor) {
+        this.currentThemeStyleId = styleId;
+        this.currentThemeBgColor = bgColor;
+        localStorage.setItem("currentThemeStyleId", styleId);
+        localStorage.setItem("currentThemeBgColor", bgColor);
       },
       removeTab(targetName) {
         let removeIndex = 0;
@@ -323,7 +288,7 @@
     },
     computed: {},
     watch: {},
-    create() {
+    created() {
 
     }
   }
@@ -358,8 +323,8 @@
   }
 
   .aside_header_image {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     margin-top: 2px;
   }
 
