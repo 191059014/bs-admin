@@ -122,6 +122,7 @@
   import DefaultContent from './DefaultContent.vue'
   import {getServerIpAndHost} from '../../common/utils.js'
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
+  import '../../common.scss'
 
   export default {
 
