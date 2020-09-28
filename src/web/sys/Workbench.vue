@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <!--<el-aside>-->
+    <el-aside>
       <el-menu class="el_menu" mode="horizontal" :collapse="isCollapse" :default-active="menuActive" ref="menuTree" :unique-opened="true">
         <el-menu-item class="logo" :style="{'background-color':currentThemeBgColor}">
           <el-image class="aside_header_image" src="../../static/image/favicon.ico" fit="scale-contain"></el-image>
@@ -57,7 +57,7 @@
         </template>
         <!-- 一级菜单 end-->
       </el-menu>
-    <!--</el-aside>-->
+    </el-aside>
     <el-container>
       <el-header class="right_content_header" :style="{'background-color':currentThemeBgColor}">
         <el-row type="flex" justify="space-between">
@@ -347,7 +347,7 @@
 <style scoped>
 
   .el_menu:not(.el-menu--collapse) {
-    /*width: 200px;*/
+    width: 200px;
     border-right: none;
   }
 
