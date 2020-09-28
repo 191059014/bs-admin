@@ -85,7 +85,11 @@
         </el-row>
       </el-header>
       <el-main class="main_content">
-        <el-tabs v-model="activeTab" type="border-card" @tab-remove="removeTab" @tab-click="tabClick">
+        <el-breadcrumb separator="/" style="padding: 12px 0 12px 5px" v-show="breadcrumbShow">
+          <el-breadcrumb-item v-for="breadcrumb in breadcrumbList" :key="breadcrumb.id">{{breadcrumb.name}}
+          </el-breadcrumb-item>
+        </el-breadcrumb>
+        <el-tabs v-model="activeTab" type="border-card" @tab-remove="removeTab" @tab-click="tabClick" ref="tabs">
           <el-tab-pane v-for="(item, index) in tabsItem"
                        :key="item.name"
                        :label="item.title"
@@ -111,6 +115,20 @@
                 @click="setCurrentThemeStyle(themeColor.id, themeColor.backgroundColor)">
         </el-tag>
       </el-row>
+      <el-divider></el-divider>
+      <p>多页签模式</p>
+      <el-row>
+        <el-switch
+          style="display: block"
+          v-model="multiTabs"
+          active-text="多页签"
+          inactive-text="单页签"
+          active-value="true"
+          inactive-value="false"
+          @change="changeMultiTabs">
+        </el-switch>
+      </el-row>
+      <el-divider></el-divider>
       <el-row>
         <el-row style="text-align: center;padding-top: 20px">
           <el-button type="primary" @click="flushPage" style="width: 100%">刷新页面，立即生效</el-button>
@@ -129,6 +147,11 @@
   export default {
     data() {
       return {
+        breadcrumbList: [
+          {id: "0", name: "首页"}
+        ],
+        breadcrumbShow: true,
+        multiTabs: localStorage.getItem("multiTabs") ? localStorage.getItem("multiTabs") : "false",
         currentThemeStyleId: localStorage.getItem("currentThemeStyleId") ? localStorage.getItem("currentThemeStyleId") : '0',
         currentThemeBgColor: localStorage.getItem("currentThemeBgColor") ? localStorage.getItem("currentThemeBgColor") : '#409EFF',
         themeColorList: [
@@ -170,6 +193,9 @@
       }
     },
     methods: {
+      changeMultiTabs(newValue) {
+        localStorage.setItem("multiTabs", newValue);
+      },
       flushPage() {
         this.$router.go(0);
       },
@@ -223,6 +249,20 @@
           });
         }
         this.activeTab = menu.index;
+
+        let firstParentMenu = this.findParentMenu(newMenu.parentIndex);
+        let secondParentMenu;
+        if (firstParentMenu) {
+          secondParentMenu = this.findParentMenu(firstParentMenu.parentIndex);
+        }
+        this.breadcrumbList = [];
+        if (secondParentMenu) {
+          this.breadcrumbList.push({id: secondParentMenu.index, name: secondParentMenu.name});
+        }
+        if (firstParentMenu) {
+          this.breadcrumbList.push({id: firstParentMenu.index, name: firstParentMenu.name});
+        }
+        this.breadcrumbList.push({id: newMenu.index, name: newMenu.name});
       },
       collapseChange(collapse) {
 
@@ -265,9 +305,6 @@
           }
         }
       },
-      isMini() {
-        return document.documentElement.clientWidth < 500;
-      },
       findPrivateMenuDatas() {
         this.hbapis.getPrivateMenuDatas().then(res => {
           if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
@@ -279,15 +316,21 @@
       }
     },
     mounted() {
-      // 动态设置iframe高度
-      let frameContent = document.getElementById("frameContent");
-      let top = frameContent.offsetTop;
-      this.iframeHeight = (document.documentElement.clientHeight - top - 120) + 'px';
-      // 设置左侧菜单隐藏
-      if (this.isMini()) {
-        this.isCollapse = false;
+      /*
+       * 多页签
+       */
+      if ("true" === this.multiTabs) {
+        this.$refs.tabs.$children[0].$el.style.display = 'block';
+        this.breadcrumbShow = false;
+      } else {
+        this.$refs.tabs.$children[0].$el.style.display = 'none';
       }
-      this.findPrivateMenuDatas();
+      /*
+       * 动态设置iframe高度
+       */
+      let frameContent = document.getElementById("frameContent");
+      let top = frameContent.offsetParent.offsetTop;
+      this.iframeHeight = (document.documentElement.clientHeight - top - 16) + 'px';
     },
     components: {
       DefaultContent: DefaultContent,
@@ -295,7 +338,7 @@
     computed: {},
     watch: {},
     created() {
-
+      this.findPrivateMenuDatas();
     }
   }
 
