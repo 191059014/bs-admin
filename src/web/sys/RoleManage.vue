@@ -31,7 +31,7 @@
       v-loading="tableLoading"
       style="width: 100%">
       <el-table-column type="index" label="序号" min-width="100"></el-table-column>
-      <el-table-column prop="roleId" label="角色标识" min-width="100" sortable></el-table-column>
+<!--      <el-table-column prop="roleId" label="角色标识" min-width="100" sortable></el-table-column>-->
       <el-table-column prop="roleName" label="角色名称" min-width="100" sortable></el-table-column>
       <el-table-column prop="createTime" label="创建时间" min-width="100" sortable></el-table-column>
       <el-table-column prop="createBy" label="创建人" min-width="100" sortable></el-table-column>

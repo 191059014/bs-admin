@@ -228,6 +228,9 @@
           this.hbalert.warn("当前打开的页面过多，请关闭一些后再打开");
           return false;
         }
+        if (this.multiTabs === 'false') {
+          this.tabsItem = [];
+        }
         let newMenu = {...menu};
         if (menu && menu.url && menu.url.indexOf('http') < 0) {
           newMenu.url = getServerIpAndHost(menu.url);

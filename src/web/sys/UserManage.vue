@@ -34,7 +34,7 @@
       v-loading="tableLoading"
       style="width: 100%">
       <el-table-column type="index" label="序号" min-width="100"></el-table-column>
-      <el-table-column prop="userId" label="用户标识" min-width="100" sortable></el-table-column>
+<!--      <el-table-column prop="userId" label="用户标识" min-width="100" sortable></el-table-column>-->
       <el-table-column prop="userName" label="用户名" min-width="100" sortable></el-table-column>
       <el-table-column prop="mobile" label="手机号" min-width="100" sortable></el-table-column>
       <el-table-column prop="createTime" label="创建时间" min-width="100" sortable></el-table-column>
