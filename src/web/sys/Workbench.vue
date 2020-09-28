@@ -1,5 +1,5 @@
 <template>
-  <el-container :class="currentThemeClassName">
+  <el-container>
     <el-aside>
       <el-menu class="el_menu" :collapse="isCollapse" :default-active="menuActive" ref="menuTree" :unique-opened="true">
         <el-menu-item class="logo" :style="{'background-color':currentThemeBgColor}">
@@ -75,9 +75,9 @@
                 {{currentLoginUsername}}<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">账户中心</el-dropdown-item>
-                <el-dropdown-item command="b">个人主页</el-dropdown-item>
-                <el-dropdown-item command="setting">系统设置</el-dropdown-item>
+                <el-dropdown-item command="a" icon="el-icon-house">账户中心</el-dropdown-item>
+                <el-dropdown-item command="b" icon="el-icon-user">个人主页</el-dropdown-item>
+                <el-dropdown-item command="setting" icon="el-icon-setting">系统设置</el-dropdown-item>
                 <el-dropdown-item command="logout" divided icon="el-icon-switch-button">退出登录</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -104,15 +104,18 @@
       :visible.sync="openDrawer"
       direction="rtl"
       :before-close="handleClose">
-
       <p>主题色</p>
       <el-row>
         <el-tag v-for="themeColor in themeColorList" :key="themeColor.id" :color="themeColor.backgroundColor"
-                class="el_tag_common" :class="{'myicon-tick-checked':currentThemeStyleId===themeColor.id}"
-                @click="setCurrentThemeStyle(themeColor.id,themeColor.themeClassName)">
+                class="el_tag_common" :class="{'myicon-tick-checked': currentThemeStyleId === themeColor.id}"
+                @click="setCurrentThemeStyle(themeColor.id, themeColor.backgroundColor)">
         </el-tag>
       </el-row>
-
+      <el-row>
+        <el-row style="text-align: center;padding-top: 20px">
+          <el-button type="primary" @click="flushPage" style="width: 100%">刷新页面，立即生效</el-button>
+        </el-row>
+      </el-row>
     </el-drawer>
 
   </el-container>
@@ -122,26 +125,23 @@
   import DefaultContent from './DefaultContent.vue'
   import {getServerIpAndHost} from '../../common/utils.js'
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
-  import '../../common.scss'
 
   export default {
-
     data() {
       return {
-        currentThemeClassName: localStorage.getItem("currentThemeClassName") ? localStorage.getItem("currentThemeClassName") : 'theme_0',
-        currentThemeStyleId: localStorage.getItem("currentThemeStyleId") ? localStorage.getItem("currentThemeStyleId") : '1',
+        currentThemeStyleId: localStorage.getItem("currentThemeStyleId") ? localStorage.getItem("currentThemeStyleId") : '0',
+        currentThemeBgColor: localStorage.getItem("currentThemeBgColor") ? localStorage.getItem("currentThemeBgColor") : '#409EFF',
         themeColorList: [
-          {id: '1', backgroundColor: '#409EFF', themeClassName: 'theme_0'},
-          {id: '2', backgroundColor: 'rgb(245, 34, 45)', themeClassName: 'theme_1'},
-          {id: '3', backgroundColor: 'rgb(250, 84, 28)'},
-          {id: '4', backgroundColor: '#F56C6C'},
-          {id: '5', backgroundColor: 'rgb(250, 173, 20)'},
-          {id: '6', backgroundColor: 'rgb(82, 196, 26)'},
-          {id: '7', backgroundColor: 'rgb(19, 194, 194)'},
-          {id: '8', backgroundColor: 'rgb(114, 46, 209)'},
-          {id: '9', backgroundColor: '#909399'},
-          {id: '10', backgroundColor: '#545c64'},
-          {id: '11', backgroundColor: '#000000'}
+          {id: '0', backgroundColor: '#409EFF'},
+          {id: '1', backgroundColor: 'rgb(245, 34, 45)'},
+          {id: '2', backgroundColor: 'rgb(250, 84, 28)'},
+          {id: '3', backgroundColor: '#F56C6C'},
+          {id: '4', backgroundColor: 'rgb(250, 173, 20)'},
+          {id: '5', backgroundColor: 'rgb(82, 196, 26)'},
+          {id: '6', backgroundColor: 'rgb(19, 194, 194)'},
+          {id: '7', backgroundColor: 'rgb(114, 46, 209)'},
+          {id: '8', backgroundColor: '#545c64'},
+          {id: '9', backgroundColor: '#000000'}
         ],
         activeTab: '0', //默认显示的tab
         tabsItem: [
@@ -170,11 +170,13 @@
       }
     },
     methods: {
-      setCurrentThemeStyle(styleId, themeClassName) {
+      flushPage() {
+        this.$router.go(0);
+      },
+      setCurrentThemeStyle(styleId, bgColor) {
         this.currentThemeStyleId = styleId;
-        this.currentThemeClassName = themeClassName;
         localStorage.setItem("currentThemeStyleId", styleId);
-        localStorage.setItem("currentThemeClassName", themeClassName);
+        localStorage.setItem("currentThemeBgColor", bgColor);
       },
       removeTab(targetName) {
         let removeIndex = 0;
@@ -185,6 +187,9 @@
           }
         }
         this.tabsItem.splice(removeIndex, 1);
+        if (this.activeTab === targetName) {
+          this.activeTab = this.tabsItem[removeIndex - 1].name;
+        }
       },
       tabClick(thisTab) {
 
@@ -285,7 +290,7 @@
       this.findPrivateMenuDatas();
     },
     components: {
-      DefaultContent: DefaultContent
+      DefaultContent: DefaultContent,
     },
     computed: {},
     watch: {},
