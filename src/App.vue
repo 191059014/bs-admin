@@ -8,45 +8,55 @@
   export default {
     name: 'App',
     data() {
-      return {}
+      return {
+        alreadyLoadTheme: false
+      }
     },
     created() {
-      let currentThemeStyleId = localStorage.getItem("currentThemeStyleId");
-      switch (currentThemeStyleId) {
-        case "0":
-          require("./assets/themes/0/index.css");
-          break;
-        case "1":
-          require("./assets/themes/1/index.css");
-          break;
-        case "2":
-          require("./assets/themes/2/index.css");
-          break;
-        case "3":
-          require("./assets/themes/3/index.css");
-          break;
-        case "4":
-          require("./assets/themes/4/index.css");
-          break;
-        case "5":
-          require("./assets/themes/5/index.css");
-          break;
-        case "6":
-          require("./assets/themes/6/index.css");
-          break;
-        case "7":
-          require("./assets/themes/7/index.css");
-          break;
-        case "8":
-          require("./assets/themes/8/index.css");
-          break;
-        case "9":
-          require("./assets/themes/9/index.css");
-          break;
-        default:
-          require("./assets/themes/0/index.css");
-          break;
+      if (!this.alreadyLoadTheme) {
+        let currentThemeStyleId = localStorage.getItem("currentThemeStyleId");
+        switch (currentThemeStyleId) {
+          case "0":
+            require("./assets/themes/0/index.css");
+            break;
+          case "1":
+            require("./assets/themes/1/index.css");
+            break;
+          case "2":
+            require("./assets/themes/2/index.css");
+            break;
+          case "3":
+            require("./assets/themes/3/index.css");
+            break;
+          case "4":
+            require("./assets/themes/4/index.css");
+            break;
+          case "5":
+            require("./assets/themes/5/index.css");
+            break;
+          case "6":
+            require("./assets/themes/6/index.css");
+            break;
+          case "7":
+            require("./assets/themes/7/index.css");
+            break;
+          case "8":
+            require("./assets/themes/8/index.css");
+            break;
+          case "9":
+            require("./assets/themes/9/index.css");
+            break;
+          default:
+            require("./assets/themes/0/index.css");
+            break;
+        }
+        this.alreadyLoadTheme = true;
       }
+    },
+    mounted() {
+      window.onbeforeunload = function (event) {
+        this.alreadyLoadTheme = false;
+      };
     }
   }
 </script>
