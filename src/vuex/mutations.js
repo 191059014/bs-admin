@@ -3,10 +3,10 @@
  */
 const mutations = {
   /**
-   * 设置当前主题
+   * 菜单伸缩
    */
-  setCurrentThemeStyle(state, obj) {
-
+  changeMenuCollapse(state, value) {
+    state.isMenuCollapse = value;
   }
 };
 export default mutations
