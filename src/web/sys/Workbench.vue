@@ -1,12 +1,12 @@
 <template>
   <el-container>
     <el-aside>
-      <el-menu class="el_menu" mode="horizontal" :collapse="isCollapse" :default-active="menuActive" ref="menuTree" :unique-opened="true">
+      <el-menu class="el_menu" :collapse="isCollapse" :default-active="menuActive" ref="menuTree" :unique-opened="true" router>
         <el-menu-item class="logo" :style="{'background-color':currentThemeBgColor}">
           <el-image class="aside_header_image" src="../../static/image/favicon.ico" fit="scale-contain"></el-image>
           <span class="aside_header_span">天道酬勤</span>
         </el-menu-item>
-        <el-menu-item :index="shouyeMenu.index" @click="clickMenu(shouyeMenu)">
+        <el-menu-item :index="shouyeMenu.url" @click="clickMenu(shouyeMenu)">
           <i :class="shouyeMenu.icon"></i>
           <span slot="title">{{shouyeMenu.name}}</span>
         </el-menu-item>
@@ -33,7 +33,7 @@
                     </template>
                     <!-- 此处可继续添加四级菜单 -->
                   </el-submenu>
-                  <el-menu-item v-else :id="thirdMenu.index" :index="thirdMenu.index"
+                  <el-menu-item v-else :id="thirdMenu.index" :index="thirdMenu.url"
                                 @click="clickMenu(thirdMenu)">
                     <i :class="thirdMenu.icon"></i>
                     <span slot="title">{{thirdMenu.name}}</span>
@@ -41,7 +41,7 @@
                 </template>
                 <!-- 三级菜单 end-->
               </el-submenu>
-              <el-menu-item v-else :id="secondMenu.index" :index="secondMenu.index"
+              <el-menu-item v-else :id="secondMenu.index" :index="secondMenu.url"
                             @click="clickMenu(secondMenu)">
                 <i :class="secondMenu.icon"></i>
                 <span slot="title">{{secondMenu.name}}</span>
@@ -49,7 +49,7 @@
             </template>
             <!-- 二级菜单 end -->
           </el-submenu>
-          <el-menu-item v-else :id="firstMenu.index" :index="firstMenu.index"
+          <el-menu-item v-else :id="firstMenu.index" :index="firstMenu.url"
                         @click="clickMenu(firstMenu)">
             <i :class="firstMenu.icon"></i>
             <span slot="title">{{firstMenu.name}}</span>
@@ -89,6 +89,7 @@
           <el-breadcrumb-item v-for="breadcrumb in breadcrumbList" :key="breadcrumb.id">{{breadcrumb.name}}
           </el-breadcrumb-item>
         </el-breadcrumb>
+
         <el-tabs v-model="activeTab" type="border-card" @tab-remove="removeTab" @tab-click="tabClick" ref="tabs">
           <el-tab-pane v-for="(item, index) in tabsItem"
                        :key="item.name"
@@ -96,8 +97,7 @@
                        :name="item.name"
                        :closable="item.closable"
                        :ref="item.ref">
-            <iframe id="frameContent" :src="item.url" width="100%" :height="iframeHeight" frameborder="no"
-                    scrolling="auto"></iframe>
+            <router-view style="height: 100%"></router-view>
           </el-tab-pane>
         </el-tabs>
       </el-main>
@@ -182,7 +182,7 @@
           "url": "/defaultContent",
           "icon": "el-icon-s-home"
         },
-        menuActive: "0",
+        menuActive: "/defaultContent",
         searchWord: '',
         menuDatas: '',
         iframeHeight: '100%',
@@ -328,9 +328,9 @@
       /*
        * 动态设置iframe高度
        */
-      let frameContent = document.getElementById("frameContent");
-      let top = frameContent.offsetParent.offsetTop;
-      this.iframeHeight = (document.documentElement.clientHeight - top - 16) + 'px';
+      // let frameContent = document.getElementById("frameContent");
+      // let top = frameContent.offsetParent.offsetTop;
+      // this.iframeHeight = (document.documentElement.clientHeight - top - 16) + 'px';
     },
     components: {
       DefaultContent: DefaultContent,
