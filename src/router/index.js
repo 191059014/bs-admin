@@ -13,6 +13,14 @@ import AccessManage from '../web/sys/AccessManage.vue'
 import Test from '../web/Test.vue'
 import Test1 from '../web/Test1.vue'
 
+/**
+ * 解决点击菜单时报重复路由的错，虽然不影响功能，但是console里会打印红色错误
+ */
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+};
+
 Vue.use(Router);
 
 export default new Router({

@@ -1,14 +1,22 @@
 <template>
   <div class="workbench_container">
     <el-row>
-      <el-col :span="3">
+      <el-col :span="3" class="transition_width" :class="{'workbenck_sidebar_collapse':isMenuCollapse}">
         <Sidebar></Sidebar>
       </el-col>
-      <el-col :span="21">
+      <el-col :span="21" class="transition_width" :class="{'workbench_navbar_collapse':isMenuCollapse}">
         <Navbar></Navbar>
+        <div id="content_wrapper">
+          <TagsView></TagsView>
+          <BreadcrumbView></BreadcrumbView>
+          <keep-alive :exclude="clearTabKeepAlive">
+            <router-view></router-view>
+          </keep-alive>
+        </div>
       </el-col>
     </el-row>
 
+    <SystemSetting></SystemSetting>
 
   </div>
 </template>
@@ -16,21 +24,34 @@
 <script>
   import Sidebar from '../../components/Sidebar.vue'
   import Navbar from '../../components/Navbar.vue'
-  import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
+  import TagsView from '../../components/TagsView.vue'
+  import SystemSetting from "../../components/SystemSetting";
+  import BreadcrumbView from "../../components/BreadcrumbView";
 
   export default {
     data() {
       return {}
     },
+    computed: {
+      isMenuCollapse() {
+        return this.$store.state.isMenuCollapse;
+      },
+      clearTabKeepAlive() {
+        return this.$store.state.clearTabKeepAlive;
+      },
+    },
     methods: {},
     mounted() {
-
+      let contentWrapperDiv = document.getElementById("content_wrapper");
+      contentWrapperDiv.style.minHeight = (document.documentElement.clientHeight - 56 - 10) + 'px';
     },
     components: {
+      BreadcrumbView,
+      SystemSetting,
       Sidebar,
-      Navbar
+      Navbar,
+      TagsView
     },
-    computed: {},
     watch: {},
     created() {
     }
@@ -40,6 +61,23 @@
 
 <style scoped>
 
+  #content_wrapper {
+    height: 100%;
+    padding: 5px;
+    border-left: solid 1px #e6e6e6;
+  }
+
+  .transition_width {
+    transition: width .3s;
+  }
+
+  .workbenck_sidebar_collapse {
+    width: 64px;
+  }
+
+  .workbench_navbar_collapse {
+    width: calc(100% - 64px);
+  }
 
   .logo {
     pointer-events: none;

@@ -1,5 +1,5 @@
 <template>
-  <div class="nav_bar">
+  <div class="nav_bar" :style="{'background-color':currentThemeBgColor}">
     <el-row>
       <el-col :lg="12">
         <el-row type="flex" justify="start" align="middle">
@@ -12,10 +12,10 @@
         </el-row>
       </el-col>
       <el-col :lg="12">
-        <el-row type="flex" justify="end" align="middle">
+        <el-row type="flex" justify="end" align="middle" style="padding-right: 20px">
           <el-dropdown @command="handleCommand">
-              <span class="el-dropdown-link">
-                123<i class="el-icon-arrow-down el-icon--right"></i>
+              <span class="el-dropdown-link" style="color: white">
+                {{currentLoginUsername}}<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="a" icon="el-icon-house">账户中心</el-dropdown-item>
@@ -35,7 +35,13 @@
     name: "Navbar",
     data() {
       return {
-        isMenuCollapse: this.$store.state.isMenuCollapse
+        isMenuCollapse: this.$store.state.isMenuCollapse,
+        currentLoginUsername: sessionStorage.getItem(this.hbconsts.LOGIN_USERNAME),
+      }
+    },
+    computed: {
+      currentThemeBgColor() {
+        return this.$store.state.currentThemeBgColor;
       }
     },
     methods: {
@@ -43,7 +49,14 @@
         this.$store.commit('changeMenuCollapse', val);
       },
       handleCommand(command) {
-
+        if (command === 'logout') {
+          sessionStorage.setItem(this.hbconsts.TOKEN, null);
+          this.$router.push({path: "/"});
+        } else if (command === 'setting') {
+          this.$store.commit('changeOpenSystemSetting', true);
+        } else {
+          this.hbalert.info('click on item ' + command);
+        }
       },
     },
     created() {
@@ -69,4 +82,5 @@
     background: none;
     color: white;
   }
+
 </style>

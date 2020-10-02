@@ -3,11 +3,13 @@
  */
 const gatters = {
   /**
-   * 获取当前用户名
+   * 获取tab的路由地址
    */
-  getCurrentUsername(state, gatters) {
-
-    return state.username;
+  getTabRoute(state, name) {
+    let tab = this.state.openTabs.find(function (value, index, arr) {
+      return value.name === data.name;
+    });
+    return tab.route;
   },
 };
 

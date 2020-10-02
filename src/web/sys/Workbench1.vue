@@ -172,7 +172,6 @@
             title: '首页',
             name: '0',
             closable: false,
-            ref: 'tabs',
             url: 'http://localhost/#/defaultContent'
           }
         ],
