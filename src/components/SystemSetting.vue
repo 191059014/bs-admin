@@ -25,12 +25,6 @@
           @change="changeMultiTabs">
         </el-switch>
       </el-row>
-      <el-divider></el-divider>
-      <el-row>
-        <el-row style="text-align: center;padding-top: 20px">
-          <el-button type="primary" @click="flushPage" style="width: 100%">刷新页面，立即生效</el-button>
-        </el-row>
-      </el-row>
     </el-drawer>
   </div>
 </template>
@@ -40,6 +34,7 @@
     name: "SystemSetting",
     data() {
       return {
+        multiTabs: this.$store.state.multiTabs,
         themeColorList: [
           {id: '0', backgroundColor: '#409EFF'},
           {id: '1', backgroundColor: 'rgb(245, 34, 45)'},
@@ -59,10 +54,7 @@
         return this.$store.state.openSystemSetting;
       },
       currentThemeStyleId: function () {
-        return this.$store.state.currentThemeStyleId;
-      },
-      multiTabs:function () {
-        return this.$store.state.multiTabs;
+        return this.$store.gatters.getCurrentThemeStyleId;
       }
     },
     methods: {
@@ -75,10 +67,7 @@
       },
       changeMultiTabs(newValue) {
         this.$store.commit('changeMultiTabs', newValue);
-      },
-      flushPage() {
-        this.$router.go(0);
-      },
+      }
     }
 
   }

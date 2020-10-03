@@ -197,6 +197,7 @@
 
 <script>
   export default {
+    name:'AccessManage',
     data() {
       return {
         pageNum: 1,

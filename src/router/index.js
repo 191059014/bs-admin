@@ -57,7 +57,7 @@ export default new Router({
         },
         {
           path: '/userManage',
-          name: '用户管理',
+          name: 'userManage',
           component: UserManage
         },
         {

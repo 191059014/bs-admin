@@ -9,7 +9,7 @@
         <div id="content_wrapper">
           <TagsView></TagsView>
           <BreadcrumbView></BreadcrumbView>
-          <keep-alive :exclude="clearTabKeepAlive">
+          <keep-alive>
             <router-view></router-view>
           </keep-alive>
         </div>

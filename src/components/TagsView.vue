@@ -37,10 +37,38 @@
       tabClick(tab) {
         this.$store.commit('set_tabs_active', tab.name);
         this.routingToActiveTab(tab.name);
+        // 改变面包屑导航
+        this.$store.commit('replaceLastBreadcrumb', {id: tab.name, name: tab.title});
       },
       tabRemove(name) {
-        let keepAliveArr = this.$vnode.data.keepAlive;
+        /*
+         * 删除tab的缓存
+         */
+        // let tab = this.openTabs.find((value, index, arr) => {
+        //   return value.name === name
+        // });
+        // if (tab) {
+        //   let componentName = this.findComponentNameCycle(tab.route, this.$router.options.routes);
+        //   componentName && this.$store.commit('addClearTabKeepAlive', componentName);
+        // }
+        /*
+         * 删除tab页
+         */
         this.$store.commit('delete_tabs', name);
+        /**
+         * 重置缓存页面
+         */
+        // this.$store.commit('resetClearTabKeepAlive');
+      },
+      findComponentNameCycle(path, routeArr) {
+        for (let i = 0; i < routeArr.length; i++) {
+          if (path === routeArr[i].path) {
+            return routeArr[i].component.name;
+          }
+          if (routeArr[i].children) {
+            return this.findComponentNameCycle(path, routeArr[i].children);
+          }
+        }
       },
       routingToActiveTab(name) {
         let currentTab = this.$store.state.openTabs.find(function (value, index, arr) {

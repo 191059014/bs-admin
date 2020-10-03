@@ -156,6 +156,7 @@
 
 <script>
   export default {
+    name:'UserManage',
     data() {
       return {
         pageNum: 1,
