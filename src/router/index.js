@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../views/sys/Login.vue'
 import Workbench from '../views/sys/Workbench.vue'
-import Workbench1 from '../views/sys/Workbench1.vue'
 import IframeContent from '../views/sys/IframeContent.vue'
 import DefaultContent from '../views/sys/DefaultContent.vue'
 import AccessDeny from '../views/errorPage/AccessDeny.vue'
@@ -29,11 +28,6 @@ export default new Router({
       path: '/',
       name: '登陆',
       component: Login
-    },
-    {
-      path: '/workbench1',
-      name: '工作台1',
-      component: Workbench1
     },
     {
       path: '/workbench',

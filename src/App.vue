@@ -83,9 +83,6 @@
           localStorage.setItem("stateCache", JSON.stringify(stateCache))
         })
       }
-    },
-    mounted() {
-
     }
   }
 </script>
