@@ -54,7 +54,7 @@
         return this.$store.state.openSystemSetting;
       },
       currentThemeStyleId: function () {
-        return this.$store.gatters.getCurrentThemeStyleId;
+        return this.$store.state.currentThemeStyleId;
       }
     },
     methods: {

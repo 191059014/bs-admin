@@ -154,7 +154,7 @@
   }
 
   .el-menu:not(.el-menu--collapse) {
-    width: 100%;
+    width: 200px;
   }
 
   .logo {

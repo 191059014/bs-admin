@@ -83,4 +83,14 @@
     color: white;
   }
 
+  .el-radio-button:first-child .el-radio-button__inner{
+    border: none;
+  }
+
+  .el-dropdown-link {
+    cursor: pointer;
+    color: white;
+    font-size: 13px;
+  }
+
 </style>
