@@ -1,89 +1,61 @@
 <template>
   <el-container>
-    <el-aside>
-      <el-menu class="el_menu" :collapse="isCollapse" :default-active="menuActive" ref="menuTree" :unique-opened="true">
-        <el-menu-item class="logo" :style="{'background-color':currentThemeBgColor}">
-          <el-image class="aside_header_image" src="../../static/image/favicon.ico" fit="scale-contain"></el-image>
-          <span class="aside_header_span">天道酬勤</span>
-        </el-menu-item>
-        <el-menu-item :index="shouyeMenu.index" @click="clickMenu(shouyeMenu)">
-          <i :class="shouyeMenu.icon"></i>
-          <span slot="title">{{shouyeMenu.name}}</span>
-        </el-menu-item>
-        <!-- 一级菜单 start-->
-        <template v-for="firstMenu in menuDatas">
-          <el-submenu :index="firstMenu.index" v-if="firstMenu.children">
-            <template slot="title">
-              <i :class="firstMenu.icon"></i>
-              <span slot="title">{{firstMenu.name}}</span>
-            </template>
-            <!-- 二级菜单 start -->
-            <template v-for="secondMenu in firstMenu.children">
-              <el-submenu :index="secondMenu.index" v-if="secondMenu.children">
-                <template slot="title">
-                  <i :class="secondMenu.icon"></i>
-                  <span slot="title">{{secondMenu.name}}</span>
-                </template>
-                <!-- 三级菜单 start-->
-                <template v-for="thirdMenu in secondMenu.children">
-                  <el-submenu :index="thirdMenu.index" v-if="thirdMenu.children">
-                    <template slot="title">
-                      <i :class="thirdMenu.icon"></i>
-                      <span slot="title">{{thirdMenu.name}}</span>
-                    </template>
-                    <!-- 此处可继续添加四级菜单 -->
-                  </el-submenu>
-                  <el-menu-item v-else :id="thirdMenu.index" :index="thirdMenu.index"
-                                @click="clickMenu(thirdMenu)">
-                    <i :class="thirdMenu.icon"></i>
-                    <span slot="title">{{thirdMenu.name}}</span>
-                  </el-menu-item>
-                </template>
-                <!-- 三级菜单 end-->
-              </el-submenu>
-              <el-menu-item v-else :id="secondMenu.index" :index="secondMenu.index"
-                            @click="clickMenu(secondMenu)">
-                <i :class="secondMenu.icon"></i>
-                <span slot="title">{{secondMenu.name}}</span>
-              </el-menu-item>
-            </template>
-            <!-- 二级菜单 end -->
-          </el-submenu>
-          <el-menu-item v-else :id="firstMenu.index" :index="firstMenu.index"
-                        @click="clickMenu(firstMenu)">
+    <el-menu mode="horizontal" :collapse="isCollapse" :default-active="menuActive" ref="menuTree" :unique-opened="true">
+      <el-menu-item >
+        <el-image  src="../../static/image/favicon.ico" fit="scale-contain"></el-image>
+        <span >天道酬勤</span>
+      </el-menu-item>
+      <el-menu-item :index="shouyeMenu.index" @click="clickMenu(shouyeMenu)">
+        <i :class="shouyeMenu.icon"></i>
+        <span slot="title">{{shouyeMenu.name}}</span>
+      </el-menu-item>
+      <!-- 一级菜单 start-->
+      <template v-for="firstMenu in menuDatas">
+        <el-submenu :index="firstMenu.index" v-if="firstMenu.children">
+          <template slot="title">
             <i :class="firstMenu.icon"></i>
             <span slot="title">{{firstMenu.name}}</span>
-          </el-menu-item>
-        </template>
-        <!-- 一级菜单 end-->
-      </el-menu>
-    </el-aside>
-    <el-container>
-      <el-header class="right_content_header" :style="{'background-color':currentThemeBgColor}">
-        <el-row type="flex" justify="space-between">
-          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" class="collapse_radio_group_col">
-            <el-radio-group v-model="isCollapse" class="collapse_radio_group" @change="collapseChange">
-              <el-radio-button v-show="isCollapse" :label="false"><i class="el-icon-s-unfold collapse_i"></i>
-              </el-radio-button>
-              <el-radio-button v-show="!isCollapse" :label="true"><i class="el-icon-s-fold collapse_i"></i>
-              </el-radio-button>
-            </el-radio-group>
-          </el-col>
-          <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" :offset="20" class="top_dropdown_col">
-            <el-dropdown @command="handleCommand">
-              <span class="el-dropdown-link">
-                {{currentLoginUsername}}<i class="el-icon-arrow-down el-icon--right"></i>
-              </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a" icon="el-icon-house">账户中心</el-dropdown-item>
-                <el-dropdown-item command="b" icon="el-icon-user">个人主页</el-dropdown-item>
-                <el-dropdown-item command="setting" icon="el-icon-setting">系统设置</el-dropdown-item>
-                <el-dropdown-item command="logout" divided icon="el-icon-switch-button">退出登录</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </el-col>
-        </el-row>
-      </el-header>
+          </template>
+          <!-- 二级菜单 start -->
+          <template v-for="secondMenu in firstMenu.children">
+            <el-submenu :index="secondMenu.index" v-if="secondMenu.children">
+              <template slot="title">
+                <i :class="secondMenu.icon"></i>
+                <span slot="title">{{secondMenu.name}}</span>
+              </template>
+              <!-- 三级菜单 start-->
+              <template v-for="thirdMenu in secondMenu.children">
+                <el-submenu :index="thirdMenu.index" v-if="thirdMenu.children">
+                  <template slot="title">
+                    <i :class="thirdMenu.icon"></i>
+                    <span slot="title">{{thirdMenu.name}}</span>
+                  </template>
+                  <!-- 此处可继续添加四级菜单 -->
+                </el-submenu>
+                <el-menu-item v-else :id="thirdMenu.index" :index="thirdMenu.index"
+                              @click="clickMenu(thirdMenu)">
+                  <i :class="thirdMenu.icon"></i>
+                  <span slot="title">{{thirdMenu.name}}</span>
+                </el-menu-item>
+              </template>
+              <!-- 三级菜单 end-->
+            </el-submenu>
+            <el-menu-item v-else :id="secondMenu.index" :index="secondMenu.index"
+                          @click="clickMenu(secondMenu)">
+              <i :class="secondMenu.icon"></i>
+              <span slot="title">{{secondMenu.name}}</span>
+            </el-menu-item>
+          </template>
+          <!-- 二级菜单 end -->
+        </el-submenu>
+        <el-menu-item v-else :id="firstMenu.index" :index="firstMenu.index"
+                      @click="clickMenu(firstMenu)">
+          <i :class="firstMenu.icon"></i>
+          <span slot="title">{{firstMenu.name}}</span>
+        </el-menu-item>
+      </template>
+      <!-- 一级菜单 end-->
+    </el-menu>
       <el-main class="main_content">
         <el-breadcrumb separator="/" style="padding: 12px 0 12px 5px" v-show="breadcrumbShow">
           <el-breadcrumb-item v-for="breadcrumb in breadcrumbList" :key="breadcrumb.id">{{breadcrumb.name}}
@@ -101,7 +73,6 @@
           </el-tab-pane>
         </el-tabs>
       </el-main>
-    </el-container>
 
     <el-drawer
       title="系统设置"
@@ -140,8 +111,8 @@
 </template>
 
 <script>
-  import DefaultContent from './DefaultContent.vue'
-  import {getServerIpAndHost} from '../../common/utils.js'
+  import DefaultContent from './sys/DefaultContent.vue'
+  import {getServerIpAndHost} from '../common/utils.js'
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 
   export default {
@@ -227,9 +198,6 @@
         if (this.tabsItem.length > 10) {
           this.hbalert.warn("当前打开的页面过多，请关闭一些后再打开");
           return false;
-        }
-        if (this.multiTabs === 'false') {
-          this.tabsItem = [];
         }
         let newMenu = {...menu};
         if (menu && menu.url && menu.url.indexOf('http') < 0) {
@@ -349,135 +317,7 @@
 
 <style scoped>
 
-  .el_menu:not(.el-menu--collapse) {
-    width: 200px;
-    border-right: none;
-  }
 
-  .logo {
-    pointer-events: none;
-    transition: none;
-  }
-
-  .el-aside {
-    width: auto !important;
-  }
-
-  .el-dropdown-link {
-    cursor: pointer;
-    color: white;
-    font-size: 13px;
-  }
-
-  .top_dropdown_col {
-    padding-top: 20px;
-    text-align: center;
-  }
-
-  .aside_header_image {
-    width: 25px;
-    height: 25px;
-    margin-top: 2px;
-  }
-
-  .right_content_header {
-    height: 56px !important;
-    padding: 5px 0;
-  }
-
-  .input_search >>> .el-input__inner {
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: 1px antiquewhite solid;
-    background-color: #545c64;
-    color: white;
-  }
-
-  .aside_header_span {
-    color: white;
-    font-size: 1.5rem;
-    display: inline-block;
-    margin-top: 3px;
-    margin-left: 5px;
-    font-family: cursive;
-  }
-
-  .main_content {
-    padding: 5px 5px 0 5px;
-    border-left: solid 1px #e6e6e6;
-  }
-
-  .el-menu-item.is-active {
-    border-right: 3px solid #409EFF;
-  }
-
-  aside.el-aside > .el-menu {
-    height: 100%;
-  }
-
-  .collapse_i {
-    font-size: 2rem;
-    color: white;
-  }
-
-  .collapse_radio_group_col {
-    padding: 10px 0 10px 10px;
-  }
-
-  .collapse_radio_group >>> .el-radio-button__inner {
-    padding: 1px;
-    border: none;
-    border-radius: 4px;
-    background: none;
-  }
-
-  .breadcrumb_div {
-    display: inline-block;
-    margin-left: 5px;
-  }
-
-  .el-tabs--border-card >>> .el-tabs__content {
-    padding: 5px;
-  }
-
-  .el_tag_common {
-    height: 25px;
-    width: 25px;
-    padding: 0;
-    margin-right: 10px;
-    border-radius: 2px;
-  }
-
-  /* 选中样式 */
-  .myicon-tick-checked {
-    position: relative;
-  }
-
-  .myicon-tick-checked:before, .myicon-tick-checked:after {
-    content: '';
-    pointer-events: none;
-    position: absolute;
-    color: white;
-    border: 1px solid;
-    background-color: white;
-  }
-
-  .myicon-tick-checked:before {
-    width: 2px;
-    height: 1px;
-    left: 25%;
-    top: 50%;
-    transform: skew(0deg, 50deg);
-  }
-
-  .myicon-tick-checked:after {
-    width: 3px;
-    height: 1px;
-    left: 45%;
-    top: 42%;
-    transform: skew(0deg, -50deg);
-  }
 
   @media screen and (max-width: 500px) {
     /*当屏幕尺寸小于500px时，应用下面的CSS样式*/

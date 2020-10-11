@@ -45,6 +45,7 @@
             this.hbalert.success("登陆成功");
             sessionStorage.setItem(this.hbconsts.TOKEN, res.data.token);
             sessionStorage.setItem(this.hbconsts.LOGIN_USERNAME, res.data.username);
+            this.$store.commit('reset_openTabs');
             this.$router.push({path: "/workbench"});
           } else {
             this.hbalert.error(res.msg);

@@ -128,6 +128,7 @@
 
 <script>
   export default {
+    name:'RoleManage',
     data() {
       return {
         pageNum: 1,

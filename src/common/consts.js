@@ -10,5 +10,8 @@ export const ResponseEnum = {
   TOKEN_IS_EMPTY: {"code": "20110", "msg": "token为空"},
   TOKEN_IS_EXPIRED: {"code": "20111", "msg": "token过期"},
 };
-
+// 缓存的主题样式的key
+export const currentThemeStyleId_key = "currentThemeStyleId";
+// 缓存的主题的背景色的key
+export const currentThemeBgColor_key = "currentThemeBgColor";
 

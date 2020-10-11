@@ -79,6 +79,7 @@
 
 <script>
   export default {
+    name:'MerchantManage',
     data() {
       return {
         pageNum: 1,

@@ -10,42 +10,78 @@
     data() {
       return {}
     },
+    computed: {},
+    watch: {
+      "$store.state.currentThemeStyleId": function (newValue, oldValue) {
+        this.loadTheme(newValue);
+      }
+    },
     created() {
-      let currentThemeStyleId = localStorage.getItem("currentThemeStyleId");
-      switch (currentThemeStyleId) {
-        case "0":
-          require("./assets/themes/0/index.css");
-          break;
-        case "1":
-          require("./assets/themes/1/index.css");
-          break;
-        case "2":
-          require("./assets/themes/2/index.css");
-          break;
-        case "3":
-          require("./assets/themes/3/index.css");
-          break;
-        case "4":
-          require("./assets/themes/4/index.css");
-          break;
-        case "5":
-          require("./assets/themes/5/index.css");
-          break;
-        case "6":
-          require("./assets/themes/6/index.css");
-          break;
-        case "7":
-          require("./assets/themes/7/index.css");
-          break;
-        case "8":
-          require("./assets/themes/8/index.css");
-          break;
-        case "9":
-          require("./assets/themes/9/index.css");
-          break;
-        default:
-          require("./assets/themes/0/index.css");
-          break;
+      this.state2LocalStorage();
+      this.loadTheme(this.$store.state.currentThemeStyleId);
+    },
+    methods: {
+      loadTheme(themeStyleId) {
+        switch (themeStyleId) {
+          case "0":
+            require("./assets/themes/0/index.css");
+            break;
+          case "1":
+            require("./assets/themes/1/index.css");
+            break;
+          case "2":
+            require("./assets/themes/2/index.css");
+            break;
+          case "3":
+            require("./assets/themes/3/index.css");
+            break;
+          case "4":
+            require("./assets/themes/4/index.css");
+            break;
+          case "5":
+            require("./assets/themes/5/index.css");
+            break;
+          case "6":
+            require("./assets/themes/6/index.css");
+            break;
+          case "7":
+            require("./assets/themes/7/index.css");
+            break;
+          case "8":
+            require("./assets/themes/8/index.css");
+            break;
+          case "9":
+            require("./assets/themes/9/index.css");
+            break;
+          default:
+            require("./assets/themes/0/index.css");
+            break;
+        }
+        this.hbalert.success("主题初始化完成");
+      },
+      state2LocalStorage() {
+        /**
+         * 页面创建的时候，把localStorage中的信息放进vuex的state中，防止页面刷新，vuex的state数据丢失
+         */
+        let stateCache = localStorage.getItem("stateCache");
+        if (stateCache) {
+          let cache = JSON.parse(stateCache);
+          this.$store.commit('setCurrentThemeStyleId', cache.currentThemeStyleId);
+          this.$store.commit('setCurrentThemeBgColor', cache.currentThemeBgColor);
+          this.$store.commit('changeMultiTabs', cache.multiTabs);
+          localStorage.removeItem("stateCache");
+        }
+        /**
+         * 在页面刷新/关闭之前，将vuex里的信息保存到localStorage里，防止页面刷新，vuex的state数据丢失
+         */
+        window.addEventListener("beforeunload", () => {
+          let stateCache = {
+            currentThemeStyleId: this.$store.state.currentThemeStyleId,
+            currentThemeBgColor: this.$store.state.currentThemeBgColor,
+            multiTabs: this.$store.state.multiTabs
+          };
+          localStorage.setItem("stateCache", JSON.stringify(stateCache))
+        })
       }
     },
     mounted() {
