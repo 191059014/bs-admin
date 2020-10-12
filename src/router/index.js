@@ -2,7 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../views/sys/Login.vue'
 import Workbench from '../views/sys/Workbench.vue'
-import IframeContent from '../views/sys/IframeContent.vue'
+import IframeContent1 from '../views/sys/IframeContent1.vue'
+import IframeContent2 from '../views/sys/IframeContent2.vue'
+import IframeContent3 from '../views/sys/IframeContent3.vue'
 import DefaultContent from '../views/sys/DefaultContent.vue'
 import AccessDeny from '../views/errorPage/AccessDeny.vue'
 import MerchantManage from '../views/sys/MerchantManage.vue'
@@ -35,9 +37,19 @@ export default new Router({
       component: Workbench,
       children: [
         {
-          path: '/iframeContent',
-          name: 'iframe',
-          component: IframeContent
+          path: '/iframeContent1',
+          name: '自定义页面1',
+          component: IframeContent1
+        },
+        {
+          path: '/iframeContent2',
+          name: '自定义页面2',
+          component: IframeContent2
+        },
+        {
+          path: '/iframeContent3',
+          name: '自定义页面3',
+          component: IframeContent3
         },
         {
           path: '/defaultContent',

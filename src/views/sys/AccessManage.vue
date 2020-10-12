@@ -367,7 +367,7 @@
           this.hbalert.warn("权限值不能为空");
           return false;
         }
-        this.Api.addPermission(this.permissionModelAdd).then(res => {
+        this.hbapis.addPermission(this.permissionModelAdd).then(res => {
           if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
             this.hbalert.success(res.msg);
             this.showAddDialog = false;
@@ -435,7 +435,7 @@
         })
       },
       resourceTypeChange(label, updateFlag) {
-        let tenantId = updateFlag ? this.permissionModelUpdate.tenantId : this.permissionModelAdd.tenantId;
+        let tenantId = updateFlag ? this.permissionModelUpdate.tenantId : '';
         if ("folder" === label || "page" === label) {
           this.hbapis.getResourcesUnderMerchantByResourceType('folder', tenantId).then(res => {
             if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {

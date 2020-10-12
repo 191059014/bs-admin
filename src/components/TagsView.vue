@@ -81,6 +81,7 @@
 
   .el-tabs {
     margin-bottom: 10px;
+    box-shadow: 0 0 5px #cac6c6;
   }
 
   .el-tabs--border-card >>> .el-tabs__header .el-tabs__item.is-active {

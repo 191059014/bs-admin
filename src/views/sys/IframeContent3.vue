@@ -1,10 +1,10 @@
 <template>
-  <iframe id="frameContent" :src="$route.query.src" width="100%" height="500px" frameborder="no"
-          scrolling="auto"></iframe>
+  <iframe :src="$route.query.src" width="100%" height="500px"></iframe>
 </template>
 
 <script>
   export default {
+    name: 'IframeContent3',
     data() {
       return {}
     },

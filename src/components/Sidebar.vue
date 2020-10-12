@@ -64,7 +64,8 @@
           "index": "0",
           "name": "首页",
           "url": "/defaultContent",
-          "icon": "el-icon-s-home"
+          "icon": "el-icon-s-home",
+          "keepAlive": "Y"
         },
       }
     },

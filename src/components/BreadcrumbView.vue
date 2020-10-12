@@ -32,5 +32,6 @@
     margin: 0 0 10px 0;
     padding: 12px 0 12px 10px;
     background-color: white;
+    box-shadow: 0 0 5px #cac6c6;
   }
 </style>

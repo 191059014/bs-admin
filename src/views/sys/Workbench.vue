@@ -12,7 +12,7 @@
           <TagsView></TagsView>
           <BreadcrumbView></BreadcrumbView>
           <keep-alive :include="keepAliveArr">
-            <router-view style="background-color: white"></router-view>
+            <router-view style="background-color: white;"></router-view>
           </keep-alive>
         </el-main>
         <el-footer>
