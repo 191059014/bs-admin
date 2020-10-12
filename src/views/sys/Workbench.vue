@@ -15,7 +15,9 @@
             <router-view></router-view>
           </keep-alive>
         </el-main>
-        <el-footer></el-footer>
+        <el-footer>
+          Copyright  2020 Mr.huang 出品
+        </el-footer>
       </el-container>
     </el-container>
     <SystemSetting></SystemSetting>
