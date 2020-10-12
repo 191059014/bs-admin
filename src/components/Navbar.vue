@@ -15,7 +15,7 @@
         <el-row type="flex" justify="end" align="middle" style="padding-right: 20px">
           <el-dropdown @command="handleCommand">
               <span class="el-dropdown-link" style="color: white">
-                {{currentLoginUsername}}<i class="el-icon-arrow-down el-icon--right"></i>
+                欢迎您，{{currentLoginUsername}}<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="a" icon="el-icon-house">账户中心</el-dropdown-item>
