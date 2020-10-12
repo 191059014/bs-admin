@@ -11,7 +11,7 @@
         <el-main id="content_wrapper">
           <TagsView></TagsView>
           <BreadcrumbView></BreadcrumbView>
-          <keep-alive>
+          <keep-alive :include="keepAliveArr">
             <router-view></router-view>
           </keep-alive>
         </el-main>
@@ -38,8 +38,8 @@
       isMenuCollapse() {
         return this.$store.state.isMenuCollapse;
       },
-      clearTabKeepAlive() {
-        return this.$store.state.clearTabKeepAlive;
+      keepAliveArr() {
+        return this.$store.state.keepAliveArr;
       },
     },
     methods: {},

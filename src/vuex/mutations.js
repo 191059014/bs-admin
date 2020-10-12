@@ -95,13 +95,11 @@ const mutations = {
   resetBreadcrumb(state) {
     state.breadcrumbList = [];
   },
-  // 设置缓存失效
-  addClearTabKeepAlive(state, componentName) {
-    state.clearTabKeepAlive = componentName;
-  },
-  // 重置缓存失效key
-  resetClearTabKeepAlive(state) {
-    state.clearTabKeepAlive = '';
+  // 添加缓存页面
+  addKeepAlivePage(state, componentName) {
+    if (state.keepAliveArr.indexOf(componentName) < 0) {
+      state.keepAliveArr.push(componentName);
+    }
   }
 };
 export default mutations

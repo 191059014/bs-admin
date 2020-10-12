@@ -46,16 +46,6 @@
          */
         this.$store.commit('delete_tabs', name);
       },
-      findComponentNameCycle(path, routeArr) {
-        for (let i = 0; i < routeArr.length; i++) {
-          if (path === routeArr[i].path) {
-            return routeArr[i].component.name;
-          }
-          if (routeArr[i].children) {
-            return this.findComponentNameCycle(path, routeArr[i].children);
-          }
-        }
-      },
       routingToActiveTab(name) {
         let currentTab = this.$store.state.openTabs.find(function (value, index, arr) {
           return value.name === name;

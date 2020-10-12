@@ -8,7 +8,7 @@ let state = {
   tabsActiveIndex: '0',
   openTabs: [],
   defaultTab: {title: '首页', name: '0', closable: false, route: '/defaultContent'},
-  clearTabKeepAlive: '',
+  keepAliveArr: [],
   // 系统设置
   openSystemSetting: false,
   currentThemeStyleId: '0',

@@ -113,6 +113,24 @@
           this.$store.commit('addBreadcrumb', {id: secondParentMenu.index, name: secondParentMenu.name});
         }
         this.$store.commit('addBreadcrumb', {id: menu.index, name: menu.name});
+
+        /**
+         * 添加缓存页面
+         */
+        if ('Y' === menu.keepAlive) {
+          let componentName = this.findComponentNameCycle(menu.url, this.$router.options.routes);
+          this.$store.commit('addKeepAlivePage', componentName);
+        }
+      },
+      findComponentNameCycle(path, routeArr) {
+        for (let i = 0; i < routeArr.length; i++) {
+          if (path === routeArr[i].path) {
+            return routeArr[i].component.name;
+          }
+          if (routeArr[i].children) {
+            return this.findComponentNameCycle(path, routeArr[i].children);
+          }
+        }
       },
       findParentMenu(parentIndex) {
         if (!parentIndex) {
@@ -177,7 +195,7 @@
     font-family: cursive;
   }
 
-  .el-menu-item.is-active{
+  .el-menu-item.is-active {
     border-right: 2px solid #409EFF;
   }
 </style>

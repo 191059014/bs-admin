@@ -125,6 +125,16 @@
         <el-form-item label="链接" required v-show="permissionModelAdd.resourceType==='page'">
           <el-input v-model="permissionModelAdd.url" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="缓存页面" v-show="permissionModelAdd.resourceType==='page'">
+          <el-select v-model="permissionModelAdd.keepAlive" placeholder="请选择是否缓存页面">
+            <el-option
+              v-for="item in yesOrNoList"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="showDialogOfAdd(false)">取 消</el-button>
@@ -185,6 +195,16 @@
         <el-form-item label="链接" required v-show="permissionModelUpdate.resourceType==='page'">
           <el-input v-model="permissionModelUpdate.url" autocomplete="off"></el-input>
         </el-form-item>
+        <el-form-item label="缓存页面" v-show="permissionModelUpdate.resourceType==='page'">
+          <el-select v-model="permissionModelUpdate.keepAlive" placeholder="请选择是否缓存页面">
+            <el-option
+              v-for="item in yesOrNoList"
+              :key="item.value"
+              :label="item.name"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="hideDialogOfUpdate()">取 消</el-button>
@@ -197,7 +217,7 @@
 
 <script>
   export default {
-    name:'AccessManage',
+    name: 'AccessManage',
     data() {
       return {
         pageNum: 1,
@@ -219,6 +239,7 @@
           value: '',
           icon: '',
           url: '',
+          keepAlive: '',
           tenantId: ''
         },
         showUpdateDialog: false,
@@ -230,6 +251,7 @@
           value: '',
           icon: '',
           url: '',
+          keepAlive: '',
           tenantId: ''
         },
         permissionModelUpdatePrimary: {
@@ -241,10 +263,20 @@
         subMerchantList: [],
         resourceTypeList: [],
         folderList: [],
-        pageList: []
+        pageList: [],
+        yesOrNoList: []
       }
     },
     methods: {
+      loadYesOrNoList() {
+        this.hbapis.getEnumCombobox("YesOrNo").then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+            this.yesOrNoList = res.data;
+          } else {
+            this.hbalert.error(res.msg);
+          }
+        })
+      },
       changePageSize(pageSie) {
         this.pageSize = pageSie;
         this.queryPages();
@@ -284,16 +316,19 @@
         this.permissionModelUpdate.value = row.value;
         this.permissionModelUpdate.url = row.url;
         this.permissionModelUpdate.icon = row.icon;
+        this.permissionModelUpdate.keepAlive = row.keepAlive;
         this.permissionModelUpdate.tenantId = row.tenantId;
         this.permissionModelUpdate.parentId = row.parentId;
+
         this.permissionModelUpdatePrimary.permissionName = row.permissionName;
         this.permissionModelUpdatePrimary.value = row.value;
         this.permissionModelUpdatePrimary.url = row.url;
         this.permissionModelUpdatePrimary.icon = row.icon;
+        this.permissionModelUpdatePrimary.keepAlive = row.keepAlive;
 
         this.showUpdateDialog = true;
 
-        this.resourceTypeChange(row.resourceType);
+        this.resourceTypeChange(row.resourceType, true);
       },
       hideDialogOfUpdate() {
         this.showUpdateDialog = false;
@@ -352,7 +387,10 @@
           return false;
         }
         if (this.permissionModelUpdatePrimary.permissionName === this.permissionModelUpdate.permissionName
-          && this.permissionModelUpdatePrimary.value === this.permissionModelUpdate.value) {
+          && this.permissionModelUpdatePrimary.value === this.permissionModelUpdate.value
+          && this.permissionModelUpdatePrimary.icon === this.permissionModelUpdate.icon
+          && this.permissionModelUpdatePrimary.url === this.permissionModelUpdate.url
+          && this.permissionModelUpdatePrimary.keepAlive === this.permissionModelUpdate.keepAlive) {
           this.hbalert.warn("没有任何修改");
           return false;
         }
@@ -360,7 +398,8 @@
           permissionName: this.permissionModelUpdate.permissionName,
           value: this.permissionModelUpdate.value,
           url: this.permissionModelUpdate.url,
-          icon: this.permissionModelUpdate.icon
+          icon: this.permissionModelUpdate.icon,
+          keepAlive: this.permissionModelUpdate.keepAlive
         };
         this.hbapis.updatePermission(updateParams, this.permissionModelUpdate.permissionId).then(res => {
           if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
@@ -395,8 +434,8 @@
           }
         })
       },
-      resourceTypeChange(label) {
-        let tenantId = this.permissionModelAdd.tenantId;
+      resourceTypeChange(label, updateFlag) {
+        let tenantId = updateFlag ? this.permissionModelUpdate.tenantId : this.permissionModelAdd.tenantId;
         if ("folder" === label || "page" === label) {
           this.hbapis.getResourcesUnderMerchantByResourceType('folder', tenantId).then(res => {
             if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
@@ -439,6 +478,7 @@
       this.queryPages();
       this.queryResourceTypeList();
       this.getAllSubMerchants();
+      this.loadYesOrNoList();
     }
   }
 </script>
