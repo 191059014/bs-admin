@@ -29,7 +29,8 @@
 
 <style scoped>
   .el-breadcrumb {
-    padding: 12px 0 12px 5px;
-    background-color: #F5F7FA;
+    margin: 0 0 10px 0;
+    padding: 12px 0 12px 10px;
+    background-color: white;
   }
 </style>

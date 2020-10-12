@@ -68,6 +68,7 @@
 
   .el-tabs--border-card >>> .el-tabs__header {
     border-bottom: none;
+    background-color: white;
   }
 
   .el-tabs >>> .el-tabs__content {
@@ -76,6 +77,18 @@
 
   .el-tabs--border-card >>> .el-tabs__content {
     padding: 5px;
+  }
+
+  .el-tabs {
+    margin-bottom: 10px;
+  }
+
+  .el-tabs--border-card >>> .el-tabs__header .el-tabs__item.is-active {
+    border-bottom: 2px solid #409EFF;
+  }
+
+  .el-tabs--border-card >>> .el-tabs__header .el-tabs__item {
+    border: none;
   }
 
 </style>

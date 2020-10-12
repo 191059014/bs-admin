@@ -4,7 +4,7 @@
       <el-aside>
         <Sidebar></Sidebar>
       </el-aside>
-      <el-container>
+      <el-container style="background-color: #f0f2f5">
         <el-header>
           <Navbar></Navbar>
         </el-header>
@@ -12,7 +12,7 @@
           <TagsView></TagsView>
           <BreadcrumbView></BreadcrumbView>
           <keep-alive :include="keepAliveArr">
-            <router-view></router-view>
+            <router-view style="background-color: white"></router-view>
           </keep-alive>
         </el-main>
         <el-footer>
