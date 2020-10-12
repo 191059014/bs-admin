@@ -16,7 +16,7 @@
           </keep-alive>
         </el-main>
         <el-footer>
-          Copyright  2020 Mr.huang 出品
+          Copyright @ 2020 Mr.huang 出品
         </el-footer>
       </el-container>
     </el-container>
@@ -65,13 +65,23 @@
 
 <style scoped>
 
+  .workbench_container {
+    min-height: 600px;
+  }
+
+  .el-footer {
+    text-align: center;
+    padding: 50px 0;
+    color: rgba(0, 0, 0, 0.45);
+  }
+
   #content_wrapper {
     height: 100%;
     padding: 5px;
     border-left: solid 1px #e6e6e6;
   }
 
-  .el-header{
+  .el-header {
     padding: 0;
     transition: width .3s;
   }
