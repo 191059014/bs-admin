@@ -25,7 +25,7 @@ Ajax.interceptors.response.use(response => responseSuccess(response), error => r
  */
 function requestBefore(config) {
   let token = sessionStorage.getItem(TOKEN);
-  config.headers.common.Authorization = token && token;
+  config.headers.common.Authorization = token ? token : '';
   return config;
 }
 
@@ -41,24 +41,16 @@ function requestError(error) {
  * 响应成功
  */
 function responseSuccess(response) {
-  if (response.data.code == ResponseEnum.ACCESS_DENY.code) {
-    Alert.error(ResponseEnum.ACCESS_DENY.msg);
-    router.replace({
-      path: '/accessDeny',
-      query: {redirect: router.currentRoute.fullPath}
-    });
+  let errorCode = response.data.code;
+  let errorMsg = response.data.msg;
+  if (errorCode === ResponseEnum.ACCESS_DENY.code) {
+    Alert.error(errorMsg);
+    router.replace({path: '/accessDeny', query: {redirect: router.currentRoute.fullPath}});
     return;
   }
-  if (response.data.code == ResponseEnum.TOKEN_IS_EMPTY.code || response.data.code == ResponseEnum.TOKEN_IS_EXPIRED.code) {
-    Alert.error(response.data.msg);
-    router.replace({
-      path: '/',
-      query: {redirect: router.currentRoute.fullPath}
-    });
-    return;
-  }
-  if (response.data.code !== ResponseEnum.SUCCESS.code) {
-    Alert.error(response.data.msg);
+  if (errorCode === ResponseEnum.TOKEN_ERROR.code) {
+    Alert.error(errorMsg);
+    router.replace({path: '/', query: {redirect: router.currentRoute.fullPath}});
     return;
   }
   return response;
@@ -68,15 +60,16 @@ function responseSuccess(response) {
  * 响应失败
  */
 function responseError(error) {
-  if (error.response && error.response.status === 404) {
-    Alert.error('请求路径错了');
+  let responseCode = error.response ? error.response.status : '';
+  if (responseCode >= 500) {
+    Alert.error('服务器开小猜了[' + responseCode + ']');
     return;
   }
-  if (error.response && error.response.status === 500) {
-    Alert.error('服务器开小猜了');
+  if (responseCode >= 400) {
+    Alert.error('请求失败[' + responseCode + ']');
     return;
   }
-  Alert.error(ResponseEnum.ERROR.msg);
+  Alert.error('未知错误[' + responseCode + ']');
   // 处理响应失败
   return Promise.reject(error);
 }

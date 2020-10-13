@@ -69,7 +69,6 @@
           this.$store.commit('setCurrentThemeStyleId', cache.currentThemeStyleId);
           this.$store.commit('setCurrentThemeBgColor', cache.currentThemeBgColor);
           this.$store.commit('changeMultiTabs', cache.multiTabs);
-          localStorage.removeItem("stateCache");
         }
         /**
          * 在页面刷新/关闭之前，将vuex里的信息保存到localStorage里，防止页面刷新，vuex的state数据丢失
