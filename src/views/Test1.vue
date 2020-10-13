@@ -111,7 +111,7 @@
 </template>
 
 <script>
-  import DefaultContent from './sys/DefaultContent.vue'
+  import DefaultContent from './other/DefaultContent.vue'
   import {getServerIpAndHost} from '../common/utils.js'
   import {mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 

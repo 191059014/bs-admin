@@ -26,11 +26,11 @@
 </template>
 
 <script>
-  import Sidebar from '../../components/Sidebar.vue'
-  import Navbar from '../../components/Navbar.vue'
-  import TagsView from '../../components/TagsView.vue'
-  import SystemSetting from "../../components/SystemSetting";
-  import BreadcrumbView from "../../components/BreadcrumbView";
+  import Sidebar from '../components/Sidebar.vue'
+  import Navbar from '../components/Navbar.vue'
+  import TagsView from '../components/TagsView.vue'
+  import SystemSetting from "../components/SystemSetting";
+  import BreadcrumbView from "../components/BreadcrumbView";
 
   export default {
     data() {

@@ -45,6 +45,10 @@ export const getAllSubMerchants = () => {
 export const getUserPages = (params, pageNum, pageSize) => {
   return Ajax.post(`bs/auth/user/queryPages?pageNum=` + pageNum + '&pageSize=' + pageSize, params).then(res => res.data);
 };
+// 获取当前用户信息
+export const getCurrentUser = () => {
+  return Ajax.get(`bs/auth/user/getCurrentUser`).then(res => res.data);
+};
 // 添加用户
 export const addUser = (params) => {
   return Ajax.post(`bs/auth/user/add`, params).then(res => res.data);
