@@ -114,3 +114,12 @@ export const isAllNumber = function (str) {
   let reg = new RegExp("^[0-9]*$");
   return reg.test(str);
 };
+
+/**
+ * 校验邮箱格式
+ * @param str 字符串
+ */
+export const isEmail = function (str) {
+  let reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+  return reg.test(str);
+};

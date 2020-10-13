@@ -38,17 +38,17 @@ export default new Router({
       component: Workbench,
       children: [
         {
-          path: '/iframeContent1',
+          path: '/iframe1',
           name: '自定义页面1',
           component: IframeContent1
         },
         {
-          path: '/iframeContent2',
+          path: '/iframe2',
           name: '自定义页面2',
           component: IframeContent2
         },
         {
-          path: '/iframeContent3',
+          path: '/iframe3',
           name: '自定义页面3',
           component: IframeContent3
         },

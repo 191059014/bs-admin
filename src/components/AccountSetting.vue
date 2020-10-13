@@ -1,5 +1,11 @@
 <template>
   <div class="account_setting_wapper">
+    <el-alert
+      title="以下设置，重启后才能生效，请谨慎操作"
+      type="warning"
+      close-text="知道了"
+      show-icon>
+    </el-alert>
     <el-tabs tab-position="left">
       <el-tab-pane label="基本设置">
         <div class="tab_pane_title">基本设置</div>
@@ -10,7 +16,7 @@
           <el-form-item label="手机号" required>
             <el-input v-model="userModel.mobile"></el-input>
           </el-form-item>
-          <el-form-item label="性别" required>
+          <el-form-item label="性别">
             <el-radio v-model="userModel.sex" label="M">男</el-radio>
             <el-radio v-model="userModel.sex" label="F">女</el-radio>
           </el-form-item>
@@ -26,7 +32,7 @@
         <div class="tab_pane_title">安全设置</div>
         <el-form label-position="right" label-width="120px" :model="userModel">
           <el-form-item label="旧密码" required>
-            <el-input type="password" v-model="userModel.password" show-password></el-input>
+            <el-input type="password" v-model="oldPassword" show-password></el-input>
           </el-form-item>
           <el-form-item label="新密码" required>
             <el-input type="password" v-model="newPassword" show-password></el-input>
@@ -68,19 +74,19 @@
     data() {
       return {
         userModel: {
+          userId: '',
           userName: '',
           mobile: '',
           sex: '',
           email: '',
-          password: ''
         },
         userModelPrimary: {
           userName: '',
           mobile: '',
           sex: '',
           email: '',
-          password: ''
         },
+        oldPassword: '',
         newPassword: '',
         newPasswordAgain: ''
       }
@@ -95,16 +101,68 @@
           this.hbalert.warn("手机号不能为空");
           return false;
         }
-        if (!this.userModel.sex) {
-          this.hbalert.warn("性别不能为空");
+        if (this.userModel.email && !this.hbutils.isEmail(this.userModel.email)) {
+          this.hbalert.warn("邮箱格式不正确");
           return false;
         }
-        if (this.userModel.userName === this.userModelPrimary.userName) {
-
+        let updateFlag = false;
+        let updateParams = {};
+        if (this.userModel.userName !== this.userModelPrimary.userName) {
+          updateFlag = true;
+          updateParams.userName = this.userModel.userName;
         }
+        if (this.userModel.mobile !== this.userModelPrimary.mobile) {
+          updateFlag = true;
+          updateParams.mobile = this.userModel.mobile;
+        }
+        if (this.userModel.sex !== this.userModelPrimary.sex) {
+          updateFlag = true;
+          updateParams.sex = this.userModel.sex;
+        }
+        if (this.userModel.email !== this.userModelPrimary.email) {
+          updateFlag = true;
+          updateParams.email = this.userModel.email;
+        }
+        if (!updateFlag) {
+          this.hbalert.warn("所有信息均未修改");
+          return false;
+        }
+        this.hbapis.updateUser(updateParams, this.userModel.userId).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+            this.hbalert.success(res.msg);
+          } else {
+            this.hbalert.error(res.msg);
+          }
+        })
       },
       onSubmitSecurity() {
-
+        if (!this.oldPassword) {
+          this.hbalert.warn("旧密码不能为空");
+          return false;
+        }
+        if (!this.newPassword) {
+          this.hbalert.warn("新密码不能为空");
+          return false;
+        }
+        if (!this.newPasswordAgain) {
+          this.hbalert.warn("新密码确认密码不能为空");
+          return false;
+        }
+        if (this.newPassword !== this.newPasswordAgain) {
+          this.hbalert.warn("两次密码输入不一致");
+          return false;
+        }
+        let updateParams = {
+          oldPassword: this.oldPassword,
+          newPassword: this.newPassword
+        };
+        this.hbapis.updatePassword(updateParams).then(res => {
+          if (this.hbconsts.ResponseEnum.SUCCESS.code === res.code) {
+            this.hbalert.success(res.msg);
+          } else {
+            this.hbalert.error(res.msg);
+          }
+        })
       },
       loadCurrentUserInfo() {
         this.hbapis.getCurrentUser().then(res => {
@@ -124,6 +182,11 @@
 </script>
 
 <style scoped>
+
+  .el-alert {
+    margin: 0 10px 10px 10px;
+    width: auto;
+  }
 
   .account_bind_ul {
     list-style: none;
@@ -173,7 +236,7 @@
   }
 
   .account_setting_wapper >>> .el-tabs__content {
-    border-left: 2px solid #E4E7ED;
+    border-left: 1px solid #E4E7ED;
   }
 
 </style>

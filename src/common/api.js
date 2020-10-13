@@ -57,6 +57,10 @@ export const addUser = (params) => {
 export const updateUser = (params, userId) => {
   return Ajax.post(`bs/auth/user/update?userId=` + userId, params).then(res => res.data);
 };
+// 修改密码
+export const updatePassword = (params) => {
+  return Ajax.post(`bs/auth/user/updatePassword`, params).then(res => res.data);
+};
 // 删除用户
 export const deleteUser = (userId) => {
   return Ajax.get(`bs/auth/user/delete?userId=` + userId).then(res => res.data);
