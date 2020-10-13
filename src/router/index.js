@@ -11,6 +11,7 @@ import MerchantManage from '../views/sys/MerchantManage.vue'
 import UserManage from '../views/sys/UserManage.vue'
 import RoleManage from '../views/sys/RoleManage.vue'
 import AccessManage from '../views/sys/AccessManage.vue'
+import AccountSetting from '../views/sys/AccountSetting.vue'
 import Test from '../views/Test.vue'
 import Test1 from '../views/Test1.vue'
 
@@ -75,6 +76,11 @@ export default new Router({
           path: '/accessManage',
           name: '权限管理',
           component: AccessManage
+        },
+        {
+          path: '/accountSetting',
+          name: '账户设置',
+          component: AccountSetting
         },
       ]
     },

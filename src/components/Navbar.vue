@@ -18,8 +18,7 @@
                 欢迎您，{{currentLoginUsername}}<i class="el-icon-arrow-down el-icon--right"></i>
               </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="a" icon="el-icon-house">账户中心</el-dropdown-item>
-              <el-dropdown-item command="b" icon="el-icon-user">个人主页</el-dropdown-item>
+              <el-dropdown-item command="accountSetting" icon="el-icon-house">账户设置</el-dropdown-item>
               <el-dropdown-item command="setting" icon="el-icon-setting">系统设置</el-dropdown-item>
               <el-dropdown-item command="logout" divided icon="el-icon-switch-button">退出登录</el-dropdown-item>
             </el-dropdown-menu>
@@ -54,8 +53,13 @@
           this.$router.push({path: "/"});
         } else if (command === 'setting') {
           this.$store.commit('changeOpenSystemSetting', true);
-        } else {
-          this.hbalert.info('click on item ' + command);
+        } else if (command === 'accountSetting') {
+          let menu = {
+            "index": "10",
+            "name": "账户设置",
+            "url": "/accountSetting",
+          };
+          this.hbutils.clickMenu(this, menu);
         }
       },
     },
@@ -83,7 +87,7 @@
     color: white;
   }
 
-  .el-radio-button:first-child .el-radio-button__inner{
+  .el-radio-button:first-child .el-radio-button__inner {
     border: none;
   }
 

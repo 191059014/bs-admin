@@ -10,6 +10,64 @@ export const getServerIpAndHost = function (path) {
   return 'http://' + host + ':' + port + '/#' + path;
 };
 
+export const clickMenu = function (that, menu) {
+  /*
+   * 多页签
+   */
+  let openTabsLength = that.$store.state.openTabs.length;
+  if (openTabsLength >= 10) {
+    this.hbalert.warn("当前打开的页面过多，请关闭一些后再打开");
+    return false;
+  }
+  let closable = that.$store.state.defaultTab.name !== menu.index;
+  that.$store.commit('add_tabs', {route: menu.url, title: menu.name, name: menu.index, closable: closable});
+
+  /*
+   * 面包屑
+   */
+  that.$store.commit('resetBreadcrumb');
+  let firstParentMenu = this.findParentMenu(menu.parentIndex);
+  let secondParentMenu;
+  if (firstParentMenu) {
+    that.$store.commit('addBreadcrumb', {id: firstParentMenu.index, name: firstParentMenu.name});
+    secondParentMenu = this.findParentMenu(firstParentMenu.parentIndex);
+  }
+  if (secondParentMenu) {
+    that.$store.commit('addBreadcrumb', {id: secondParentMenu.index, name: secondParentMenu.name});
+  }
+  that.$store.commit('addBreadcrumb', {id: menu.index, name: menu.name});
+
+  /**
+   * 添加缓存页面
+   */
+  if ('Y' === menu.keepAlive) {
+    let componentName = findComponentNameCycle(menu.url, that.$router.options.routes);
+    that.$store.commit('addKeepAlivePage', componentName);
+  }
+};
+
+export const findParentMenu = function (parentIndex, menuDatas) {
+  if (!parentIndex) {
+    return null;
+  }
+  return findParentCycle(parentIndex, menuDatas);
+};
+
+export const findParentCycle = function (parentIndex, menuList) {
+  for (let i in menuList) {
+    let menu = menuList[i];
+    if (parentIndex === menu.index) {
+      return menu;
+    }
+    if (menu.children) {
+      let parentCycle = this.findParentCycle(parentIndex, menu.children);
+      if (parentCycle) {
+        return parentCycle;
+      }
+    }
+  }
+};
+
 /**
  * 校验是否是指定长度范围
  * @param str 字符串

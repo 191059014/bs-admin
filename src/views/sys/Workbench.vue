@@ -47,7 +47,7 @@
     methods: {},
     mounted() {
       let contentWrapperDiv = document.getElementById("content_wrapper");
-      contentWrapperDiv.style.minHeight = (document.documentElement.clientHeight - 56 - 10) + 'px';
+      contentWrapperDiv.style.minHeight = (document.documentElement.clientHeight - 56 - 105) + 'px';
     },
     components: {
       BreadcrumbView,
@@ -64,10 +64,6 @@
 </script>
 
 <style scoped>
-
-  .workbench_container {
-    min-height: 600px;
-  }
 
   .el-footer {
     text-align: center;
