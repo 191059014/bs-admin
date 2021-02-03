@@ -136,5 +136,33 @@ export const getResourcesUnderMerchantByResourceType = (resourceType, tenantId) 
   return Ajax.get(`bs/auth/access/getResourcesUnderMerchantByResourceType?resourceType=` + resourceType + "&tenantId=" + tenantId).then(res => res.data);
 };
 
+/**
+ * 分页查询全局配置表
+ */
+export const queryGlobalConfigPages = (globalConfig, pageNum, pageSize) => {
+  return Ajax.post(`bs/auth/globalConfig/queryPages?pageNum=` + pageNum + "&pageSize=" + pageSize, globalConfig).then(res => res.data);
+};
+
+/**
+ * 新增全局配置表
+ */
+export const saveGlobalConfig = (globalConfig) => {
+  return Ajax.post(`bs/auth/globalConfig/save`, globalConfig).then(res => res.data);
+};
+
+/**
+ * 通过主键修改全局配置表
+ */
+export const updateGlobalConfigById = (globalConfig) => {
+  return Ajax.post(`bs/auth/globalConfig/updateById`, globalConfig).then(res => res.data);
+};
+
+/**
+ * 通过主键删除全局配置表
+ */
+export const deleteGlobalConfigById = (id) => {
+  return Ajax.get(`bs/auth/globalConfig/deleteById?id=` + id).then(res => res.data);
+};
+
 
 

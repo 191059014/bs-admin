@@ -14,6 +14,7 @@ import AccessManage from '../views/sys/AccessManage.vue'
 import AccountSetting from '../components/AccountSetting.vue'
 import Test from '../views/Test.vue'
 import Test1 from '../views/Test1.vue'
+import GlobalConfig from '../views/configmanage/GlobalConfig.vue'
 
 /**
  * 解决点击菜单时报重复路由的错，虽然不影响功能，但是console里会打印红色错误
@@ -81,6 +82,11 @@ export default new Router({
           path: '/accountSetting',
           name: '账户设置',
           component: AccountSetting
+        },
+        {
+          path: '/globalConfig',
+          name: '全局配置',
+          component: GlobalConfig
         },
       ]
     },
